@@ -24,3 +24,10 @@ npx nx g @nx/angular:app ./apps/shell --routing --style=scss
 ```bash
 nx g @angular-architects/module-federation:init --project shell --type host
 ```
+
+### Step 5: Create and configure Dashboard MFE app
+
+```bash
+npx nx g @nx/angular:app ./apps/mfe-pages/dashboard --routing --style=scss
+npx nx g @angular-architects/module-federation:init --project dashboard --type remote
+```

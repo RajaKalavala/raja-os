@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "run:all": "node node_modules/@angular-architects/module-federation/src/server/mf-dev-server.js"
+    "run:all": "node node_modules/@angular-architects/module-federation/src/server/mf-dev-server.js",
+    "serve:shell": "npx nx run shell:serve",
+    "serve:dashboard": "npx nx run dashboard:serve"
   },
   "private": true,
   "dependencies": {
