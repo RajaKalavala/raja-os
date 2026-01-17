@@ -1,0 +1,102 @@
+{
+  "name": "dashboard",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "app",
+  "sourceRoot": "apps/mfe-pages/dashboard/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:webpack-browser",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/apps/mfe-pages/dashboard",
+        "index": "apps/mfe-pages/dashboard/src/index.html",
+        "main": "apps/mfe-pages/dashboard/src/main.ts",
+        "tsConfig": "apps/mfe-pages/dashboard/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/mfe-pages/dashboard/public",
+            "output": "."
+          }
+        ],
+        "styles": [
+          "apps/mfe-pages/dashboard/src/styles.scss"
+        ],
+        "customWebpackConfig": {
+          "path": "apps/mfe-pages/dashboard/webpack.config.js"
+        },
+        "commonChunk": false
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "4kb",
+              "maximumError": "8kb"
+            }
+          ],
+          "outputHashing": "all",
+          "customWebpackConfig": {
+            "path": "apps/mfe-pages/dashboard/webpack.prod.config.js"
+          }
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "continuous": true,
+      "executor": "@nx/angular:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "dashboard:build:production"
+        },
+        "development": {
+          "buildTarget": "dashboard:build:development"
+        }
+      },
+      "defaultConfiguration": "development",
+      "options": {
+        "port": 4100,
+        "publicHost": "http://localhost:4100"
+      }
+    },
+    "extract-i18n": {
+      "executor": "ngx-build-plus:extract-i18n",
+      "options": {
+        "buildTarget": "dashboard:build",
+        "extraWebpackConfig": "apps/mfe-pages/dashboard/webpack.config.js"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "serve-static": {
+      "continuous": true,
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "dashboard:build",
+        "port": 4200,
+        "spa": true
+      }
+    }
+  }
+}
