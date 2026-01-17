@@ -12,10 +12,3 @@ npx create-nx-workspace@latest raja-os
 npm install @nx/angular
 npm install @angular-architects/module-federation
 ```
-
-### Step 3: Create Shell App
-
-```bash
-npx nx g @nx/angular:app shell --routing --style=scss
-```
-
