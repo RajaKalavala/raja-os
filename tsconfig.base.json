@@ -22,7 +22,11 @@
         "libs/shop/feature-product-detail/src/index.ts"
       ],
       "@org/shop/feature-products": ["libs/shop/feature-products/src/index.ts"],
-      "@org/shop/shared-ui": ["libs/shop/shared-ui/src/index.ts"]
+      "@org/shop/shared-ui": ["libs/shop/shared-ui/src/index.ts"],
+      "test/Routes": ["apps/test/src/app/remote-entry/entry.routes.ts"],
+      "dashboard/Routes": [
+        "apps/mfe/dashboard/src/app/remote-entry/entry.routes.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]
