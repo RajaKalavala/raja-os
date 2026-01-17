@@ -2,7 +2,11 @@
   "name": "@org/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "run:all": "node node_modules/@angular-architects/module-federation/src/server/mf-dev-server.js",
+    "serve:shell": "npx nx run shell:serve",
+    "serve:dashboard": "npx nx run dashboard:serve"
+  },
   "private": true,
   "dependencies": {
     "@angular-architects/module-federation": "^20.0.0",
@@ -61,8 +65,9 @@
     "jiti": "2.4.2",
     "jsdom": "~22.1.0",
     "jsonc-eslint-parser": "^2.1.0",
+    "ngx-build-plus": "^20.0.0",
     "nx": "22.3.3",
-    "prettier": "^2.6.2",
+    "prettier": "~3.6.2",
     "supertest": "^7.1.4",
     "ts-node": "10.9.1",
     "tslib": "^2.3.0",
