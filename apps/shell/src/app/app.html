@@ -1,5 +1,6 @@
-<ul class="remote-menu">
-  <li><a routerLink="/">Home</a></li>
-  <li><a routerLink="dashboard">Dashboard</a></li>
-</ul>
-<router-outlet></router-outlet>
+<div class="app-layout">
+  <app-sidebar></app-sidebar>
+  <main class="app-main">
+    <router-outlet></router-outlet>
+  </main>
+</div>

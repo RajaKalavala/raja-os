@@ -1,0 +1,22 @@
+// App Layout Styles
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #f9fafb;
+}
+
+.app-main {
+  flex: 1;
+  margin-left: 280px; // Sidebar width
+  min-height: 100vh;
+  width: calc(100% - 280px);
+  padding: 0;
+  overflow-x: hidden;
+}
+
+// Remove old menu styles
+.remote-menu {
+  display: none;
+}
