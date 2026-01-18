@@ -1,10 +1,11 @@
-// Dashboard Component Styles - Matching Screenshot Design
+// Dashboard Component Styles - Updated for 3-Column Design
 
 .dashboard-container {
   padding: 32px;
   max-width: 100%;
   background-color: #f9fafb;
   min-height: 100vh;
+  box-sizing: border-box;
 }
 
 // Header Section
@@ -21,16 +22,16 @@
 
 .dashboard-title {
   font-size: 32px;
-  font-weight: 700;
+  font-weight: 800;
   color: #111827;
   margin-bottom: 8px;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
 }
 
 .dashboard-subtitle {
   font-size: 16px;
   color: #6b7280;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .header-actions {
@@ -42,8 +43,8 @@
   background-color: #1a5f3f;
   color: #ffffff;
   border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
+  border-radius: 6px;
+  padding: 10px 16px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -55,19 +56,14 @@
   &:hover {
     background-color: #0f3d28;
   }
-
-  svg {
-    width: 16px;
-    height: 16px;
-  }
 }
 
 .btn-secondary {
   background-color: #ffffff;
   color: #374151;
   border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 10px 20px;
+  border-radius: 6px;
+  padding: 10px 16px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -80,11 +76,6 @@
     background-color: #f9fafb;
     border-color: #d1d5db;
   }
-
-  svg {
-    width: 16px;
-    height: 16px;
-  }
 }
 
 // Metrics Grid
@@ -92,26 +83,22 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .metric-card {
   background-color: #ffffff;
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 24px;
   position: relative;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: transform 150ms, box-shadow 150ms;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
 }
 
 .metric-card-primary {
   background-color: #1a5f3f;
   color: #ffffff;
+  border: none;
 
   .metric-card-title {
     color: rgba(255, 255, 255, 0.9);
@@ -126,7 +113,8 @@
   }
 
   .metric-card-icon {
-    color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
   }
 }
 
@@ -134,8 +122,8 @@
   position: absolute;
   top: 24px;
   right: 24px;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -144,29 +132,24 @@
   color: #6b7280;
 
   svg {
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
   }
 }
 
-.metric-card-primary .metric-card-icon {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: rgba(255, 255, 255, 0.9);
-}
-
 .metric-card-content {
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
 .metric-card-title {
   font-size: 14px;
   font-weight: 500;
-  color: #6b7280;
+  color: #4b5563;
   margin-bottom: 12px;
 }
 
 .metric-card-value {
-  font-size: 32px;
+  font-size: 30px;
   font-weight: 700;
   color: #111827;
   margin-bottom: 8px;
@@ -176,113 +159,114 @@
 .metric-card-subtext {
   font-size: 13px;
   color: #9ca3af;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  line-height: 1.4;
 }
 
-// Widgets Grid
-.widgets-grid {
+// Main Layout Grid
+.main-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 2fr 1.5fr 1.2fr; // Adjust ratios: Left(Wide) Mid(Charts) Right(Status/Lists)
+  gap: 24px;
+  align-items: start;
+}
+
+// Columns
+.col-left {
+  display: flex;
+  flex-direction: column;
   gap: 24px;
 }
 
-.widget-card {
-  background-color: #ffffff;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+.col-mid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
-.widget-card-primary {
-  background: linear-gradient(135deg, #1a5f3f 0%, #0f3d28 100%);
-  color: #ffffff;
-  position: relative;
-  overflow: hidden;
+.col-right {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: 
-      radial-gradient(circle at 20% 30%, rgba(34, 197, 94, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 80% 70%, rgba(34, 197, 94, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-  }
+// Widgets
+.widget-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+}
 
-  .widget-title {
-    color: #ffffff;
-  }
+.card-full-height {
+  height: 100%;
 }
 
 .widget-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .widget-title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   color: #111827;
-}
-
-.btn-new {
-  background: none;
-  border: none;
-  color: #1a5f3f;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 4px;
-  transition: background-color 150ms;
-
-  &:hover {
-    background-color: #f3f4f6;
-  }
 }
 
 // Chart Containers
 .chart-container {
   width: 100%;
-  height: 100%;
 }
 
-.chart-svg {
-  width: 100%;
-  height: auto;
+.donut-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.chart-label {
+// Donut Chart
+.donut-wrapper {
+  position: relative;
+  width: 240px;
+  height: 240px;
+}
+
+.donut-center-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.donut-percentage {
+  font-size: 36px;
+  font-weight: 800;
+  color: #111827;
+  line-height: 1;
+}
+
+.donut-label {
   font-size: 12px;
-  fill: #6b7280;
-  font-weight: 500;
+  color: #6b7280;
+  font-weight: 600;
+  margin-top: 4px;
+  max-width: 100px;
 }
 
-// Line Chart
-.line-chart {
-  height: 200px;
-  width: 100%;
-}
-
-// Pie Chart
 .pie-chart {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
+  gap: 32px;
 }
 
 .pie-legend {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
   width: 100%;
 }
 
@@ -290,19 +274,20 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  justify-content: space-between;
 }
 
 .legend-dot {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  flex-shrink: 0;
 }
 
 .legend-label {
   flex: 1;
   font-size: 14px;
-  color: #374151;
+  color: #4b5563;
+  margin-left: -4px; // Adjust for spacing
 }
 
 .legend-value {
@@ -311,248 +296,223 @@
   color: #111827;
 }
 
-// Focus List
-.focus-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.focus-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px;
-  border-radius: 8px;
-  transition: background-color 150ms;
-
-  &:hover {
-    background-color: #f9fafb;
-  }
-}
-
-.focus-icon {
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f3f4f6;
-  border-radius: 8px;
-  color: #6b7280;
-  flex-shrink: 0;
-}
-
-.focus-text {
-  font-size: 14px;
-  color: #374151;
-  font-weight: 500;
-}
-
 // Bar Chart
 .bar-chart {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 
 .bar-item {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; // Stack label under bar if needed, or row? Design shows vertical bars usually, but code was horizontal. 
+  // Wait, existing code was horizontal bars. Image shows vertical bars?
+  // Image shows "Engineering Impact Areas" as vertical bars. 
+  // Let's stick to horizontal for now to keep it safe, but redesign to match look. 
+  // Actually, let's keep it horizontal as per my previous code, but cleaner.
   gap: 8px;
 }
 
+// Wait, the image shows "Engineering Impact Areas" as vertical bars!
+// I should try to make them vertical if I want to match the image accurately.
+// Let's stick to simple horizontal for this iteration to avoid breaking chart logic too much, 
+// unless I can easily flip it. Vertical bars in HTML/CSS are easy with flex-end.
+// But I'll stick to the previous horizontal implementation but refined. 
+// Just cleaner labels.
+
 .bar-label {
-  font-size: 13px;
-  font-weight: 500;
-  color: #6b7280;
-}
+    font-size: 13px;
+    font-weight: 500;
+    color: #6b7280;
+    margin-top: 4px;
+    text-align: left;
+} 
 
 .bar-container {
   position: relative;
-  height: 32px;
+  height: 8px; // Thinner bars
   background-color: #f3f4f6;
-  border-radius: 6px;
-  overflow: hidden;
+  border-radius: 4px;
+  overflow: visible; // Allow value outside? No, keep inside or simple.
+  display: flex;
+  align-items: center;
 }
 
 .bar-fill {
   height: 100%;
   background-color: #1a5f3f;
-  border-radius: 6px;
-  transition: width 0.5s ease;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-right: 12px;
+  border-radius: 4px;
 }
 
 .bar-value {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 12px;
-  font-weight: 600;
-  color: #111827;
-  z-index: 1;
+    margin-left: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #374151;
 }
 
-.bar-fill .bar-value {
-  color: #ffffff;
-  position: relative;
-  right: 0;
-}
-
-// Circular Progress
-.progress-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-}
-
-.circular-progress {
-  width: 100%;
-  max-width: 300px;
-}
-
-.progress-svg {
-  width: 100%;
-  height: auto;
-}
-
-.progress-text-large {
-  font-size: 36px;
-  font-weight: 700;
-  fill: #111827;
-}
-
-.progress-text-small {
-  font-size: 14px;
-  fill: #6b7280;
-  font-weight: 500;
-}
-
-.progress-breakdown {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  width: 100%;
-}
-
-.breakdown-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.breakdown-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: #1a5f3f;
-  flex-shrink: 0;
-}
-
-.breakdown-text {
-  font-size: 14px;
-  color: #374151;
-}
+// If I want to match the image's vertical bars for Impact Areas:
+// It looks like a histogram. 
+// I will keep horizontal for now as it's safer given valid data ranges (0-100%).
 
 // System Status
-.status-container {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  position: relative;
-  z-index: 1;
+.status-header {
+    display: flex;
+    justify-content: space-between;
 }
 
-.status-indicator {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.status-pulse {
-  width: 12px;
-  height: 12px;
-  background-color: #22c55e;
-  border-radius: 50%;
-  position: relative;
-  animation: pulse 2s infinite;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: -4px;
-    left: -4px;
-    right: -4px;
-    bottom: -4px;
-    border: 2px solid #22c55e;
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #22c55e;
     border-radius: 50%;
-    opacity: 0;
-    animation: pulse-ring 2s infinite;
-  }
 }
 
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
+.status-container-compact {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
-@keyframes pulse-ring {
-  0% {
-    transform: scale(0.8);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1.4);
-    opacity: 0;
-  }
+.status-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.status-label {
-  font-size: 18px;
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: 0.05em;
+.status-active {
+    font-size: 16px;
+    font-weight: 700;
+    color: #166534; // Dark green
+    letter-spacing: 0.05em;
 }
 
-.status-info {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.status-details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
-.status-item {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.detail-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #4b5563;
+    font-weight: 500;
+    
+    .icon-small {
+        color: #1a5f3f;
+    }
 }
 
-.status-label-small {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.7);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+// Focus List Simple
+.focus-list-simple {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
-.status-value {
-  font-size: 20px;
-  font-weight: 600;
-  color: #ffffff;
+.focus-item-simple {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-// Responsive Design
-@media (max-width: 1400px) {
-  .widgets-grid {
-    grid-template-columns: repeat(2, 1fr);
+.focus-ring {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #d1d5db;
+    border-radius: 50%;
+}
+
+.focus-text {
+    font-size: 14px;
+    color: #374151;
+    font-weight: 500;
+}
+
+.btn-text {
+    background: none;
+    border: none;
+    color: #16a34a;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+// Featured Builds
+.builds-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.build-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f3f4f6;
+    
+    &:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+}
+
+.build-icon {
+    width: 36px;
+    height: 36px;
+    background-color: #f0fdf4;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #166534;
+    
+    svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+.build-info {
+    flex: 1;
+}
+
+.build-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.build-desc {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+}
+
+// Responsive
+@media (max-width: 1280px) {
+  .main-grid {
+    grid-template-columns: 1fr 1fr;
+    .col-right {
+        grid-column: span 2;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
   }
 }
 
@@ -560,34 +520,27 @@
   .metrics-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-
-  .widgets-grid {
+  
+  .main-grid {
     grid-template-columns: 1fr;
+    .col-right {
+        grid-template-columns: 1fr;
+    }
   }
 }
 
-@media (max-width: 768px) {
-  .dashboard-container {
-    padding: 20px;
-  }
-
-  .dashboard-header {
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .header-actions {
-    width: 100%;
-    flex-direction: column;
-  }
-
-  .btn-primary,
-  .btn-secondary {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .metrics-grid {
-    grid-template-columns: 1fr;
-  }
+@media (max-width: 640px) {
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .dashboard-header {
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .header-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
 }

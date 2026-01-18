@@ -3,7 +3,7 @@
   <div class="dashboard-header">
     <div class="header-content">
       <h1 class="dashboard-title">Dashboard</h1>
-      <p class="dashboard-subtitle">Plan, prioritize, and accomplish your tasks with ease.</p>
+      <p class="dashboard-subtitle">Engineering Command Center — Systems, Architecture & Impact</p>
     </div>
     <div class="header-actions">
       <button class="btn-primary">
@@ -40,204 +40,200 @@
     </div>
   </div>
 
-  <!-- Charts and Widgets Grid -->
-  <div class="widgets-grid">
-    <!-- Career Growth Timeline -->
-    <div class="widget-card">
-      <div class="widget-header">
-        <h3 class="widget-title">Career Growth Timeline</h3>
-      </div>
-      <div class="chart-container">
-        <div class="line-chart">
-          <svg class="chart-svg" viewBox="0 0 400 200">
-            <!-- Grid lines -->
-            <defs>
-              <linearGradient id="careerGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" style="stop-color:#22c55e;stop-opacity:0.3" />
-                <stop offset="100%" style="stop-color:#22c55e;stop-opacity:0" />
-              </linearGradient>
-            </defs>
-            <!-- Area under line -->
-            <path
-              [attr.d]="getCareerPath()"
-              fill="url(#careerGradient)"
-            />
-            <!-- Line -->
-            <polyline
-              [attr.points]="getCareerPoints()"
-              fill="none"
-              stroke="#22c55e"
-              stroke-width="3"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <!-- Data points -->
-            <circle
-              *ngFor="let milestone of careerTimeline; let i = index"
-              [attr.cx]="i * 60 + 40"
-              [attr.cy]="180 - getCareerLevelPercentage(milestone.level) * 1.4"
-              r="5"
-              fill="#22c55e"
-              stroke="#ffffff"
-              stroke-width="2"
-            />
-            <!-- X-axis labels -->
-            <text
-              *ngFor="let milestone of careerTimeline; let i = index"
-              [attr.x]="i * 60 + 40"
-              y="195"
-              text-anchor="middle"
-              class="chart-label"
-            >
-              {{ milestone.year }}
-            </text>
-          </svg>
+  <!-- Main Content Grid -->
+  <div class="main-grid">
+    
+    <!-- Left Column: Timeline & Impact -->
+    <div class="col-left">
+      <!-- Career Growth Timeline -->
+      <div class="widget-card">
+        <div class="widget-header">
+          <h3 class="widget-title">Career Growth Timeline</h3>
         </div>
-      </div>
-    </div>
-
-    <!-- Engineering Contribution Distribution -->
-    <div class="widget-card">
-      <div class="widget-header">
-        <h3 class="widget-title">Engineering Contribution Distribution</h3>
-      </div>
-      <div class="chart-container">
-        <div class="pie-chart">
-          <svg class="chart-svg" viewBox="0 0 200 200">
-            <circle
-              cx="100"
-              cy="100"
-              r="80"
-              fill="none"
-              stroke="#e5e7eb"
-              stroke-width="20"
-            />
-            <g *ngFor="let segment of contributionDistribution; let i = index">
-              <circle
-                cx="100"
-                cy="100"
-                r="80"
-                fill="none"
-                [attr.stroke]="segment.color"
-                stroke-width="20"
-                [attr.stroke-dasharray]="getPieDashArray(segment.percentage)"
-                [attr.stroke-dashoffset]="getPieDashOffset(i)"
-                transform="rotate(-90 100 100)"
+        <div class="chart-container">
+          <div class="line-chart">
+            <svg class="chart-svg" viewBox="0 0 400 200">
+              <!-- Grid lines -->
+              <defs>
+                <linearGradient id="careerGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color:#22c55e;stop-opacity:0.3" />
+                  <stop offset="100%" style="stop-color:#22c55e;stop-opacity:0" />
+                </linearGradient>
+              </defs>
+              <!-- Area under line -->
+              <path
+                [attr.d]="getCareerPath()"
+                fill="url(#careerGradient)"
               />
-            </g>
-          </svg>
-          <div class="pie-legend">
-            <div *ngFor="let segment of contributionDistribution" class="legend-item">
-              <span class="legend-dot" [style.background-color]="segment.color"></span>
-              <span class="legend-label">{{ segment.label }}</span>
-              <span class="legend-value">{{ segment.percentage }}%</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Current Focus List -->
-    <div class="widget-card">
-      <div class="widget-header">
-        <h3 class="widget-title">Current Focus</h3>
-        <button class="btn-new">+ New</button>
-      </div>
-      <div class="focus-list">
-        <div *ngFor="let item of currentFocusList" class="focus-item">
-          <div class="focus-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"></circle>
-              <polyline points="12 6 12 12 16 14"></polyline>
+              <!-- Line -->
+              <polyline
+                [attr.points]="getCareerPoints()"
+                fill="none"
+                stroke="#22c55e"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <!-- Data points -->
+              <circle
+                *ngFor="let milestone of careerTimeline; let i = index"
+                [attr.cx]="i * 60 + 40"
+                [attr.cy]="180 - getCareerLevelPercentage(milestone.level) * 1.4"
+                r="5"
+                fill="#22c55e"
+                stroke="#ffffff"
+                stroke-width="2"
+              />
+              <!-- X-axis labels -->
+              <text
+                *ngFor="let milestone of careerTimeline; let i = index"
+                [attr.x]="i * 60 + 40"
+                y="195"
+                text-anchor="middle"
+                class="chart-label"
+              >
+                {{ milestone.year }}
+              </text>
             </svg>
           </div>
-          <span class="focus-text">{{ item }}</span>
         </div>
       </div>
-    </div>
 
-    <!-- Engineering Impact Areas -->
-    <div class="widget-card">
-      <div class="widget-header">
-        <h3 class="widget-title">Engineering Impact Areas</h3>
-      </div>
-      <div class="chart-container">
-        <div class="bar-chart">
-          <div *ngFor="let area of impactAreas" class="bar-item">
-            <div class="bar-label">{{ area.label }}</div>
-            <div class="bar-container">
-              <div class="bar-fill" [style.width.%]="area.value" [style.background-color]="area.value > 90 ? '#1a5f3f' : area.value > 85 ? '#2d7a5a' : '#4a9d7a'"></div>
-              <span class="bar-value">{{ area.value }}%</span>
+      <!-- Engineering Impact Areas -->
+      <div class="widget-card">
+        <div class="widget-header">
+          <h3 class="widget-title">Engineering Impact Areas</h3>
+        </div>
+        <div class="chart-container">
+          <div class="bar-chart">
+            <div *ngFor="let area of impactAreas" class="bar-item">
+              <div class="bar-container">
+                <div class="bar-fill" [style.width.%]="area.value" [style.background-color]="area.value > 90 ? '#1a5f3f' : area.value > 85 ? '#2d7a5a' : '#4a9d7a'"></div>
+                <span class="bar-value">{{ area.value }}%</span>
+              </div>
+              <div class="bar-label">{{ area.label }}</div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Current Focus Completion -->
-    <div class="widget-card">
-      <div class="widget-header">
-        <h3 class="widget-title">Current Focus Completion</h3>
-      </div>
-      <div class="progress-container">
-        <div class="circular-progress">
-          <svg class="progress-svg" viewBox="0 0 200 120">
-            <defs>
-              <pattern id="stripes" patternUnits="userSpaceOnUse" width="10" height="10">
-                <line x1="0" y1="0" x2="10" y2="10" stroke="#e5e7eb" stroke-width="2"/>
-              </pattern>
-            </defs>
-            <!-- Background arc -->
-            <path
-              d="M 40 100 A 60 60 0 0 1 160 100"
-              fill="none"
-              stroke="#e5e7eb"
-              stroke-width="20"
-              stroke-linecap="round"
-            />
-            <!-- Progress arc -->
-            <path
-              [attr.d]="getProgressArcPath()"
-              fill="none"
-              stroke="#1a5f3f"
-              stroke-width="20"
-              stroke-linecap="round"
-            />
-            <!-- Text -->
-            <text x="100" y="95" text-anchor="middle" class="progress-text-large">{{ currentFocusCompletion }}%</text>
-            <text x="100" y="110" text-anchor="middle" class="progress-text-small">Current Year Goals</text>
-          </svg>
+    <!-- Middle Column: Contribution Distribution -->
+    <div class="col-mid">
+      <div class="widget-card card-full-height">
+        <div class="widget-header">
+          <h3 class="widget-title">Engineering Contribution Distribution</h3>
         </div>
-        <div class="progress-breakdown">
-          <div *ngFor="let item of currentFocusItems" class="breakdown-item">
-            <span class="breakdown-dot"></span>
-            <span class="breakdown-text">{{ item }}</span>
+        <div class="chart-container donut-container">
+          <div class="pie-chart">
+            <div class="donut-wrapper">
+              <svg class="chart-svg" viewBox="0 0 200 200">
+                <circle
+                  cx="100"
+                  cy="100"
+                  r="80"
+                  fill="none"
+                  stroke="#e5e7eb"
+                  stroke-width="24"
+                />
+                <g *ngFor="let segment of contributionDistribution; let i = index">
+                  <circle
+                    cx="100"
+                    cy="100"
+                    r="80"
+                    fill="none"
+                    [attr.stroke]="segment.color"
+                    stroke-width="24"
+                    [attr.stroke-dasharray]="getPieDashArray(segment.percentage)"
+                    [attr.stroke-dashoffset]="getPieDashOffset(i)"
+                    transform="rotate(-90 100 100)"
+                    stroke-linecap="butt"
+                  />
+                </g>
+              </svg>
+              <div class="donut-center-text">
+                <div class="donut-percentage">{{ currentFocusCompletion }}%</div>
+                <div class="donut-label">2025 Goals Completed</div>
+              </div>
+            </div>
+            
+            <div class="pie-legend">
+              <div *ngFor="let segment of contributionDistribution" class="legend-item">
+                <span class="legend-dot" [style.background-color]="segment.color"></span>
+                <span class="legend-label">{{ segment.label }}</span>
+                <span class="legend-value">{{ segment.percentage }}%</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- System Status -->
-    <div class="widget-card widget-card-primary">
-      <div class="widget-header">
-        <h3 class="widget-title">System Status</h3>
-      </div>
-      <div class="status-container">
-        <div class="status-indicator">
-          <div class="status-pulse"></div>
-          <span class="status-label">ACTIVE</span>
+    <!-- Right Column: Status & Focus -->
+    <div class="col-right">
+      <!-- System Status -->
+      <div class="widget-card">
+        <div class="widget-header">
+          <h3 class="widget-title">System Status</h3>
+          <span class="status-dot"></span>
         </div>
-        <div class="status-info">
-          <div class="status-item">
-            <span class="status-label-small">Uptime</span>
-            <span class="status-value">10+ Years</span>
+        <div class="status-container-compact">
+          <div class="status-row">
+            <span class="status-pulse-small"></span>
+            <span class="status-active">ACTIVE</span>
+            <span class="status-dot-green"></span>
           </div>
-          <div class="status-item">
-            <span class="status-label-small">Mode</span>
-            <span class="status-value">Shipping 🚀</span>
+          <div class="status-details">
+            <div class="detail-row">
+               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-small"><path d="M12 2v20M2 12h20"/></svg>
+               <span>Uptime: 10+ Years</span>
+            </div>
+            <div class="detail-row">
+               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-small"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+               <span>Mode: Shipping 🚀</span>
+            </div>
           </div>
         </div>
       </div>
+
+      <!-- Current Focus List -->
+      <div class="widget-card">
+        <div class="widget-header">
+          <h3 class="widget-title">Current Focus</h3>
+          <button class="btn-text">View</button>
+        </div>
+        <div class="focus-list-simple">
+          <div *ngFor="let item of currentFocusItems" class="focus-item-simple">
+            <div class="focus-ring"></div>
+            <span class="focus-text">{{ item }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Featured Builds -->
+      <div class="widget-card">
+        <div class="widget-header">
+          <h3 class="widget-title">Featured Builds</h3>
+          <button class="btn-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+        </div>
+        <div class="builds-list">
+          <div *ngFor="let build of featuredBuilds" class="build-item">
+            <div class="build-icon">
+               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+            </div>
+            <div class="build-info">
+              <div class="build-name">{{ build.name }}</div>
+              <div class="build-desc">{{ build.desc }}</div>
+            </div>
+            <div class="build-arrow">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>

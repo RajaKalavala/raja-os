@@ -97,6 +97,20 @@ export class DashboardComponent {
     'Developing RajaOS platform',
   ];
 
+
+  featuredBuilds = [
+    {
+      name: 'Arsenal Platform',
+      desc: 'Centralized limit funds, commerce systems',
+      icon: 'assets/cube.svg' // Placeholder
+    },
+    {
+      name: 'AI Enrichment Pipeline',
+      desc: 'Actionable rich data, re-engineering',
+      icon: 'assets/pipeline.svg' // Placeholder
+    }
+  ];
+
   getCareerMaxLevel(): number {
     return Math.max(...this.careerTimeline.map((m) => m.level));
   }
@@ -127,17 +141,23 @@ export class DashboardComponent {
   }
 
   getPieDashArray(percentage: number): string {
-    const circumference = 2 * Math.PI * 80; // radius = 80
+    const radius = 80;
+    const circumference = 2 * Math.PI * radius;
     const dashLength = (percentage / 100) * circumference;
     return `${dashLength} ${circumference}`;
   }
 
   getPieDashOffset(index: number): number {
-    const circumference = 2 * Math.PI * 80;
+    const radius = 80;
+    const circumference = 2 * Math.PI * radius;
     let offset = 0;
     for (let i = 0; i < index; i++) {
-      offset -= (this.contributionDistribution[i].percentage / 100) * circumference;
+        // Start from -90 degrees (top)
+        // Just cumulative length
+        offset -= (this.contributionDistribution[i].percentage / 100) * circumference;
     }
+    // No +25% offset needed if we rotate the SVG -90deg in CSS/SVG transform.
+    // However, SVG circles start at 3 o'clock. -90 takes them to 12 o'clock.
     return offset;
   }
 
@@ -165,3 +185,4 @@ export class DashboardComponent {
       .join(' ');
   }
 }
+
