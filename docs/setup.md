@@ -33,3 +33,8 @@ npx nx g @nx/angular:host apps/shell --prefix=app --dynamic
 npx nx g @nx/angular:remote mfe/dashboard --prefix=raja
 ```
 
+### Step 5: Add Shared Libraries
+
+```bash
+npx nx g @nx/angular:lib libs/design-system
+```
