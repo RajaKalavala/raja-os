@@ -1,0 +1,243 @@
+<div class="dashboard-container">
+  <!-- Header Section -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <h1 class="dashboard-title">Dashboard</h1>
+      <p class="dashboard-subtitle">Plan, prioritize, and accomplish your tasks with ease.</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Add Project
+      </button>
+      <button class="btn-secondary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        Import Data
+      </button>
+    </div>
+  </div>
+
+  <!-- Top Metrics Cards -->
+  <div class="metrics-grid">
+    <div *ngFor="let card of metricCards" [class]="'metric-card' + (card.isPrimary ? ' metric-card-primary' : '')">
+      <div class="metric-card-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+        </svg>
+      </div>
+      <div class="metric-card-content">
+        <h3 class="metric-card-title">{{ card.title }}</h3>
+        <div class="metric-card-value">{{ card.value }}</div>
+        <p class="metric-card-subtext">{{ card.subtext }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts and Widgets Grid -->
+  <div class="widgets-grid">
+    <!-- Career Growth Timeline -->
+    <div class="widget-card">
+      <div class="widget-header">
+        <h3 class="widget-title">Career Growth Timeline</h3>
+      </div>
+      <div class="chart-container">
+        <div class="line-chart">
+          <svg class="chart-svg" viewBox="0 0 400 200">
+            <!-- Grid lines -->
+            <defs>
+              <linearGradient id="careerGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#22c55e;stop-opacity:0.3" />
+                <stop offset="100%" style="stop-color:#22c55e;stop-opacity:0" />
+              </linearGradient>
+            </defs>
+            <!-- Area under line -->
+            <path
+              [attr.d]="getCareerPath()"
+              fill="url(#careerGradient)"
+            />
+            <!-- Line -->
+            <polyline
+              [attr.points]="getCareerPoints()"
+              fill="none"
+              stroke="#22c55e"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <!-- Data points -->
+            <circle
+              *ngFor="let milestone of careerTimeline; let i = index"
+              [attr.cx]="i * 60 + 40"
+              [attr.cy]="180 - getCareerLevelPercentage(milestone.level) * 1.4"
+              r="5"
+              fill="#22c55e"
+              stroke="#ffffff"
+              stroke-width="2"
+            />
+            <!-- X-axis labels -->
+            <text
+              *ngFor="let milestone of careerTimeline; let i = index"
+              [attr.x]="i * 60 + 40"
+              y="195"
+              text-anchor="middle"
+              class="chart-label"
+            >
+              {{ milestone.year }}
+            </text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Engineering Contribution Distribution -->
+    <div class="widget-card">
+      <div class="widget-header">
+        <h3 class="widget-title">Engineering Contribution Distribution</h3>
+      </div>
+      <div class="chart-container">
+        <div class="pie-chart">
+          <svg class="chart-svg" viewBox="0 0 200 200">
+            <circle
+              cx="100"
+              cy="100"
+              r="80"
+              fill="none"
+              stroke="#e5e7eb"
+              stroke-width="20"
+            />
+            <g *ngFor="let segment of contributionDistribution; let i = index">
+              <circle
+                cx="100"
+                cy="100"
+                r="80"
+                fill="none"
+                [attr.stroke]="segment.color"
+                stroke-width="20"
+                [attr.stroke-dasharray]="getPieDashArray(segment.percentage)"
+                [attr.stroke-dashoffset]="getPieDashOffset(i)"
+                transform="rotate(-90 100 100)"
+              />
+            </g>
+          </svg>
+          <div class="pie-legend">
+            <div *ngFor="let segment of contributionDistribution" class="legend-item">
+              <span class="legend-dot" [style.background-color]="segment.color"></span>
+              <span class="legend-label">{{ segment.label }}</span>
+              <span class="legend-value">{{ segment.percentage }}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Current Focus List -->
+    <div class="widget-card">
+      <div class="widget-header">
+        <h3 class="widget-title">Current Focus</h3>
+        <button class="btn-new">+ New</button>
+      </div>
+      <div class="focus-list">
+        <div *ngFor="let item of currentFocusList" class="focus-item">
+          <div class="focus-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+          </div>
+          <span class="focus-text">{{ item }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Engineering Impact Areas -->
+    <div class="widget-card">
+      <div class="widget-header">
+        <h3 class="widget-title">Engineering Impact Areas</h3>
+      </div>
+      <div class="chart-container">
+        <div class="bar-chart">
+          <div *ngFor="let area of impactAreas" class="bar-item">
+            <div class="bar-label">{{ area.label }}</div>
+            <div class="bar-container">
+              <div class="bar-fill" [style.width.%]="area.value" [style.background-color]="area.value > 90 ? '#1a5f3f' : area.value > 85 ? '#2d7a5a' : '#4a9d7a'"></div>
+              <span class="bar-value">{{ area.value }}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Current Focus Completion -->
+    <div class="widget-card">
+      <div class="widget-header">
+        <h3 class="widget-title">Current Focus Completion</h3>
+      </div>
+      <div class="progress-container">
+        <div class="circular-progress">
+          <svg class="progress-svg" viewBox="0 0 200 120">
+            <defs>
+              <pattern id="stripes" patternUnits="userSpaceOnUse" width="10" height="10">
+                <line x1="0" y1="0" x2="10" y2="10" stroke="#e5e7eb" stroke-width="2"/>
+              </pattern>
+            </defs>
+            <!-- Background arc -->
+            <path
+              d="M 40 100 A 60 60 0 0 1 160 100"
+              fill="none"
+              stroke="#e5e7eb"
+              stroke-width="20"
+              stroke-linecap="round"
+            />
+            <!-- Progress arc -->
+            <path
+              [attr.d]="getProgressArcPath()"
+              fill="none"
+              stroke="#1a5f3f"
+              stroke-width="20"
+              stroke-linecap="round"
+            />
+            <!-- Text -->
+            <text x="100" y="95" text-anchor="middle" class="progress-text-large">{{ currentFocusCompletion }}%</text>
+            <text x="100" y="110" text-anchor="middle" class="progress-text-small">Current Year Goals</text>
+          </svg>
+        </div>
+        <div class="progress-breakdown">
+          <div *ngFor="let item of currentFocusItems" class="breakdown-item">
+            <span class="breakdown-dot"></span>
+            <span class="breakdown-text">{{ item }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- System Status -->
+    <div class="widget-card widget-card-primary">
+      <div class="widget-header">
+        <h3 class="widget-title">System Status</h3>
+      </div>
+      <div class="status-container">
+        <div class="status-indicator">
+          <div class="status-pulse"></div>
+          <span class="status-label">ACTIVE</span>
+        </div>
+        <div class="status-info">
+          <div class="status-item">
+            <span class="status-label-small">Uptime</span>
+            <span class="status-value">10+ Years</span>
+          </div>
+          <div class="status-item">
+            <span class="status-label-small">Mode</span>
+            <span class="status-value">Shipping 🚀</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
