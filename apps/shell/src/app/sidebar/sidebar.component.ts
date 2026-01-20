@@ -24,23 +24,20 @@ interface GeneralItem {
 })
 export class SidebarComponent {
   menuItems: MenuItem[] = [
-    { label: 'Dashboard', route: '/dashboard', icon: 'grid' },
-    { label: 'Tasks', route: '/tasks', icon: 'checklist', badge: 10 },
-    { label: 'Calendar', route: '/calendar', icon: 'calendar' },
-    { label: 'Analytics', route: '/analytics', icon: 'bar-chart' },
-    { label: 'Team', route: '/team', icon: 'group' },
+    { label: 'Dashboard', route: '/dashboard', icon: 'grid'},
+    { label: 'System Overview', route: '/system-overview', icon: 'server' },
+    { label: 'Production History', route: '/production-history', icon: 'history' },
+    { label: 'Builds', route: '/builds', icon: 'folder' },
+    { label: 'Architecture', route: '/architecture', icon: 'cpu' },
+    { label: 'AI Lab', route: '/ai-lab', icon: 'beaker' },
+    { label: 'Engineering Notes', route: '/engineering-notes', icon: 'book' },
+    { label: 'Now', route: '/now', icon: 'clock' },
+    { label: 'Ping Me', route: '/ping-me', icon: 'message-circle' },
   ];
 
-  generalItems: GeneralItem[] = [
-    { label: 'Settings', icon: 'settings' },
-    { label: 'Help', icon: 'help' },
-    { label: 'Logout', icon: 'logout' },
+  sidebarActions = [
+      { icon: 'github', url: 'https://github.com/rajakalavala' }, // Replace with actual links if known, or placeholders
+      { icon: 'linkedin', url: 'https://linkedin.com/in/rajakalavala' },
+      { icon: 'download', action: 'download' }
   ];
-
-  onGeneralItemClick(item: GeneralItem): void {
-    if (item.action) {
-      item.action();
-    }
-    console.log(`${item.label} clicked`);
-  }
 }
