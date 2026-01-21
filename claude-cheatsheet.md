@@ -2,39 +2,17 @@
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `/exit` | Exit the Claude Code CLI session |
-| `/clear` | Clear the conversation history and start fresh |
-| `/compact` | Summarize the conversation to reduce context usage |
-| `/status` | Check current model and session status |
-| `Esc Esc` | Press Escape twice to cancel the current operation or interrupt Claude |
+| Command    | Description                                                            |
+| ---------- | ---------------------------------------------------------------------- |
+| `/exit`    | Exit the Claude Code CLI session                                       |
+| `/clear`   | Clear the conversation history and start fresh                         |
+| `/compact` | Summarize the conversation to reduce context usage                     |
+| `/status`  | Check current model and session status                                 |
+| `Esc Esc`  | Press Escape twice to cancel the current operation or interrupt Claude |
+| `/model`   | Switch to a different model                                            |
 
-## Changing Models
+## Examples
 
-### During a Session
-```bash
-/model opus    # Switch to Opus 4.5 (complex reasoning)
-/model sonnet  # Switch to Sonnet 4.5 (daily coding)
-/model haiku   # Switch to Haiku (fast, simple tasks)
-```
+Prompt - "I want to build a tiktok UGC generating app for my marketing agency, please help me create a plan. Write this in a prd.md"
 
-### At Startup
-```bash
-claude --model opus
-claude --model sonnet
-claude --model haiku
-```
-
-### Environment Variable
-```bash
-export ANTHROPIC_MODEL=opus
-```
-
-### Settings File
-Edit `~/.claude/settings.json`:
-```json
-{
-  "model": "opus"
-}
-```
+PRD Enablement - "Read this plan file and interview me in detail using AskUserQuestionTool about literally anything; Technical implementation, UI and UX concerns, trade-offs, etc."
