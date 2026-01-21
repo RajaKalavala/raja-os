@@ -36,24 +36,25 @@ export class DashboardComponent {
   metricCards: MetricCard[] = [
     {
       title: 'Total Experience',
-      value: '10+ Years',
-      subtext: 'Across enterprise & platform systems',
+      value: '9+ Years',
+      subtext: 'Design & Development Across Web and Mobile Apps',
       isPrimary: true,
     },
     {
-      title: 'Systems in Production',
+      title: 'Worked on ',
       value: '15+',
-      subtext: 'High-scale distributed systems',
+      subtext:
+        'Projects : E-Commerce, Healthcare, Platform, Mobile and Web Apps',
     },
     {
-      title: 'Daily Data Processed',
-      value: '1M+',
-      subtext: 'Events & product updates per day',
+      title: 'LinkedIn Community',
+      value: '1K+',
+      subtext: 'Connections',
     },
     {
       title: 'Core Focus Areas',
       value: '5',
-      subtext: 'Data, AI, Platform, Cloud, Architecture',
+      subtext: 'Architecture, AI, Data, System Design, Platform',
     },
   ];
 
@@ -97,18 +98,17 @@ export class DashboardComponent {
     'Developing RajaOS platform',
   ];
 
-
   featuredBuilds = [
     {
       name: 'Arsenal Platform',
       desc: 'Centralized limit funds, commerce systems',
-      icon: 'assets/cube.svg' // Placeholder
+      icon: 'assets/cube.svg', // Placeholder
     },
     {
       name: 'AI Enrichment Pipeline',
       desc: 'Actionable rich data, re-engineering',
-      icon: 'assets/pipeline.svg' // Placeholder
-    }
+      icon: 'assets/pipeline.svg', // Placeholder
+    },
   ];
 
   getCareerMaxLevel(): number {
@@ -152,9 +152,10 @@ export class DashboardComponent {
     const circumference = 2 * Math.PI * radius;
     let offset = 0;
     for (let i = 0; i < index; i++) {
-        // Start from -90 degrees (top)
-        // Just cumulative length
-        offset -= (this.contributionDistribution[i].percentage / 100) * circumference;
+      // Start from -90 degrees (top)
+      // Just cumulative length
+      offset -=
+        (this.contributionDistribution[i].percentage / 100) * circumference;
     }
     // No +25% offset needed if we rotate the SVG -90deg in CSS/SVG transform.
     // However, SVG circles start at 3 o'clock. -90 takes them to 12 o'clock.
@@ -167,7 +168,10 @@ export class DashboardComponent {
       this.careerTimeline
         .map(
           (m, i) =>
-            i * 60 + 40 + ',' + (180 - this.getCareerLevelPercentage(m.level) * 1.4)
+            i * 60 +
+            40 +
+            ',' +
+            (180 - this.getCareerLevelPercentage(m.level) * 1.4),
         )
         .join(' L ') +
       ' L ' +
@@ -180,9 +184,11 @@ export class DashboardComponent {
     return this.careerTimeline
       .map(
         (m, i) =>
-          i * 60 + 40 + ',' + (180 - this.getCareerLevelPercentage(m.level) * 1.4)
+          i * 60 +
+          40 +
+          ',' +
+          (180 - this.getCareerLevelPercentage(m.level) * 1.4),
       )
       .join(' ');
   }
 }
-
