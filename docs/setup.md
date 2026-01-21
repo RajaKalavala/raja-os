@@ -18,11 +18,13 @@ npm install @angular-architects/module-federation
 ### Step 3: Add Host App
 
 Static App:
+
 ```bash
 npx nx g @nx/angular:host apps/shell --prefix=app
 ```
 
 Dynamic App:
+
 ```bash
 npx nx g @nx/angular:host apps/shell --prefix=app --dynamic
 ```
@@ -30,7 +32,7 @@ npx nx g @nx/angular:host apps/shell --prefix=app --dynamic
 ### Step 4: Add MFE Apps
 
 ```bash
-npx nx g @nx/angular:remote mfe/dashboard --prefix=raja
+npx nx g @nx/angular:remote apps/mfe/dashboard --prefix=raja
 ```
 
 ### Step 5: Add Shared Libraries

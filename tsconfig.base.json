@@ -27,7 +27,10 @@
       "dashboard/Routes": [
         "apps/mfe/dashboard/src/app/remote-entry/entry.routes.ts"
       ],
-      "@org/design-system": ["libs/design-system/src/index.ts"]
+      "@org/design-system": ["libs/design-system/src/index.ts"],
+      "experience/Routes": [
+        "apps/mfe/experience/src/app/remote-entry/entry.routes.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

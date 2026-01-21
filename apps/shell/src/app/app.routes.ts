@@ -11,6 +11,13 @@ export const appRoutes: Route[] = [
       ),
   },
   {
+    path: 'experience',
+    loadChildren: () =>
+      loadRemote<typeof import('experience/Routes')>('experience/Routes').then(
+        (m) => m!.remoteRoutes,
+      ),
+  },
+  {
     path: '',
     component: NxWelcome,
   },

@@ -1,3 +1,4 @@
 {
-  "dashboard": "http://localhost:4202/mf-manifest.json"
+  "dashboard": "http://localhost:4202/mf-manifest.json",
+  "experience": "http://localhost:4203/mf-manifest.json"
 }
