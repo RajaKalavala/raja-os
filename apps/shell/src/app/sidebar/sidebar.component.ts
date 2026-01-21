@@ -24,20 +24,15 @@ interface GeneralItem {
 })
 export class SidebarComponent {
   menuItems: MenuItem[] = [
-    { label: 'Dashboard', route: '/dashboard', icon: 'grid'},
-    { label: 'System Overview', route: '/system-overview', icon: 'server' },
-    { label: 'Production History', route: '/production-history', icon: 'history' },
-    { label: 'Builds', route: '/builds', icon: 'folder' },
-    { label: 'Architecture', route: '/architecture', icon: 'cpu' },
-    { label: 'AI Lab', route: '/ai-lab', icon: 'beaker' },
-    { label: 'Engineering Notes', route: '/engineering-notes', icon: 'book' },
-    { label: 'Now', route: '/now', icon: 'clock' },
-    { label: 'Ping Me', route: '/ping-me', icon: 'message-circle' },
+    { label: 'Dashboard', route: '/dashboard', icon: 'grid' },
+    { label: 'Projects', route: '/projects', icon: 'folder' },
+    { label: 'Experience', route: '/experience', icon: 'history' },
+    { label: 'Blogs', route: '/blogs', icon: 'book' },
   ];
 
   sidebarActions = [
-      { icon: 'github', url: 'https://github.com/rajakalavala' }, // Replace with actual links if known, or placeholders
-      { icon: 'linkedin', url: 'https://linkedin.com/in/rajakalavala' },
-      { icon: 'download', action: 'download' }
+    { icon: 'github', url: 'https://github.com/rajakalavala' }, // Replace with actual links if known, or placeholders
+    { icon: 'linkedin', url: 'https://linkedin.com/in/rajakalavala' },
+    { icon: 'download', action: 'download' },
   ];
 }
