@@ -5,6 +5,10 @@
   min-height: 100vh;
   width: 100%;
   background-color: #f9fafb;
+
+  &.landing-mode {
+    background-color: transparent;
+  }
 }
 
 .app-main {
@@ -14,6 +18,11 @@
   width: calc(100% - 280px);
   padding: 0;
   overflow-x: hidden;
+
+  &.full-width {
+    margin-left: 0;
+    width: 100%;
+  }
 }
 
 // Remove old menu styles
