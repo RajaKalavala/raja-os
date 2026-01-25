@@ -9,6 +9,7 @@
 - When working in individual projects, use the `nx_project_details` mcp tool to analyze and understand the specific project structure and dependencies
 - For questions around nx configuration, best practices or if you're unsure, use the `nx_docs` tool to get relevant, up-to-date docs. Always use this instead of assuming things about nx configuration
 - If the user needs help with an Nx configuration or project graph error, use the `nx_workspace` tool to get any errors
+- For Nx plugin best practices, check `node_modules/@nx/<plugin>/PLUGIN.md`. Not all plugins have this file - proceed without it if unavailable.
 
 <!-- nx configuration end-->
 
@@ -21,6 +22,7 @@
 **RajaOS** is a personal operating system platform built to showcase professional experience, technical capabilities, and engineering philosophy through an interactive, data-driven web application. It serves as both a portfolio and a demonstration of modern web architecture.
 
 ### Key Information
+
 - **Product Requirements Document**: See `prd.md` in project root for comprehensive feature requirements, data models, and roadmap
 - **Architecture**: Module Federation with Angular Standalone Components
 - **Monorepo**: Nx workspace
@@ -66,6 +68,7 @@ This project uses **Module Federation** to create a micro frontend architecture:
 ### When Creating New MFEs
 
 1. **Generate the application** using Nx generators:
+
    ```bash
    npx nx g @nx/angular:app <name> --directory=apps/mfe/<name>
    ```
@@ -105,16 +108,19 @@ This project uses **Module Federation** to create a micro frontend architecture:
 ## Important Files and Locations
 
 ### Configuration
+
 - `nx.json` - Nx workspace configuration
 - `tsconfig.base.json` - TypeScript path mappings
 - `apps/shell/webpack.config.ts` - Module Federation host config
 - `apps/mfe/*/webpack.config.ts` - Remote MFE configs
 
 ### Navigation
+
 - `apps/shell/src/app/app.routes.ts` - Main routing configuration
 - `apps/shell/src/app/sidebar/sidebar.component.ts` - Navigation menu (all routes defined)
 
 ### Key Reference Files
+
 - `prd.md` - Complete product requirements and data models
 - `README.md` - General Nx repository information
 - `AGENTS.md` - Nx MCP configuration
@@ -122,6 +128,7 @@ This project uses **Module Federation** to create a micro frontend architecture:
 ## Running the Application
 
 ### Development
+
 ```bash
 # Serve shell (host) - will auto-serve remotes as needed
 npx nx serve shell
@@ -137,6 +144,7 @@ npx nx run-many -t lint
 ```
 
 ### Module Federation Development
+
 When shell is served with `nx serve shell`, it will automatically start remote MFEs based on the Module Federation configuration. The shell runs on port 4200 and loads remotes on their configured ports.
 
 ## Current Priorities
@@ -144,6 +152,7 @@ When shell is served with `nx serve shell`, it will automatically start remote M
 Based on the development roadmap in `prd.md`:
 
 ### Phase 2: Dashboard Completion (Current)
+
 - [ ] Refine Dashboard data models
 - [ ] Implement real data integration
 - [ ] Add animations and transitions
@@ -151,6 +160,7 @@ Based on the development roadmap in `prd.md`:
 - [ ] Add interactive features
 
 ### Phase 3: High Priority Pages (Next)
+
 - [ ] Create Production History MFE (Priority 1)
 - [ ] Create Architecture MFE
 - [ ] Create AI Lab MFE
@@ -159,24 +169,28 @@ Based on the development roadmap in `prd.md`:
 ## Code Quality Standards
 
 ### TypeScript
+
 - Use strict mode
 - Define explicit types (avoid `any`)
 - Use interfaces for data models
 - Follow Angular style guide
 
 ### Components
+
 - Standalone components only
 - Small, focused components
 - Clear input/output contracts
 - Proper lifecycle management
 
 ### Performance
+
 - Lazy load routes
 - Code splitting via Module Federation
 - Optimize bundle sizes
 - Use OnPush change detection where possible
 
 ### Accessibility
+
 - WCAG 2.1 Level AA compliance
 - Semantic HTML
 - ARIA labels where needed
