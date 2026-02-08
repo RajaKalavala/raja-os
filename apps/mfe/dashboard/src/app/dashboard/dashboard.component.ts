@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TimeTrackerComponent } from '../time-tracker/time-tracker.component';
+import { AdminLoginModalComponent } from '../components/admin-login-modal/admin-login-modal.component';
+import { AuthService } from '../services/auth.service';
 
 interface MetricCard {
   title: string;
@@ -30,12 +32,15 @@ interface ImpactArea {
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, TimeTrackerComponent],
+  imports: [CommonModule, TimeTrackerComponent, AdminLoginModalComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   standalone: true,
 })
 export class DashboardComponent {
+  showLoginModal = signal<boolean>(false);
+
+  constructor(public authService: AuthService) {}
   metricCards: MetricCard[] = [
     {
       title: 'Total Experience',
@@ -196,5 +201,17 @@ export class DashboardComponent {
           (180 - this.getCareerLevelPercentage(m.level) * 1.4),
       )
       .join(' ');
+  }
+
+  openLoginModal(): void {
+    this.showLoginModal.set(true);
+  }
+
+  closeLoginModal(): void {
+    this.showLoginModal.set(false);
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 }

@@ -6,21 +6,25 @@
       <p class="dashboard-subtitle">Engineering Command Center — Systems, Architecture & Impact</p>
     </div>
     <div class="header-actions">
-      <button class="btn-primary">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="12" y1="5" x2="12" y2="19"></line>
-          <line x1="5" y1="12" x2="19" y2="12"></line>
-        </svg>
-        Add Project
-      </button>
-      <button class="btn-secondary">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-          <polyline points="7 10 12 15 17 10"></polyline>
-          <line x1="12" y1="15" x2="12" y2="3"></line>
-        </svg>
-        Import Data
-      </button>
+      @if (!authService.isAdminLoggedIn()) {
+        <button class="btn-primary" (click)="openLoginModal()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+            <polyline points="10 17 15 12 10 7"></polyline>
+            <line x1="15" y1="12" x2="3" y2="12"></line>
+          </svg>
+          Admin Login
+        </button>
+      } @else {
+        <button class="btn-secondary" (click)="logout()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          Logout
+        </button>
+      }
     </div>
   </div>
 
@@ -273,3 +277,8 @@
     </div>
   </div>
 </div>
+
+<!-- Admin Login Modal -->
+@if (showLoginModal()) {
+  <app-admin-login-modal (close)="closeLoginModal()"></app-admin-login-modal>
+}
