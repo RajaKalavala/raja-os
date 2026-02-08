@@ -1,0 +1,105 @@
+<div class="time-tracker-container">
+  <!-- Timer Card -->
+  <div class="timer-card">
+    <!-- Wave Pattern Background -->
+    <div class="wave-pattern">
+      <svg viewBox="0 0 500 150" preserveAspectRatio="none" class="wave-svg">
+        <path
+          d="M0,50 Q125,30 250,50 T500,50 L500,150 L0,150 Z"
+          fill="rgba(16, 185, 129, 0.1)"
+        />
+        <path
+          d="M0,70 Q125,50 250,70 T500,70 L500,150 L0,150 Z"
+          fill="rgba(16, 185, 129, 0.05)"
+        />
+        <path
+          d="M0,90 Q125,70 250,90 T500,90 L500,150 L0,150 Z"
+          fill="rgba(16, 185, 129, 0.03)"
+        />
+      </svg>
+    </div>
+
+    <!-- Content -->
+    <div class="timer-content">
+      <h3 class="timer-title">Time Tracker</h3>
+
+      <!-- Timer Display -->
+      <div class="timer-display">
+        <span class="time-digit">{{ formatTime(hours()) }}</span>
+        <span class="time-separator">:</span>
+        <span class="time-digit">{{ formatTime(minutes()) }}</span>
+        <span class="time-separator">:</span>
+        <span class="time-digit">{{ formatTime(seconds()) }}</span>
+      </div>
+
+      <!-- Control Buttons -->
+      <div class="timer-controls">
+        <button
+          class="control-btn pause-btn"
+          (click)="toggleTimer()"
+          [class.active]="isRunning()"
+        >
+          @if (isRunning()) {
+            <!-- Pause Icon -->
+            <svg viewBox="0 0 24 24" fill="currentColor" class="btn-icon">
+              <rect x="6" y="4" width="4" height="16" rx="1" />
+              <rect x="14" y="4" width="4" height="16" rx="1" />
+            </svg>
+          } @else {
+            <!-- Play Icon -->
+            <svg viewBox="0 0 24 24" fill="currentColor" class="btn-icon">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          }
+        </button>
+
+        <button
+          class="control-btn stop-btn"
+          (click)="stopTimer()"
+          [disabled]="!isRunning() && !isPaused()"
+        >
+          <!-- Stop Icon -->
+          <svg viewBox="0 0 24 24" fill="currentColor" class="btn-icon">
+            <rect x="6" y="6" width="12" height="12" rx="2" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Weekly Focus Chart -->
+  <div class="weekly-chart">
+    <div class="chart-header">
+      <h4 class="chart-title">Weekly Focus Time</h4>
+      <div class="chart-stats">
+        <span class="stat-label">Total:</span>
+        <span class="stat-value">{{ getTotalWeeklyTime() }}</span>
+      </div>
+    </div>
+
+    <!-- Bar Chart -->
+    <div class="chart-container">
+      <div class="chart-bars">
+        @for (day of weeklyFocus; track day.day) {
+          <div class="bar-wrapper" [class.today]="isToday(day.day)">
+            <div class="bar-column">
+              <div
+                class="bar-fill"
+                [style.height.%]="getBarHeight(day)"
+                [class.has-data]="day.hours > 0 || day.minutes > 0"
+              >
+                @if (day.hours > 0 || day.minutes > 0) {
+                  <span class="bar-value">{{ formatDayTime(day) }}</span>
+                }
+              </div>
+            </div>
+            <div class="bar-label">{{ day.day }}</div>
+            @if (isToday(day.day)) {
+              <div class="today-indicator">●</div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

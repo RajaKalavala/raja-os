@@ -74,27 +74,58 @@
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
+              <!-- Company transition markers -->
+              @for (milestone of careerTimeline; track milestone.year; let i = $index) {
+                @if (milestone.isTransition) {
+                  <circle
+                    [attr.cx]="i * 60 + 40"
+                    [attr.cy]="180 - getCareerLevelPercentage(milestone.level) * 1.4"
+                    r="12"
+                    fill="none"
+                    stroke="#fbbf24"
+                    stroke-width="2"
+                    opacity="0.6"
+                  />
+                }
+              }
               <!-- Data points -->
               <circle
                 *ngFor="let milestone of careerTimeline; let i = index"
                 [attr.cx]="i * 60 + 40"
                 [attr.cy]="180 - getCareerLevelPercentage(milestone.level) * 1.4"
-                r="5"
-                fill="#22c55e"
+                [attr.r]="milestone.isTransition ? 6 : 5"
+                [attr.fill]="milestone.isTransition ? '#fbbf24' : '#22c55e'"
                 stroke="#ffffff"
                 stroke-width="2"
               />
-              <!-- X-axis labels -->
+              <!-- X-axis labels (only show key years) -->
               <text
                 *ngFor="let milestone of careerTimeline; let i = index"
                 [attr.x]="i * 60 + 40"
                 y="195"
                 text-anchor="middle"
                 class="chart-label"
+                [style.font-weight]="milestone.isTransition ? 'bold' : 'normal'"
+                [style.fill]="milestone.isTransition ? '#fbbf24' : '#9ca3af'"
               >
                 {{ milestone.year }}
               </text>
             </svg>
+          </div>
+          <!-- Company Timeline Legend -->
+          <div class="company-timeline-legend">
+            <div class="legend-item">
+              <div class="legend-badge company-1"></div>
+              <span>Company 1: 2016-2018</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-badge company-2"></div>
+              <span>Company 2: 2019-2021</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-badge company-3"></div>
+              <span>Company 3: 2022-2026</span>
+            </div>
           </div>
         </div>
       </div>
@@ -194,6 +225,11 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- Time Tracker -->
+      <div class="widget-card widget-card-compact">
+        <app-time-tracker></app-time-tracker>
       </div>
 
       <!-- Current Focus List -->

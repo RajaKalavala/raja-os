@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TimeTrackerComponent } from '../time-tracker/time-tracker.component';
 
 interface MetricCard {
   title: string;
@@ -12,6 +13,8 @@ interface CareerMilestone {
   year: number;
   role: string;
   level: number;
+  company?: string;
+  isTransition?: boolean;
 }
 
 interface ContributionSegment {
@@ -27,7 +30,7 @@ interface ImpactArea {
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule],
+  imports: [CommonModule, TimeTrackerComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   standalone: true,
@@ -59,13 +62,17 @@ export class DashboardComponent {
   ];
 
   careerTimeline: CareerMilestone[] = [
-    { year: 2014, role: 'Junior Engineer', level: 1 },
-    { year: 2016, role: 'Engineer', level: 2 },
-    { year: 2018, role: 'Senior Engineer', level: 3 },
-    { year: 2020, role: 'Tech Lead', level: 4 },
-    { year: 2022, role: 'Principal Engineer', level: 4.5 },
-    { year: 2024, role: 'Architect', level: 5 },
-    { year: 2026, role: 'Senior Architect', level: 5.5 },
+    { year: 2016, role: 'Software Engineer', level: 1, company: 'Company 1', isTransition: true },
+    { year: 2017, role: 'Senior Engineer', level: 2, company: 'Company 1' },
+    { year: 2018, role: 'Tech Lead', level: 2.8, company: 'Company 1' },
+    { year: 2019, role: 'Engineering Lead', level: 3.5, company: 'Company 2', isTransition: true },
+    { year: 2020, role: 'Principal Engineer', level: 4.2, company: 'Company 2' },
+    { year: 2021, role: 'Principal Engineer', level: 4.5, company: 'Company 2' },
+    { year: 2022, role: 'Senior Principal', level: 5, company: 'Company 3', isTransition: true },
+    { year: 2023, role: 'Staff Engineer', level: 5.2, company: 'Company 3' },
+    { year: 2024, role: 'Staff Engineer', level: 5.5, company: 'Company 3' },
+    { year: 2025, role: 'Tech Architect', level: 5.7, company: 'Company 3' },
+    { year: 2026, role: 'Staff Architect', level: 6, company: 'Company 3' },
   ];
 
   contributionDistribution: ContributionSegment[] = [
@@ -130,7 +137,6 @@ export class DashboardComponent {
     const radius = 60;
     const centerX = 100;
     const centerY = 100;
-    const startAngle = Math.PI; // 180 degrees
     const endAngle = Math.PI - (percentage / 100) * Math.PI;
     const startX = centerX - radius;
     const startY = centerY;
