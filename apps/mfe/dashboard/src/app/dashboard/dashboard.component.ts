@@ -6,6 +6,9 @@ import { IdentityCardComponent } from '../components/identity-card/identity-card
 import { LifeStatsComponent } from '../components/life-stats/life-stats.component';
 import { NowPlayingComponent } from '../components/now-playing/now-playing.component';
 import { CurrentlyBuildingComponent } from '../components/currently-building/currently-building.component';
+import { SkillTreeComponent } from '../components/skill-tree/skill-tree.component';
+import { GithubHeatmapComponent } from '../components/github-heatmap/github-heatmap.component';
+import { DeveloperJourneyComponent } from '../components/developer-journey/developer-journey.component';
 import { AuthService } from '../services/auth.service';
 import { ThemeService } from '../services/theme.service';
 
@@ -45,6 +48,9 @@ interface ImpactArea {
     LifeStatsComponent,
     NowPlayingComponent,
     CurrentlyBuildingComponent,
+    SkillTreeComponent,
+    GithubHeatmapComponent,
+    DeveloperJourneyComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',

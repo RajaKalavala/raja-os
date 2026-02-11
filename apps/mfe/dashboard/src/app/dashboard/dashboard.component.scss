@@ -237,6 +237,36 @@
   line-height: 1.4;
 }
 
+// Interactive Features Grid
+.interactive-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+// .interactive-col-left {
+//   display: flex;
+//   min-height: 500px;
+// }
+
+.interactive-col-right {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+// Responsive for interactive grid
+@media (max-width: 1024px) {
+  .interactive-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .interactive-col-left {
+    min-height: 400px;
+  }
+}
+
 // Main Layout Grid
 .main-grid {
   display: grid;
@@ -323,7 +353,8 @@
 }
 
 @keyframes blink {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -448,11 +479,11 @@
 }
 
 .bar-label {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text-secondary);
-    margin-top: 4px;
-    text-align: left;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  text-align: left;
 }
 
 .bar-container {
@@ -472,159 +503,159 @@
 }
 
 .bar-value {
-    margin-left: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-secondary);
+  margin-left: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
 }
 
 // System Status
 .status-header {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .status-dot {
-    width: 8px;
-    height: 8px;
-    background-color: var(--accent-green);
-    border-radius: 50%;
+  width: 8px;
+  height: 8px;
+  background-color: var(--accent-green);
+  border-radius: 50%;
 }
 
 .status-container-compact {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .status-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .status-active {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--status-active);
-    letter-spacing: 0.05em;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--status-active);
+  letter-spacing: 0.05em;
 }
 
 .status-details {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .detail-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 14px;
-    color: var(--text-secondary);
-    font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 500;
 
-    .icon-small {
-        color: var(--accent-green-dark);
-    }
+  .icon-small {
+    color: var(--accent-green-dark);
+  }
 }
 
 // Focus List Simple
 .focus-list-simple {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .focus-item-simple {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .focus-ring {
-    width: 16px;
-    height: 16px;
-    border: 2px solid var(--focus-ring-border);
-    border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--focus-ring-border);
+  border-radius: 50%;
 }
 
 .focus-text {
-    font-size: 14px;
-    color: var(--tagline-text);
-    font-weight: 500;
+  font-size: 14px;
+  color: var(--tagline-text);
+  font-weight: 500;
 }
 
 .btn-text {
-    background: none;
-    border: none;
-    color: #16a34a;
-    font-weight: 600;
-    font-size: 13px;
-    cursor: pointer;
+  background: none;
+  border: none;
+  color: #16a34a;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
 }
 
 // Featured Builds
 .builds-list {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .build-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-light);
 
-    &:last-child {
-        border-bottom: none;
-        padding-bottom: 0;
-    }
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
 }
 
 .build-icon {
-    width: 36px;
-    height: 36px;
-    background-color: var(--build-icon-bg);
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--build-icon-color);
+  width: 36px;
+  height: 36px;
+  background-color: var(--build-icon-bg);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--build-icon-color);
 
-    svg {
-        width: 18px;
-        height: 18px;
-    }
+  svg {
+    width: 18px;
+    height: 18px;
+  }
 }
 
 .build-info {
-    flex: 1;
+  flex: 1;
 }
 
 .build-name {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
 .build-desc {
-    font-size: 12px;
-    color: var(--text-secondary);
-    margin-top: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 140px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140px;
 }
 
 .btn-icon {
-    background: none;
-    border: none;
-    color: var(--text-tertiary);
-    cursor: pointer;
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  cursor: pointer;
 }
 
 // Responsive
@@ -632,9 +663,9 @@
   .main-grid {
     grid-template-columns: 1fr 1fr;
     .col-right {
-        grid-column: span 2;
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+      grid-column: span 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
     }
   }
 }
@@ -647,25 +678,25 @@
   .main-grid {
     grid-template-columns: 1fr;
     .col-right {
-        grid-template-columns: 1fr;
+      grid-template-columns: 1fr;
     }
   }
 }
 
 @media (max-width: 640px) {
-    .metrics-grid {
-        grid-template-columns: 1fr;
-    }
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
 
-    .dashboard-header {
-        flex-direction: column;
-        gap: 16px;
-    }
+  .dashboard-header {
+    flex-direction: column;
+    gap: 16px;
+  }
 
-    .header-actions {
-        width: 100%;
-        justify-content: flex-start;
-    }
+  .header-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
 }
 
 // Company Timeline Legend

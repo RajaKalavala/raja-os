@@ -1,0 +1,29 @@
+<div class="developer-journey">
+  <div class="journey-header">
+    <h3 class="journey-title">DEVELOPER JOURNEY</h3>
+  </div>
+
+  <div class="timeline">
+    @for (milestone of milestones; track milestone.year; let i = $index) {
+      <div
+        class="milestone"
+        [class.active]="currentMilestone() === i"
+        (click)="selectMilestone(i)"
+      >
+        <div class="milestone-icon" [style.background-color]="milestone.color">
+          {{ milestone.icon }}
+        </div>
+        <div class="milestone-year">{{ milestone.year || 'NOW' }}</div>
+      </div>
+    }
+
+    <div class="timeline-line">
+      <div class="timeline-progress" [style.width.%]="getProgressPercentage()"></div>
+    </div>
+  </div>
+
+  <div class="milestone-details">
+    <h4 class="milestone-title">{{ milestones[currentMilestone()].title }}</h4>
+    <p class="milestone-description">{{ milestones[currentMilestone()].description }}</p>
+  </div>
+</div>

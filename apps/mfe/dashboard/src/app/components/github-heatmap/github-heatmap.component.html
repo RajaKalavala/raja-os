@@ -1,0 +1,38 @@
+<div class="github-heatmap">
+  <div class="heatmap-header">
+    <h3 class="heatmap-title">GITHUB — LAST 20 WEEKS</h3>
+    <div class="total-contributions">
+      <span class="contribution-count">{{ totalContributions() }}</span>
+      <span class="contribution-label">contributions</span>
+    </div>
+  </div>
+
+  <div class="heatmap-grid">
+    @for (week of weeks; track $index) {
+      <div class="week-column">
+        @for (day of week; track day.date) {
+          <div
+            class="day-cell"
+            [ngClass]="getLevelClass(day.level)"
+            [attr.title]="getTooltipText(day)"
+          ></div>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="heatmap-stats">
+    <div class="stat-item">
+      <span class="stat-icon">🔥</span>
+      <span class="stat-value">{{ currentStreak() }} day streak</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-icon">⭐</span>
+      <span class="stat-value">{{ starsEarned() }} stars earned</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-icon">📦</span>
+      <span class="stat-value">{{ repoCount() }} repos</span>
+    </div>
+  </div>
+</div>

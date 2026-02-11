@@ -1,0 +1,35 @@
+<div class="skill-tree">
+  <div class="skill-tree-header">
+    <h3 class="skill-tree-title">SKILL TREE — CLICK TO EXPLORE</h3>
+  </div>
+
+  <div class="skills-container">
+    @for (skill of skills; track skill.name) {
+      <div
+        class="skill-item"
+        [class.expanded]="expandedSkill() === skill.name"
+        (click)="toggleSkill(skill.name)"
+      >
+        <div class="skill-header">
+          <div class="skill-icon">{{ skill.icon }}</div>
+          <div class="skill-info">
+            <div class="skill-name">{{ skill.name }}</div>
+            <div class="skill-level" [style.color]="skill.color">Lv. {{ skill.level }}</div>
+          </div>
+        </div>
+
+        <div class="xp-bar">
+          <div class="xp-fill" [style.width.%]="getXPPercentage(skill)" [style.background-color]="skill.color"></div>
+        </div>
+
+        @if (expandedSkill() === skill.name) {
+          <div class="skill-technologies">
+            @for (tech of skill.technologies; track tech) {
+              <span class="tech-badge">{{ tech }}</span>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>
