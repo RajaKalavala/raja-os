@@ -26,7 +26,7 @@
 - **Product Requirements Document**: See `prd.md` in project root for comprehensive feature requirements, data models, and roadmap
 - **Architecture**: Module Federation with Angular Standalone Components
 - **Monorepo**: Nx workspace
-- **Current Status**: Shell complete, Dashboard implemented (needs updates), 8 pages pending
+- **Current Status**: Shell complete, Dashboard implemented with dark/light theme toggle, 8 pages pending
 
 ## Architecture
 
@@ -40,7 +40,7 @@ This project uses **Module Federation** to create a micro frontend architecture:
   - Provides shared layout and theme
 
 - **Remote MFEs**: Independent micro frontend applications at `apps/mfe/`
-  - `dashboard/` - Dashboard page (Port 4202) - ✅ Implemented
+  - `dashboard/` - Dashboard page (Port 4202) - ✅ Implemented (includes dark/light theme toggle)
   - `system-overview/` - System Overview page - ❌ Not started
   - `production-history/` - Production History page - ❌ Not started (Priority 1)
   - `builds/` - Builds showcase page - ❌ Not started
@@ -100,9 +100,19 @@ This project uses **Module Federation** to create a micro frontend architecture:
 
 ### Styling
 
-- **Framework**: SCSS
-- **Theme**: Dark mode (primary green: #22c55e, dark backgrounds)
-- **Design Tokens**: See `prd.md` Design System section
+- **Framework**: SCSS with CSS Custom Properties for theming
+- **Theme System**:
+  - Light/Dark mode toggle implemented globally
+  - Theme managed via CSS variables in `apps/shell/src/styles.scss`
+  - ThemeService in dashboard MFE (`apps/mfe/dashboard/src/app/services/theme.service.ts`)
+  - Persists to localStorage as `'raja-os-theme'`
+  - Respects OS `prefers-color-scheme` on first visit
+  - Toggle button in dashboard header (sun/moon icon)
+- **Color Palette**:
+  - Light mode: White cards (#ffffff), light gray page (#f9fafb), dark text (#111827)
+  - Dark mode: DarkReader-style palette - dark gray cards (#181a1b), page (#1b1d1e), light text (#d6d3cd)
+  - Green accent: #22c55e (light), #4ae081 (dark)
+- **Design Tokens**: All colors use CSS variables (e.g., `var(--bg-card)`, `var(--text-primary)`)
 - **Responsive**: Mobile-first approach
 
 ## Important Files and Locations
@@ -113,6 +123,8 @@ This project uses **Module Federation** to create a micro frontend architecture:
 - `tsconfig.base.json` - TypeScript path mappings
 - `apps/shell/webpack.config.ts` - Module Federation host config
 - `apps/mfe/*/webpack.config.ts` - Remote MFE configs
+- `apps/shell/src/styles.scss` - Global theme CSS variables (light/dark modes)
+- `apps/shell/src/index.html` - Theme initialization script (prevents FOUC)
 
 ### Navigation
 
@@ -153,6 +165,7 @@ Based on the development roadmap in `prd.md`:
 
 ### Phase 2: Dashboard Completion (Current)
 
+- [x] Implement dark/light theme toggle (✅ Completed)
 - [ ] Refine Dashboard data models
 - [ ] Implement real data integration
 - [ ] Add animations and transitions
@@ -222,16 +235,49 @@ Based on the development roadmap in `prd.md`:
 3. Implement data fetching/management
 4. Use Angular signals for reactive state (preferred)
 
+### Working with the Theme System
+
+The application supports light/dark mode theming via CSS custom properties:
+
+**Theme Architecture:**
+- Global CSS variables defined in `apps/shell/src/styles.scss`
+- Two theme blocks: `:root` (light) and `html[data-theme='dark']` (dark)
+- ThemeService manages theme state and persistence (`apps/mfe/dashboard/src/app/services/theme.service.ts`)
+- Inline script in `apps/shell/src/index.html` prevents flash of unstyled content (FOUC)
+
+**When Styling Components:**
+1. **Never use hardcoded colors** - always use CSS variables
+2. **Common variables**:
+   - Backgrounds: `var(--bg-page)`, `var(--bg-card)`, `var(--bg-card-alt)`, `var(--bg-icon)`
+   - Text: `var(--text-primary)`, `var(--text-secondary)`, `var(--text-tertiary)`
+   - Borders: `var(--border-primary)`, `var(--border-light)`
+   - Accents: `var(--accent-green)`, `var(--accent-green-dark)`, `var(--text-value)`
+   - Semantic: `var(--status-active)`, `var(--card-shadow)`
+3. **For SVG inline attributes** that can't use CSS vars directly, use CSS classes instead (e.g., `.donut-bg-circle`, `.career-point`)
+4. **Testing themes**: Toggle with sun/moon button in dashboard header, verify both modes look correct
+
+**Theme Persistence:**
+- Saved to localStorage as `'raja-os-theme'` with value `'light'` or `'dark'`
+- On first visit, respects OS `prefers-color-scheme: dark`
+- Listens to OS preference changes if user hasn't manually toggled
+
+**Components that stay dark in both modes:**
+- Sidebar navigation
+- Admin login modal
+- Timer card gradient in time tracker
+
 ## Key Reminders
 
 - **Always check `prd.md`** for feature requirements and data models before implementing
 - **Module Federation**: Each MFE is independently deployable
 - **Standalone Components**: No NgModules, use standalone: true
+- **Theme System**: Use CSS variables for all colors to support light/dark modes (`var(--bg-card)`, etc.)
 - **Design System**: Build reusable components, avoid duplication
 - **Data Models**: Follow the TypeScript interfaces defined in PRD
 - **Nx Commands**: Always use `nx` for running tasks
 - **Responsive Design**: Mobile-first approach
 - **Accessibility**: Consider from the start, not as afterthought
+- **Angular Best Practices**: Use `inject()` function instead of constructor injection
 
 ## Getting Help
 
