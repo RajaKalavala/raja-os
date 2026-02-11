@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TimeTrackerComponent } from '../time-tracker/time-tracker.component';
 import { AdminLoginModalComponent } from '../components/admin-login-modal/admin-login-modal.component';
@@ -7,6 +7,7 @@ import { LifeStatsComponent } from '../components/life-stats/life-stats.componen
 import { NowPlayingComponent } from '../components/now-playing/now-playing.component';
 import { CurrentlyBuildingComponent } from '../components/currently-building/currently-building.component';
 import { AuthService } from '../services/auth.service';
+import { ThemeService } from '../services/theme.service';
 
 interface MetricCard {
   title: string;
@@ -51,8 +52,8 @@ interface ImpactArea {
 })
 export class DashboardComponent {
   showLoginModal = signal<boolean>(false);
-
-  constructor(public authService: AuthService) {}
+  authService = inject(AuthService);
+  themeService = inject(ThemeService);
   metricCards: MetricCard[] = [
     {
       title: 'Total Experience',

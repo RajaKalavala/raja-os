@@ -1,3 +1,128 @@
+/* Theme Variables */
+:root {
+  /* Backgrounds */
+  --bg-page: #f9fafb;
+  --bg-card: #ffffff;
+  --bg-card-alt: #f9fafb;
+  --bg-icon: #f3f4f6;
+
+  /* Text */
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-tertiary: #9ca3af;
+
+  /* Borders */
+  --border-primary: #e5e7eb;
+  --border-light: #f3f4f6;
+
+  /* Accent (same both themes) */
+  --accent-green: #22c55e;
+  --accent-green-dark: #1a5f3f;
+  --accent-green-mid: #2d7a5a;
+  --accent-green-light: #4a9d7a;
+
+  /* Semantic */
+  --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --status-active: #166534;
+  --text-value: #1a5f3f;
+  --btn-secondary-bg: #ffffff;
+  --btn-secondary-color: #374151;
+  --btn-secondary-border: #e5e7eb;
+
+  /* Bar chart */
+  --bar-bg: #f3f4f6;
+  --bar-empty: #e5e7eb;
+
+  /* Build icon */
+  --build-icon-bg: #f0fdf4;
+  --build-icon-color: #166534;
+
+  /* Location badge */
+  --location-badge-bg: #f3f4f6;
+  --location-badge-color: #4b5563;
+  --location-badge-border: #e5e7eb;
+
+  /* Tagline / status sections */
+  --tagline-text: #374151;
+
+  /* Progress bar bg */
+  --progress-bar-bg: #e5e7eb;
+
+  /* Album art bg */
+  --album-art-bg: #f0fdf4;
+
+  /* Focus ring border */
+  --focus-ring-border: #d1d5db;
+
+  /* Donut bg stroke */
+  --donut-bg-stroke: #e5e7eb;
+
+  /* Chart label on career (non-transition) */
+  --chart-point-stroke: #ffffff;
+}
+
+html[data-theme='dark'] {
+  /* Backgrounds */
+  --bg-page: #1b1d1e;
+  --bg-card: #181a1b;
+  --bg-card-alt: #1b1d1e;
+  --bg-icon: #1e2022;
+
+  /* Text */
+  --text-primary: #d6d3cd;
+  --text-secondary: #9e9589;
+  --text-tertiary: #afa99e;
+
+  /* Borders */
+  --border-primary: #363b3d;
+  --border-light: #333739;
+
+  /* Accent */
+  --accent-green: #4ae081;
+  --accent-green-dark: #154c32;
+  --accent-green-mid: #2d7a5a;
+  --accent-green-light: #4a9d7a;
+
+  /* Semantic */
+  --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --status-active: #8ee6b0;
+  --text-value: #94e2be;
+  --btn-secondary-bg: #181a1b;
+  --btn-secondary-color: #bdb7af;
+  --btn-secondary-border: #363b3d;
+
+  /* Bar chart */
+  --bar-bg: #1e2022;
+  --bar-empty: #25282a;
+
+  /* Build icon */
+  --build-icon-bg: #07361e;
+  --build-icon-color: #8ee6b0;
+
+  /* Location badge */
+  --location-badge-bg: #1e2022;
+  --location-badge-color: #b1aaa0;
+  --location-badge-border: #363b3d;
+
+  /* Tagline / status sections */
+  --tagline-text: #bdb7af;
+
+  /* Progress bar bg */
+  --progress-bar-bg: #25282a;
+
+  /* Album art bg */
+  --album-art-bg: #07361e;
+
+  /* Focus ring border */
+  --focus-ring-border: #3c4143;
+
+  /* Donut bg stroke */
+  --donut-bg-stroke: #25282a;
+
+  /* Chart label on career (non-transition) */
+  --chart-point-stroke: #181a1b;
+}
+
 /* Global styles */
 * {
   margin: 0;
@@ -5,15 +130,18 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
   width: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
   font-size: 16px;
   font-weight: 400;
-  color: #111827;
+  color: var(--text-primary);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
