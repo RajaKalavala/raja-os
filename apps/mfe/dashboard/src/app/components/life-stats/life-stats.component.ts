@@ -1,10 +1,10 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 interface StatItem {
   icon: string;
   value: number;
-  displayValue: string;
+  displayValue: WritableSignal<string>;
   label: string;
   suffix?: string;
 }
@@ -18,10 +18,10 @@ interface StatItem {
 })
 export class LifeStatsComponent implements OnInit {
   stats: StatItem[] = [
-    { icon: 'coffee', value: 847, displayValue: '0', label: 'Coffees This Year' },
-    { icon: 'bug', value: 2341, displayValue: '0', label: 'Bugs Squashed' },
-    { icon: 'commit', value: 1893, displayValue: '0', label: 'Git Commits' },
-    { icon: 'code', value: 284000, displayValue: '0', label: 'Lines of Code', suffix: '+' },
+    { icon: 'coffee', value: 847, displayValue: signal('0'), label: 'Coffees This Year' },
+    { icon: 'bug', value: 2341, displayValue: signal('0'), label: 'Bugs Squashed' },
+    { icon: 'commit', value: 1893, displayValue: signal('0'), label: 'Git Commits' },
+    { icon: 'code', value: 284000, displayValue: signal('0'), label: 'Lines of Code', suffix: '+' },
   ];
 
   ngOnInit(): void {
@@ -42,11 +42,11 @@ export class LifeStatsComponent implements OnInit {
         const interval = setInterval(() => {
           currentFrame++;
           const currentValue = Math.min(Math.round(increment * currentFrame), stat.value);
-          stat.displayValue = this.formatNumber(currentValue, stat.suffix);
+          stat.displayValue.set(this.formatNumber(currentValue, stat.suffix));
 
           if (currentFrame >= totalFrames) {
             clearInterval(interval);
-            stat.displayValue = this.formatNumber(stat.value, stat.suffix);
+            stat.displayValue.set(this.formatNumber(stat.value, stat.suffix));
           }
         }, 1000 / frameRate);
       }, index * 150); // 150ms stagger between each counter
