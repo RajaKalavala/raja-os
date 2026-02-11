@@ -1,0 +1,37 @@
+<div class="now-playing">
+  <div class="widget-header">
+    <span class="widget-label">NOW PLAYING</span>
+    @if (isPlaying()) {
+      <span class="playing-indicator">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </span>
+    }
+  </div>
+
+  <div class="track-info">
+    <div class="album-art">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="12" cy="12" r="10"></circle>
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M12 2a10 10 0 0 1 10 10"></path>
+      </svg>
+    </div>
+
+    <div class="track-details">
+      <h4 class="track-title">{{ currentTrack.title }}</h4>
+      <p class="track-artist">{{ currentTrack.artist }}</p>
+    </div>
+  </div>
+
+  <div class="progress-section">
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="progress()"></div>
+    </div>
+    <div class="time-info">
+      <span class="current-time">{{ formatTime(currentTrack.currentTime) }}</span>
+      <span class="total-time">{{ formatTime(currentTrack.duration) }}</span>
+    </div>
+  </div>
+</div>

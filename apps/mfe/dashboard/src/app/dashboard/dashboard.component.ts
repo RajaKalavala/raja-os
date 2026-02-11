@@ -2,6 +2,10 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TimeTrackerComponent } from '../time-tracker/time-tracker.component';
 import { AdminLoginModalComponent } from '../components/admin-login-modal/admin-login-modal.component';
+import { IdentityCardComponent } from '../components/identity-card/identity-card.component';
+import { LifeStatsComponent } from '../components/life-stats/life-stats.component';
+import { NowPlayingComponent } from '../components/now-playing/now-playing.component';
+import { CurrentlyBuildingComponent } from '../components/currently-building/currently-building.component';
 import { AuthService } from '../services/auth.service';
 
 interface MetricCard {
@@ -32,7 +36,15 @@ interface ImpactArea {
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, TimeTrackerComponent, AdminLoginModalComponent],
+  imports: [
+    CommonModule,
+    TimeTrackerComponent,
+    AdminLoginModalComponent,
+    IdentityCardComponent,
+    LifeStatsComponent,
+    NowPlayingComponent,
+    CurrentlyBuildingComponent,
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   standalone: true,

@@ -78,6 +78,61 @@
   }
 }
 
+// Hero Widgets Section - 2 Column Layout
+.hero-widgets-section {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.hero-col-left {
+  display: flex;
+
+  > * {
+    width: 100%;
+  }
+}
+
+.hero-col-right {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.hero-right-top {
+  > * {
+    width: 100%;
+  }
+}
+
+.hero-right-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+// Responsive for hero widgets
+@media (max-width: 1200px) {
+  .hero-widgets-section {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-col-left {
+    order: 1;
+  }
+
+  .hero-col-right {
+    order: 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-right-bottom {
+    grid-template-columns: 1fr;
+  }
+}
+
 // Metrics Grid
 .metrics-grid {
   display: grid;

@@ -1,0 +1,308 @@
+.identity-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 24px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.card-main {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.avatar-section {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1a5f3f 0%, #22c55e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #22c55e;
+}
+
+.avatar-letter {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.status-indicator {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #9ca3af;
+  border: 2px solid #ffffff;
+
+  &.online {
+    background: #22c55e;
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+  }
+}
+
+.info-section {
+  flex: 1;
+  min-width: 0;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 2px 0;
+}
+
+.title {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 0 0 10px 0;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.online-badge {
+  background: rgba(34, 197, 94, 0.1);
+  color: #166534;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #22c55e;
+    animation: pulse 2s infinite;
+  }
+}
+
+.work-badge {
+  background: rgba(59, 130, 246, 0.1);
+  color: #1d4ed8;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.location-badge {
+  background: #f3f4f6;
+  color: #4b5563;
+  border: 1px solid #e5e7eb;
+
+  svg {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+.tagline-section {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 13px;
+  color: #374151;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.prompt {
+  color: #22c55e;
+  margin-right: 8px;
+}
+
+.tagline-text {
+  color: #374151;
+}
+
+.cursor {
+  color: #22c55e;
+  animation: blink 1s infinite;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.status-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.current-status,
+.local-time {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.status-label,
+.time-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #9ca3af;
+  letter-spacing: 0.5px;
+}
+
+.mood {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mood-emoji {
+  font-size: 16px;
+}
+
+.mood-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+}
+
+.time-display {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a5f3f;
+  letter-spacing: 1px;
+}
+
+// Dev Uptime Section
+.dev-uptime-section {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.uptime-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #9ca3af;
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.uptime-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.uptime-stats {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.uptime-years,
+.uptime-days {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a5f3f;
+  font-variant-numeric: tabular-nums;
+}
+
+.uptime-unit {
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  margin-right: 8px;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.uptime-timer {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 18px;
+  font-weight: 600;
+  color: #22c55e;
+  letter-spacing: 1px;
+}
+
+.uptime-since {
+  font-size: 12px;
+  color: #9ca3af;
+  text-align: center;
+}
+
+.console-log {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  color: #22c55e;
+  font-weight: 500;
+}
+
+.social-links {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.social-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  color: #4b5563;
+  text-decoration: none;
+  transition: all 0.2s ease;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover {
+    background: #1a5f3f;
+    border-color: #1a5f3f;
+    color: #ffffff;
+    transform: translateY(-2px);
+  }
+}

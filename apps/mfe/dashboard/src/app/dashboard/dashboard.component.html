@@ -28,6 +28,25 @@
     </div>
   </div>
 
+  <!-- Hero Widgets Section -->
+  <div class="hero-widgets-section">
+    <!-- Left Column: Identity Card -->
+    <div class="hero-col-left">
+      <app-identity-card></app-identity-card>
+    </div>
+
+    <!-- Right Column: Stats + Music/Building -->
+    <div class="hero-col-right">
+      <div class="hero-right-top">
+        <app-life-stats></app-life-stats>
+      </div>
+      <div class="hero-right-bottom">
+        <app-now-playing></app-now-playing>
+        <app-currently-building></app-currently-building>
+      </div>
+    </div>
+  </div>
+
   <!-- Top Metrics Cards -->
   <div class="metrics-grid">
     <div *ngFor="let card of metricCards" [class]="'metric-card' + (card.isPrimary ? ' metric-card-primary' : '')">
