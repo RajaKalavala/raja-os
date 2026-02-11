@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "npx nx serve shell"
+    "start": "npx nx serve shell",
+    "build": "npx nx build shell --prod",
+    "build:all": "npx nx run-many -t build --all --prod",
+    "preview": "npx nx preview shell"
   },
   "private": true,
   "dependencies": {

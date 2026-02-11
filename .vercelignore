@@ -1,0 +1,32 @@
+# Dependencies
+node_modules
+
+# Build outputs (except the one we need)
+dist/*
+!dist/apps/shell
+
+# Cache
+.nx/cache
+.angular/cache
+
+# Development
+tmp
+.vscode
+.idea
+
+# Testing
+coverage
+test-results
+playwright-report
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env.local
+.env.*.local
