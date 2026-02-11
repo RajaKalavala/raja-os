@@ -6,10 +6,10 @@
   "framework": "angular",
   "installCommand": "npm install",
   "devCommand": "npx nx serve shell",
-  "routes": [
+  "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
   "headers": [
