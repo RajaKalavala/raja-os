@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -9,12 +9,6 @@ interface MenuItem {
   badge?: number;
 }
 
-interface GeneralItem {
-  label: string;
-  icon: string;
-  action?: () => void;
-}
-
 @Component({
   selector: 'app-sidebar',
   imports: [CommonModule, RouterModule],
@@ -23,6 +17,10 @@ interface GeneralItem {
   standalone: true,
 })
 export class SidebarComponent {
+  isOpen = input(false);
+  isMobile = input(false);
+  closed = output<void>();
+
   menuItems: MenuItem[] = [
     { label: 'Dashboard', route: '/dashboard', icon: 'grid' },
     { label: 'Projects', route: '/projects', icon: 'folder' },
@@ -31,8 +29,18 @@ export class SidebarComponent {
   ];
 
   sidebarActions = [
-    { icon: 'github', url: 'https://github.com/rajakalavala' }, // Replace with actual links if known, or placeholders
+    { icon: 'github', url: 'https://github.com/rajakalavala' },
     { icon: 'linkedin', url: 'https://linkedin.com/in/rajakalavala' },
     { icon: 'download', action: 'download' },
   ];
+
+  onNavItemClick() {
+    if (this.isMobile()) {
+      this.closed.emit();
+    }
+  }
+
+  onClose() {
+    this.closed.emit();
+  }
 }

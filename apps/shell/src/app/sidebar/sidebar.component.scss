@@ -13,6 +13,18 @@
   padding: 24px 16px;
   z-index: 100;
   box-sizing: border-box;
+  transition: transform 300ms ease;
+
+  // Mobile styles
+  &.mobile {
+    z-index: 200;
+    transform: translateX(-100%);
+    box-shadow: 2px 0 16px rgba(0, 0, 0, 0.3);
+
+    &.open {
+      transform: translateX(0);
+    }
+  }
 }
 
 // Header/Logo Section
@@ -22,6 +34,27 @@
   gap: 12px;
   margin-bottom: 40px;
   padding: 0 8px;
+}
+
+// Close button for mobile
+.sidebar-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 150ms;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+  }
 }
 
 .sidebar-logo {

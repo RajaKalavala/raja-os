@@ -111,3 +111,47 @@
 .stat-value {
   font-weight: 500;
 }
+
+// Mobile Responsive Styles
+@media (max-width: 768px) {
+  .github-heatmap {
+    padding: 16px;
+  }
+
+  .heatmap-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .contribution-count {
+    font-size: 14px;
+  }
+
+  .heatmap-grid {
+    margin-bottom: 12px;
+    padding: 4px 0;
+    gap: 2px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .week-column {
+    gap: 2px;
+  }
+
+  .day-cell {
+    width: 10px;
+    height: 10px;
+  }
+
+  .heatmap-stats {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 10px;
+  }
+
+  .stat-item {
+    font-size: 11px;
+  }
+}

@@ -737,3 +737,77 @@
 .company-3 {
   background-color: #f59e0b;
 }
+
+// Mobile Responsive Styles (768px breakpoint)
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 16px;
+  }
+
+  .dashboard-title {
+    font-size: 24px;
+  }
+
+  .dashboard-subtitle {
+    font-size: 14px;
+  }
+
+  .hero-widgets-section {
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .hero-col-right {
+    gap: 16px;
+  }
+
+  .hero-right-bottom {
+    gap: 16px;
+  }
+
+  .metrics-grid {
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .metric-card {
+    padding: 16px;
+  }
+
+  .metric-card-value {
+    font-size: 24px;
+  }
+
+  .metric-card-icon {
+    top: 16px;
+    right: 16px;
+    width: 28px;
+    height: 28px;
+  }
+
+  .interactive-grid {
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .main-grid {
+    gap: 16px;
+  }
+
+  .widget-card {
+    padding: 16px;
+  }
+
+  .widget-header {
+    margin-bottom: 16px;
+  }
+
+  .donut-wrapper {
+    width: 180px;
+    height: 180px;
+  }
+
+  .donut-percentage {
+    font-size: 28px;
+  }
+}

@@ -165,3 +165,44 @@
   color: var(--text-value);
   font-weight: 600;
 }
+
+// Mobile Responsive Styles
+@media (max-width: 768px) {
+  .now-playing {
+    padding: 16px;
+  }
+
+  .widget-header {
+    margin-bottom: 12px;
+  }
+
+  .track-info {
+    gap: 12px;
+  }
+
+  .album-art {
+    width: 48px;
+    height: 48px;
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .track-title {
+    font-size: 14px;
+  }
+
+  .track-artist {
+    font-size: 12px;
+  }
+
+  .progress-section {
+    margin-top: 12px;
+  }
+
+  .time-info {
+    font-size: 10px;
+  }
+}

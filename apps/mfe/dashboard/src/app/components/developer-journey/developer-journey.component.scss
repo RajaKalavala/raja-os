@@ -151,3 +151,53 @@
   margin: 0;
   line-height: 1.5;
 }
+
+// Mobile Responsive Styles
+@media (max-width: 768px) {
+  .developer-journey {
+    padding: 16px;
+  }
+
+  .journey-header {
+    margin-bottom: 16px;
+  }
+
+  .timeline {
+    padding: 16px 0;
+    margin-bottom: 16px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .timeline-line {
+    left: 20px;
+    right: 20px;
+  }
+
+  .milestone {
+    min-width: 60px;
+  }
+
+  .milestone-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+
+  .milestone-year {
+    font-size: 10px;
+  }
+
+  .milestone-details {
+    padding: 12px;
+    min-height: 60px;
+  }
+
+  .milestone-title {
+    font-size: 14px;
+  }
+
+  .milestone-description {
+    font-size: 12px;
+  }
+}

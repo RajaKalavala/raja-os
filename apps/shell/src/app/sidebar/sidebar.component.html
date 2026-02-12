@@ -1,13 +1,19 @@
-<aside class="sidebar">
+<aside class="sidebar" [class.open]="isOpen()" [class.mobile]="isMobile()">
   <!-- Logo/Title Section -->
   <div class="sidebar-header">
     <div class="sidebar-logo">
-       <!-- Use an SVG or clean logo here. For now a placeholder similar to design -->
        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
        </svg>
     </div>
     <span class="sidebar-title">RajaOS</span>
+    <!-- Close button for mobile -->
+    <button *ngIf="isMobile()" class="sidebar-close-btn" (click)="onClose()" aria-label="Close menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
   </div>
 
   <!-- MENU Section -->
@@ -20,6 +26,7 @@
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
         class="sidebar-nav-item"
+        (click)="onNavItemClick()"
       >
         <span class="sidebar-nav-icon">
           <!-- Icons -->

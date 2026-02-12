@@ -99,14 +99,37 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+  .life-stats {
+    padding: 16px;
+  }
+
+  .stats-header {
+    margin-bottom: 16px;
+  }
+
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 12px;
+  }
+
+  .stat-item {
+    padding: 12px 8px;
+  }
+
+  .stat-icon {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 8px;
   }
 
   .stat-value {
     font-size: 22px;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 11px;
   }
 
   .stat-icon svg {

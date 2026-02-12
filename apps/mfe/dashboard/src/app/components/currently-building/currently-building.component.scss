@@ -154,3 +154,57 @@
     border: 1px solid rgba(239, 68, 68, 0.3);
   }
 }
+
+// Mobile Responsive Styles
+@media (max-width: 768px) {
+  .currently-building {
+    padding: 16px;
+  }
+
+  .widget-header {
+    margin-bottom: 12px;
+  }
+
+  .project-info {
+    margin-bottom: 12px;
+  }
+
+  .project-header {
+    margin-bottom: 10px;
+  }
+
+  .project-name {
+    font-size: 14px;
+  }
+
+  .tech-stack {
+    gap: 4px;
+  }
+
+  .tech-badge {
+    padding: 3px 8px;
+    font-size: 10px;
+  }
+
+  .progress-section {
+    gap: 12px;
+  }
+
+  .progress-ring {
+    width: 64px;
+    height: 64px;
+  }
+
+  .progress-value {
+    font-size: 14px;
+  }
+
+  .sprint-label {
+    font-size: 12px;
+  }
+
+  .status-badge {
+    padding: 3px 10px;
+    font-size: 11px;
+  }
+}

@@ -306,3 +306,81 @@
     transform: translateY(-2px);
   }
 }
+
+// Mobile Responsive Styles
+@media (max-width: 768px) {
+  .identity-card {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .card-main {
+    gap: 12px;
+  }
+
+  .avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+  }
+
+  .avatar-letter {
+    font-size: 20px;
+  }
+
+  .name {
+    font-size: 16px;
+  }
+
+  .title {
+    font-size: 12px;
+  }
+
+  .badges {
+    gap: 6px;
+  }
+
+  .badge {
+    padding: 2px 6px;
+    font-size: 10px;
+  }
+
+  .tagline-section {
+    padding: 10px 12px;
+    font-size: 11px;
+    min-height: 38px;
+  }
+
+  .status-section {
+    padding: 10px 12px;
+  }
+
+  .mood-text {
+    font-size: 12px;
+  }
+
+  .time-display {
+    font-size: 14px;
+  }
+
+  .dev-uptime-section {
+    padding: 12px;
+  }
+
+  .uptime-years,
+  .uptime-days {
+    font-size: 22px;
+  }
+
+  .uptime-unit {
+    font-size: 12px;
+  }
+
+  .uptime-timer {
+    font-size: 14px;
+  }
+
+  .social-btn {
+    padding: 10px;
+  }
+}

@@ -146,3 +146,55 @@
   font-weight: 500;
   color: var(--accent-green);
 }
+
+// Mobile Responsive Styles
+@media (max-width: 768px) {
+  .skill-tree {
+    padding: 16px;
+  }
+
+  .skill-tree-header {
+    margin-bottom: 16px;
+  }
+
+  .skills-container {
+    gap: 12px;
+  }
+
+  .skill-item {
+    padding: 12px;
+  }
+
+  .skill-header {
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .skill-icon {
+    font-size: 22px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .skill-name {
+    font-size: 14px;
+  }
+
+  .skill-level {
+    font-size: 12px;
+  }
+
+  .xp-bar {
+    height: 6px;
+  }
+
+  .skill-technologies {
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .tech-badge {
+    padding: 3px 8px;
+    font-size: 10px;
+  }
+}

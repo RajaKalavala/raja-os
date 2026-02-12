@@ -23,6 +23,72 @@
     margin-left: 0;
     width: 100%;
   }
+
+  &.mobile-view {
+    margin-left: 0;
+    width: 100%;
+    padding-top: 60px; // Space for mobile header
+  }
+}
+
+// Mobile Header
+.mobile-header {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: #1a2e26;
+  z-index: 150;
+  padding: 0 16px;
+  align-items: center;
+  gap: 12px;
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+}
+
+.hamburger-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 150ms;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.mobile-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+// Sidebar Overlay
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 199;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
 }
 
 // Remove old menu styles
