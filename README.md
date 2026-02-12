@@ -1,282 +1,661 @@
-# Nx Angular Repository
+# RajaOS
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+> A personal operating system platform showcasing professional experience, technical capabilities, and engineering philosophy through an interactive, data-driven web application.
 
-✨ A repository showcasing key [Nx](https://nx.dev) features for Angular monorepos ✨
+![Angular](https://img.shields.io/badge/Angular-21.0.6-red?logo=angular)
+![Nx](https://img.shields.io/badge/Nx-22.3.3-blue?logo=nx)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-blue?logo=typescript)
+![Module Federation](https://img.shields.io/badge/Module%20Federation-Enabled-green)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
-## 📦 Project Overview
+---
 
-This repository demonstrates a production-ready Angular monorepo with:
+## 📋 Table of Contents
 
-- **2 Applications**
+- [Overview](#overview)
+- [Architecture](#architecture)
+- [Tech Stack](#tech-stack)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Running the Application](#running-the-application)
+- [Project Structure](#project-structure)
+- [Available Scripts](#available-scripts)
+- [Development Workflow](#development-workflow)
+- [Current Status](#current-status)
+- [Features & Pages](#features--pages)
+- [Design System](#design-system)
+- [Contributing](#contributing)
+- [Documentation](#documentation)
+- [License](#license)
 
-  - `shop` - Angular e-commerce application with product listings and detail views
-  - `api` - Backend API with Docker support serving product data
+---
 
-- **6 Libraries**
+## 🎯 Overview
 
-  - `@org/feature-products` - Product listing feature (Angular)
-  - `@org/feature-product-detail` - Product detail feature (Angular)
-  - `@org/data` - Data access layer for shop features
-  - `@org/shared-ui` - Shared UI components
-  - `@org/models` - Shared data models
-  - `@org/products` - API product service library
+**RajaOS** is a modern web platform built to serve as both a professional portfolio and a demonstration of cutting-edge web architecture. It leverages Angular's standalone components, Nx monorepo tooling, and Module Federation to create a scalable, maintainable micro frontend architecture.
 
-- **E2E Testing**
-  - `shop-e2e` - Playwright tests for the shop application
+### Vision
 
-## 🚀 Quick Start
+Create an engaging, interactive platform to present professional experience and technical work while demonstrating expertise in modern web architecture (Angular, Nx, Module Federation).
+
+### Target Audience
+
+- Recruiters and hiring managers
+- Technical leaders and architects
+- Potential collaborators and clients
+- Engineering community members
+
+---
+
+## 🏗️ Architecture
+
+RajaOS uses **Module Federation** to implement a micro frontend architecture, enabling:
+
+- **Independent Development**: Each page is a separate micro frontend (MFE)
+- **Lazy Loading**: MFEs load on-demand for optimal performance
+- **Shared Dependencies**: Angular core packages shared across all MFEs
+- **Scalability**: Easy to add new features without impacting existing code
+
+### Architecture Overview
+
+```
+┌─────────────────────────────────────────────────────┐
+│                  Shell (Host)                        │
+│                  Port: 4200                          │
+│  ┌──────────────────────────────────────────────┐   │
+│  │  Sidebar Navigation + Routing + Theme        │   │
+│  └──────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────┘
+           │           │           │
+           ▼           ▼           ▼
+    ┌──────────┐  ┌──────────┐  ┌──────────┐
+    │Dashboard │  │Production│  │Architecture│
+    │MFE:4202  │  │History   │  │   MFE     │
+    └──────────┘  └──────────┘  └──────────┘
+```
+
+**Shell (Host)**: Main container at `apps/shell/` (Port 4200)
+- Loads and orchestrates all remote micro frontends
+- Contains sidebar navigation and routing
+- Provides shared layout and theme system
+
+**Remote MFEs**: Independent micro frontend applications at `apps/mfe/`
+- Each page is a separate, independently deployable application
+- Exposed as remote modules via Module Federation
+- Lazy-loaded on route navigation
+
+---
+
+## 🛠️ Tech Stack
+
+### Core Technologies
+
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| **Angular** | 21.0.6 | Frontend framework (Standalone Components) |
+| **Nx** | 22.3.3 | Monorepo management and build tooling |
+| **TypeScript** | 5.9.2 | Type-safe programming language |
+| **Module Federation** | 0.21.2 | Micro frontend architecture |
+| **SCSS** | - | Styling with CSS custom properties |
+| **RxJS** | 7.8.0 | Reactive programming |
+
+### Build & Development Tools
+
+- **Webpack**: Module bundling with Module Federation plugin
+- **Vite/Vitest**: Fast unit testing
+- **Playwright**: End-to-end testing
+- **ESLint**: Code linting and quality
+- **Prettier**: Code formatting
+
+### Future Stack
+
+- **Node.js/Express**: Backend API (planned)
+- **Angular Signals**: Reactive state management
+- **Angular Universal**: Server-side rendering (SSR)
+
+---
+
+## 📦 Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Node.js**: v20.x or higher ([Download](https://nodejs.org/))
+- **npm**: v10.x or higher (comes with Node.js)
+- **Git**: Latest version ([Download](https://git-scm.com/))
+
+Verify installation:
 
 ```bash
-# Clone the repository
-git clone <your-fork-url>
-cd <your-repository-name>
+node --version  # Should be v20.x or higher
+npm --version   # Should be v10.x or higher
+git --version   # Any recent version
+```
 
-# Install dependencies
-# (Note: You may need --legacy-peer-deps)
+---
+
+## 🚀 Installation
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/RajaKalavala/raja-os.git
+cd raja-os
+```
+
+### 2. Install Dependencies
+
+```bash
 npm install
+```
 
-# Serve the Angular shop application (this will simultaneously serve the API backend)
-npx nx serve shop
+> **Note**: If you encounter peer dependency warnings, you may need to use `npm install --legacy-peer-deps`
 
-# ...or you can serve the API separately
-npx nx serve api
+### 3. Verify Installation
 
-# Build all projects
-npx nx run-many -t build
-
-# Run tests
-npx nx run-many -t test
-
-# Lint all projects
-npx nx run-many -t lint
-
-# Run e2e tests
-npx nx e2e shop-e2e
-
-# Run tasks in parallel
-
-npx nx run-many -t lint test build e2e --parallel=3
-
-# Visualize the project graph
+```bash
 npx nx graph
 ```
 
-## ⭐ Featured Nx Capabilities
+This will open an interactive dependency graph in your browser, confirming that the workspace is set up correctly.
 
-This repository showcases several powerful Nx features:
+---
 
-### 1. 🔒 Module Boundaries
+## ▶️ Running the Application
 
-Enforces architectural constraints using tags. Each project has specific dependencies it can use:
+### Development Mode
 
-- `scope:shared` - Can be used by all projects
-- `scope:shop` - Shop-specific libraries
-- `scope:api` - API-specific libraries
-- `type:feature` - Feature libraries
-- `type:data` - Data access libraries
-- `type:ui` - UI component libraries
-
-**Try it out:**
+#### Start the Shell (Recommended)
 
 ```bash
-# See the current project graph and boundaries
-npx nx graph
-
-# View a specific project's details
-npx nx show project shop --web
+npm start
+# OR
+npx nx serve shell
 ```
 
-[Learn more about module boundaries →](https://nx.dev/features/enforce-module-boundaries)
+This will:
+- Start the Shell application on `http://localhost:4200`
+- Automatically serve remote MFEs as needed
+- Enable hot module replacement (HMR)
 
-### 2. 🐳 Docker Integration
+**The application will be available at: http://localhost:4200**
 
-The API project includes Docker support with automated targets and release management:
+#### Start Individual MFEs
+
+For debugging or isolated development:
 
 ```bash
-# Build Docker image
-npx nx docker:build api
+# Dashboard MFE (Port 4202)
+npx nx serve dashboard
 
-# Run Docker container
-npx nx docker:run api
-
-# Release with automatic Docker image versioning
-npx nx release
+# Future MFEs will have similar commands
+npx nx serve production-history
+npx nx serve architecture
 ```
 
-**Nx Release for Docker:** The repository is configured to use Nx Release for managing Docker image versioning and publishing. When running `nx release`, Docker images for the API project are automatically versioned and published based on the release configuration in `nx.json`. This integrates seamlessly with semantic versioning and changelog generation.
+### Production Build
 
-[Learn more about Docker integration →](https://nx.dev/recipes/nx-release/release-docker-images)
-
-### 3. 🎭 Playwright E2E Testing
-
-End-to-end testing with Playwright is pre-configured:
+#### Build the Shell
 
 ```bash
-# Run e2e tests
-npx nx e2e shop-e2e
-
-# Run e2e tests in CI mode
-npx nx e2e-ci shop-e2e
+npm run build
+# OR
+npx nx build shell --configuration=production
 ```
 
-[Learn more about E2E testing →](https://nx.dev/technologies/test-tools/playwright/introduction#e2e-testing)
-
-### 4. ⚡ Vitest for Unit Testing
-
-Fast unit testing with Vite for Angular libraries:
+#### Build All Projects
 
 ```bash
-# Test a specific library
-npx nx test data
-
-# Test all projects
-npx nx run-many -t test
+npm run build:all
+# OR
+npx nx run-many -t build --all --configuration=production
 ```
 
-[Learn more about Vite testing →](https://nx.dev/recipes/vite)
-
-### 5. 🔧 Self-Healing CI
-
-The CI pipeline includes `nx fix-ci` which automatically identifies and suggests fixes for common issues:
+### Preview Production Build
 
 ```bash
-# In CI, this command provides automated fixes
-npx nx fix-ci
+npm run preview
+# OR
+npx nx preview shell
 ```
 
-This feature helps maintain a healthy CI pipeline by automatically detecting and suggesting solutions for:
-
-- Missing dependencies
-- Incorrect task configurations
-- Cache invalidation issues
-- Common build failures
-
-[Learn more about self-healing CI →](https://nx.dev/ci/features/self-healing-ci)
+---
 
 ## 📁 Project Structure
 
 ```
+raja-os/
 ├── apps/
-│   ├── shop/           [scope:shop]    - Angular e-commerce app
-│   ├── shop-e2e/                       - E2E tests for shop
-│   └── api/            [scope:api]     - Backend API with Docker
+│   ├── shell/                      # Shell (Host) Application - Port 4200
+│   │   ├── src/
+│   │   │   ├── app/
+│   │   │   │   ├── sidebar/       # Navigation sidebar component
+│   │   │   │   ├── app.routes.ts  # Main routing configuration
+│   │   │   │   └── app.component.ts
+│   │   │   ├── styles.scss         # Global styles and theme variables
+│   │   │   └── index.html          # Theme initialization script
+│   │   └── webpack.config.ts       # Module Federation host config
+│   │
+│   ├── mfe/                        # Micro Frontend Applications
+│   │   ├── dashboard/              # ✅ Dashboard MFE - Port 4202 (Implemented)
+│   │   ├── system-overview/        # ❌ System Overview MFE (Not started)
+│   │   ├── production-history/     # ❌ Production History MFE (Priority 1)
+│   │   ├── builds/                 # ❌ Builds MFE (Not started)
+│   │   ├── architecture/           # ❌ Architecture MFE (Not started)
+│   │   ├── ai-lab/                 # ❌ AI Lab MFE (Not started)
+│   │   ├── engineering-notes/      # ❌ Engineering Notes MFE (Not started)
+│   │   ├── now/                    # ❌ Now MFE (Not started)
+│   │   └── ping-me/                # ❌ Ping Me/Contact MFE (Not started)
+│   │
+│   └── api/                        # Backend API (Future)
+│
 ├── libs/
-│   ├── shop/
-│   │   ├── feature-products/        [scope:shop,type:feature] - Product listing
-│   │   ├── feature-product-detail/  [scope:shop,type:feature] - Product details
-│   │   ├── data/                    [scope:shop,type:data]    - Data access
-│   │   └── shared-ui/               [scope:shop,type:ui]      - UI components
-│   ├── api/
-│   │   └── products/    [scope:api]    - Product service
+│   ├── design-system/              # Shared component library
+│   │   └── src/lib/                # Reusable UI components
+│   │
 │   └── shared/
-│       └── models/      [scope:shared,type:data] - Shared models
-├── nx.json             - Nx configuration
-├── tsconfig.json       - TypeScript configuration
-└── eslint.config.mjs   - ESLint with module boundary rules
+│       └── models/                 # Shared TypeScript interfaces and data models
+│
+├── CLAUDE.md                       # AI assistant instructions
+├── prd.md                          # Product Requirements Document
+├── nx.json                         # Nx workspace configuration
+├── tsconfig.base.json              # TypeScript path mappings
+├── package.json                    # Dependencies and scripts
+└── README.md                       # This file
 ```
 
-## 🏷️ Understanding Tags
+### Application Ports
 
-This repository uses tags to enforce module boundaries:
+| Application | Port | Status |
+|------------|------|--------|
+| Shell (Host) | 4200 | ✅ Running |
+| Dashboard MFE | 4202 | ✅ Implemented |
+| Other MFEs | 4203-4210 | ❌ Not started |
+| API | 3000 | 🔮 Planned |
 
-| Project            | Tags                         | Can Import From              |
-| ------------------ | ---------------------------- | ---------------------------- |
-| `shop`             | `scope:shop`                 | `scope:shop`, `scope:shared` |
-| `api`              | `scope:api`                  | `scope:api`, `scope:shared`  |
-| `feature-products` | `scope:shop`, `type:feature` | `scope:shop`, `scope:shared` |
-| `data`             | `scope:shop`, `type:data`    | `scope:shared`               |
-| `models`           | `scope:shared`, `type:data`  | Nothing (base library)       |
+---
 
-## 📚 Useful Commands
+## 📜 Available Scripts
+
+### Development
 
 ```bash
-# Project exploration
-npx nx graph                                    # Interactive dependency graph
-npx nx list                                     # List installed plugins
-npx nx show project shop --web                 # View project details
+# Start the application
+npm start                           # Serves shell on port 4200
 
-# Development
-npx nx serve shop                              # Serve Angular app
-npx nx serve api                               # Serve backend API
-npx nx build shop                              # Build Angular app
-npx nx test data                               # Test a specific library
-npx nx lint feature-products                   # Lint a specific library
+# Serve specific MFE
+npx nx serve dashboard              # Serves dashboard on port 4202
 
-# Running multiple tasks
-npx nx run-many -t build                       # Build all projects
-npx nx run-many -t test --parallel=3          # Test in parallel
-npx nx run-many -t lint test build            # Run multiple targets
+# Build for production
+npm run build                       # Builds shell
+npm run build:all                   # Builds all projects
 
-# Affected commands (great for CI)
-npx nx affected -t build                       # Build only affected projects
-npx nx affected -t test                        # Test only affected projects
-
-# Docker operations
-npx nx docker:build api                        # Build Docker image
-npx nx docker:run api                          # Run Docker container
+# Preview production build
+npm run preview                     # Previews shell production build
 ```
 
-## 🎯 Adding New Features
-
-### Generate a new Angular application:
+### Code Quality
 
 ```bash
-npx nx g @nx/angular:app my-app
+# Lint all projects
+npx nx run-many -t lint
+
+# Lint specific project
+npx nx lint shell
+npx nx lint dashboard
+
+# Format code with Prettier
+npx nx format:write
 ```
 
-### Generate a new Angular library:
+### Testing
 
 ```bash
-npx nx g @nx/angular:lib my-lib
+# Run all tests
+npx nx run-many -t test
+
+# Test specific project
+npx nx test dashboard
+
+# Run E2E tests (when configured)
+npx nx e2e shell-e2e
+
+# Run tests in watch mode
+npx nx test dashboard --watch
 ```
 
-### Generate a new Angular component:
+### Nx Utilities
 
 ```bash
-npx nx g @nx/angular:component my-component --project=my-lib
+# View dependency graph
+npx nx graph
+
+# Show project details
+npx nx show project shell --web
+
+# List all plugins
+npx nx list
+
+# View affected projects
+npx nx affected:graph
+
+# Build only affected projects
+npx nx affected -t build
+
+# Run tasks in parallel
+npx nx run-many -t build test lint --parallel=3
 ```
 
-### Generate a new API library:
+---
 
-```bash
-npx nx g @nx/node:lib my-api-lib
+## 👨‍💻 Development Workflow
+
+### Adding a New MFE
+
+1. **Generate the application**:
+   ```bash
+   npx nx g @nx/angular:app <name> --directory=apps/mfe/<name>
+   ```
+
+2. **Configure Module Federation**:
+   - Update `apps/mfe/<name>/webpack.config.ts` to expose the remote module
+   - Add appropriate port configuration
+   - Update `apps/shell/webpack.config.ts` to include the new remote
+   - Add route configuration in `apps/shell/src/app/app.routes.ts`
+
+3. **Use Standalone Components**: All components should use `standalone: true`
+
+4. **Follow the pattern**: Reference `apps/mfe/dashboard/` as a template
+
+### Working with the Theme System
+
+The application supports light/dark mode via CSS custom properties:
+
+**Global Theme Variables** (defined in `apps/shell/src/styles.scss`):
+```scss
+// Light mode (default)
+:root {
+  --bg-page: #f9fafb;
+  --bg-card: #ffffff;
+  --text-primary: #111827;
+  --accent-green: #22c55e;
+}
+
+// Dark mode
+html[data-theme='dark'] {
+  --bg-page: #1b1d1e;
+  --bg-card: #181a1b;
+  --text-primary: #d6d3cd;
+  --accent-green: #4ae081;
+}
 ```
 
-You can use `npx nx list` to see all available plugins and `npx nx list <plugin-name>` to see all generators for a specific plugin.
+**Important**: Always use CSS variables for colors, never hardcode them:
+```scss
+// ✅ Correct
+background-color: var(--bg-card);
+color: var(--text-primary);
 
-## Nx Cloud
+// ❌ Incorrect
+background-color: #ffffff;
+color: #111827;
+```
 
-Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
+### Adding Design System Components
 
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+1. Create component in `libs/design-system/src/lib/`
+2. Export from `libs/design-system/src/index.ts`
+3. Use design tokens from `prd.md`
+4. Ensure theme compatibility (light/dark modes)
+5. Document usage
 
-## Install Nx Console
+---
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+## 📊 Current Status
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### ✅ Completed (Phase 1)
 
-## 🔗 Learn More
+- [x] Shell application with Module Federation
+- [x] Sidebar navigation with all planned routes
+- [x] Responsive layout structure
+- [x] Theme system (light/dark mode toggle)
+- [x] Dashboard MFE with basic features
+- [x] Design system library scaffolding
+- [x] Nx workspace configuration
 
-- [Nx Documentation](https://nx.dev)
-- [Angular Monorepo Tutorial](https://nx.dev/getting-started/tutorials/angular-monorepo-tutorial)
-- [Module Boundaries](https://nx.dev/features/enforce-module-boundaries)
-- [Docker Integration](https://nx.dev/recipes/nx-release/release-docker-images)
-- [Playwright Testing](https://nx.dev/technologies/test-tools/playwright/introduction#e2e-testing)
-- [Vite with Angular](https://nx.dev/recipes/vite)
-- [Nx Cloud](https://nx.dev/ci/intro/why-nx-cloud)
-- [Releasing Packages](https://nx.dev/features/manage-releases)
+### 🔨 In Progress (Phase 2)
 
-## 💬 Community
+- [ ] Refine Dashboard data models
+- [ ] Implement real data integration
+- [ ] Add animations and transitions
+- [ ] Improve mobile responsiveness
+- [ ] Expand design system components
 
-Join the Nx community:
+### 📋 Planned (Phase 3 & Beyond)
 
-- [Discord](https://go.nx.dev/community)
-- [X (Twitter)](https://twitter.com/nxdevtools)
-- [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [YouTube](https://www.youtube.com/@nxdevtools)
-- [Blog](https://nx.dev/blog)
+- [ ] Production History MFE (Priority 1)
+- [ ] Architecture MFE
+- [ ] AI Lab MFE
+- [ ] System Overview MFE
+- [ ] Builds MFE
+- [ ] Engineering Notes MFE
+- [ ] Ping Me MFE
+- [ ] Now MFE
+
+**Overall Progress**: ~15% complete (1 of 9 MFEs implemented)
+
+---
+
+## 🎨 Features & Pages
+
+### 1. Dashboard (✅ Implemented)
+
+**Purpose**: High-level overview of professional experience and current focus
+
+**Features**:
+- Career metrics display (experience, systems, data processed)
+- Career timeline visualization
+- Contribution distribution chart
+- Impact areas display
+- Current focus progress tracker
+- Featured builds preview
+- Dark/light theme toggle
+
+### 2. Production History (Priority 1 - Not Started)
+
+**Purpose**: Chronicle significant production deployments, incidents, and learnings
+
+**Features**:
+- Timeline of production events
+- Event categories (Deployment, Incident, Migration, Launch)
+- Severity/Impact indicators
+- Lessons learned section
+- Metrics and outcomes
+
+### 3. Architecture (Not Started)
+
+**Purpose**: Deep dive into architectural decisions, patterns, and design philosophy
+
+**Features**:
+- Architecture diagrams (C4 model)
+- Design pattern showcase
+- Architecture decision records (ADRs)
+- Case studies
+- Best practices documentation
+
+### 4. AI Lab (Not Started)
+
+**Purpose**: Showcase AI/ML work, experiments, and research
+
+**Features**:
+- AI/ML project showcase
+- Interactive demos
+- Research papers
+- Experiment results
+- Model performance metrics
+
+### 5. System Overview (Not Started)
+
+**Purpose**: Comprehensive view of all systems and platforms built
+
+**Features**:
+- Grid/list view of systems
+- System categories and status
+- Key metrics per system
+- Technology stack tags
+- Search and filter
+
+### 6. Builds (Not Started)
+
+**Purpose**: Showcase projects, side projects, and technical experiments
+
+**Features**:
+- Project gallery
+- Technology stack display
+- GitHub repository links
+- Live demo links
+- Featured projects
+
+### 7. Engineering Notes (Not Started)
+
+**Purpose**: Technical writing, tutorials, and engineering insights
+
+**Features**:
+- Blog post listing
+- Full-text search
+- Tag-based filtering
+- Code syntax highlighting
+- Related posts suggestions
+
+### 8. Now (Not Started)
+
+**Purpose**: Current focus, activities, and what's happening now
+
+**Features**:
+- Current focus areas
+- Recent activities timeline
+- Reading list
+- Learning goals and progress
+- Availability status
+
+### 9. Ping Me (Not Started)
+
+**Purpose**: Enable engagement and communication with visitors
+
+**Features**:
+- Contact form
+- Social media links
+- Email subscription
+- FAQ section
+- Calendly integration
+
+---
+
+## 🎨 Design System
+
+### Core Components (Planned)
+
+- **Layout**: Container, Grid, Stack
+- **Navigation**: Sidebar, Breadcrumb, Tabs
+- **Forms**: Input, Textarea, Select, Checkbox
+- **Feedback**: Button, Badge, Tooltip, Toast, Modal
+- **Data Display**: Card, Typography, Icon, Table
+- **Loading States**: Spinner, Skeleton, Progress Bar
+
+### Design Tokens
+
+- **Colors**: Primary (Green), Background (Dark/Light), Text, Borders
+- **Typography**: Font families, sizes, weights
+- **Spacing**: xs, sm, md, lg, xl, 2xl
+- **Shadows**: sm, md, lg
+- **Transitions**: fast (150ms), base (200ms), slow (300ms)
+
+See `prd.md` for complete design token specifications.
+
+---
+
+## 🤝 Contributing
+
+This is a personal portfolio project, but suggestions and feedback are welcome!
+
+### Reporting Issues
+
+If you find a bug or have a feature suggestion, please open an issue on GitHub.
+
+### Code Style
+
+- **TypeScript**: Use strict mode, explicit types, avoid `any`
+- **Components**: Standalone components only, small and focused
+- **Styling**: Use CSS variables, mobile-first approach
+- **Accessibility**: WCAG 2.1 Level AA compliance
+- **Testing**: Write tests for new features
+
+### Development Guidelines
+
+1. Follow Angular style guide
+2. Use Nx generators for creating components/libraries
+3. Ensure theme compatibility (light/dark modes)
+4. Write clear commit messages
+5. Test your changes before submitting
+
+---
+
+## 📚 Documentation
+
+- **[CLAUDE.md](./CLAUDE.md)**: Comprehensive project instructions for AI assistants and developers
+- **[prd.md](./prd.md)**: Product Requirements Document with detailed feature specifications
+- **[Nx Documentation](https://nx.dev)**: Official Nx documentation
+- **[Angular Documentation](https://angular.io)**: Official Angular documentation
+- **[Module Federation Guide](https://webpack.js.org/concepts/module-federation/)**: Webpack Module Federation documentation
+
+---
+
+## 📈 Performance Targets
+
+- **Initial Load**: < 2 seconds
+- **Time to Interactive**: < 3 seconds
+- **Lighthouse Score**: > 90 (all categories)
+- **Bundle Size**: Shell < 200KB, MFEs < 150KB each
+
+---
+
+## 🔒 Browser Support
+
+- Chrome (last 2 versions)
+- Firefox (last 2 versions)
+- Safari (last 2 versions)
+- Edge (last 2 versions)
+- Mobile browsers (iOS Safari, Chrome Mobile)
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License. See [LICENSE](./LICENSE) file for details.
+
+---
+
+## 👤 Contact
+
+**Raja Kalavala**
+
+- GitHub: [@RajaKalavala](https://github.com/RajaKalavala)
+- LinkedIn: [Raja Kalavala](https://linkedin.com/in/rajakalavala)
+
+---
+
+## 🙏 Acknowledgments
+
+Built with:
+- [Angular](https://angular.io) - The modern web framework
+- [Nx](https://nx.dev) - Smart monorepo tools
+- [Module Federation](https://webpack.js.org/concepts/module-federation/) - Micro frontend architecture
+
+---
+
+<div align="center">
+
+**Made with ❤️ by Raja Kalavala**
+
+[View Live Site](#) | [Report Bug](https://github.com/RajaKalavala/raja-os/issues) | [Request Feature](https://github.com/RajaKalavala/raja-os/issues)
+
+</div>
