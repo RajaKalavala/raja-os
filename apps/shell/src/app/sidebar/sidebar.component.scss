@@ -36,6 +36,26 @@
   padding: 0 8px;
 }
 
+// Theme toggle for desktop (in header)
+.sidebar-theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 150ms;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #22c55e;
+  }
+}
+
 // Close button for mobile
 .sidebar-close-btn {
   display: flex;
@@ -43,7 +63,6 @@
   justify-content: center;
   width: 32px;
   height: 32px;
-  margin-left: auto;
   background: transparent;
   border: none;
   color: rgba(255, 255, 255, 0.7);
@@ -75,6 +94,7 @@
 }
 
 .sidebar-title {
+  flex: 1;
   font-size: 20px;
   font-weight: 700;
   color: #ffffff;
@@ -147,13 +167,43 @@
   flex: 1;
 }
 
+// Admin Login Section
+.sidebar-admin-section {
+    padding: 16px 8px;
+    margin-top: auto;
+}
+
+.admin-login-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px 16px;
+    background-color: #2d7a5a;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 150ms;
+
+    &:hover {
+        background-color: #1a5f3f;
+    }
+
+    svg {
+        flex-shrink: 0;
+    }
+}
+
 // Bottom Actions Section
 .sidebar-bottom-actions {
     display: flex;
     flex-direction: row;
     gap: 12px;
     padding: 16px 8px;
-    margin-top: auto;
 }
 
 .bottom-action-item {

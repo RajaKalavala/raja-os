@@ -1,6 +1,7 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { ThemeService } from '../services/theme.service';
 
 interface MenuItem {
   label: string;
@@ -20,6 +21,7 @@ export class SidebarComponent {
   isOpen = input(false);
   isMobile = input(false);
   closed = output<void>();
+  themeService = inject(ThemeService);
 
   menuItems: MenuItem[] = [
     { label: 'Dashboard', route: '/dashboard', icon: 'grid' },
@@ -31,7 +33,6 @@ export class SidebarComponent {
   sidebarActions = [
     { icon: 'github', url: 'https://github.com/rajakalavala' },
     { icon: 'linkedin', url: 'https://linkedin.com/in/rajakalavala' },
-    { icon: 'download', action: 'download' },
   ];
 
   onNavItemClick() {
@@ -42,5 +43,21 @@ export class SidebarComponent {
 
   onClose() {
     this.closed.emit();
+  }
+
+  toggleTheme() {
+    this.themeService.toggleTheme();
+  }
+
+  openAdminLogin() {
+    // Trigger admin login modal in dashboard via localStorage event
+    localStorage.setItem('openAdminLogin', Date.now().toString());
+    window.dispatchEvent(new StorageEvent('storage', {
+      key: 'openAdminLogin',
+      newValue: Date.now().toString()
+    }));
+    if (this.isMobile()) {
+      this.closed.emit();
+    }
   }
 }

@@ -1,8 +1,9 @@
-import { Component, signal, HostListener, OnInit } from '@angular/core';
+import { Component, signal, HostListener, OnInit, inject } from '@angular/core';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs/operators';
+import { ThemeService } from './services/theme.service';
 
 @Component({
   imports: [RouterModule, SidebarComponent, CommonModule],
@@ -15,6 +16,7 @@ export class App implements OnInit {
   protected showSidebar = false;
   protected isMobileMenuOpen = signal(false);
   protected isMobile = signal(false);
+  protected themeService = inject(ThemeService);
 
   private readonly MOBILE_BREAKPOINT = 768;
 
@@ -52,5 +54,9 @@ export class App implements OnInit {
 
   closeMobileMenu() {
     this.isMobileMenuOpen.set(false);
+  }
+
+  toggleTheme() {
+    this.themeService.toggleTheme();
   }
 }

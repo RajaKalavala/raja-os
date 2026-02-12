@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TimeTrackerComponent } from '../time-tracker/time-tracker.component';
 import { AdminLoginModalComponent } from '../components/admin-login-modal/admin-login-modal.component';
@@ -10,7 +10,6 @@ import { SkillTreeComponent } from '../components/skill-tree/skill-tree.componen
 import { GithubHeatmapComponent } from '../components/github-heatmap/github-heatmap.component';
 import { DeveloperJourneyComponent } from '../components/developer-journey/developer-journey.component';
 import { AuthService } from '../services/auth.service';
-import { ThemeService } from '../services/theme.service';
 
 interface MetricCard {
   title: string;
@@ -56,10 +55,25 @@ interface ImpactArea {
   styleUrl: './dashboard.component.scss',
   standalone: true,
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit, OnDestroy {
   showLoginModal = signal<boolean>(false);
   authService = inject(AuthService);
-  themeService = inject(ThemeService);
+
+  private storageListener = (e: StorageEvent) => {
+    if (e.key === 'openAdminLogin') {
+      this.openLoginModal();
+      localStorage.removeItem('openAdminLogin');
+    }
+  };
+
+  ngOnInit() {
+    window.addEventListener('storage', this.storageListener);
+  }
+
+  ngOnDestroy() {
+    window.removeEventListener('storage', this.storageListener);
+  }
+
   metricCards: MetricCard[] = [
     {
       title: 'Total Experience',
