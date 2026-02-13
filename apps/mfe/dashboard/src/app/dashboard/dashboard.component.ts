@@ -1,6 +1,4 @@
 import { Component, inject, signal, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { TimeTrackerComponent } from '../time-tracker/time-tracker.component';
 import { AdminLoginModalComponent } from '../components/admin-login-modal/admin-login-modal.component';
 import { IdentityCardComponent } from '../components/identity-card/identity-card.component';
 import { LifeStatsComponent } from '../components/life-stats/life-stats.component';
@@ -25,8 +23,6 @@ interface MetricCard {
 @Component({
   selector: 'app-dashboard',
   imports: [
-    CommonModule,
-    TimeTrackerComponent,
     AdminLoginModalComponent,
     IdentityCardComponent,
     LifeStatsComponent,
@@ -85,26 +81,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       title: 'Core Focus Areas',
       value: '5',
       subtext: 'Architecture, AI, Data, System Design, Platform',
-    },
-  ];
-
-  currentFocusItems = [
-    'Architecture Research',
-    'AI Thesis',
-    'Platform Enhancements',
-    'Personal Product (StreetBites)',
-  ];
-
-  featuredBuilds = [
-    {
-      name: 'Arsenal Platform',
-      desc: 'Centralized limit funds, commerce systems',
-      icon: 'assets/cube.svg', // Placeholder
-    },
-    {
-      name: 'AI Enrichment Pipeline',
-      desc: 'Actionable rich data, re-engineering',
-      icon: 'assets/pipeline.svg', // Placeholder
     },
   ];
 

@@ -28,18 +28,20 @@
 
   <!-- Top Metrics Cards -->
   <div class="metrics-grid">
-    <div *ngFor="let card of metricCards" [class]="'metric-card' + (card.isPrimary ? ' metric-card-primary' : '')">
-      <div class="metric-card-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-        </svg>
+    @for (card of metricCards; track card.title) {
+      <div [class]="'metric-card' + (card.isPrimary ? ' metric-card-primary' : '')">
+        <div class="metric-card-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          </svg>
+        </div>
+        <div class="metric-card-content">
+          <h3 class="metric-card-title">{{ card.title }}</h3>
+          <div class="metric-card-value">{{ card.value }}</div>
+          <p class="metric-card-subtext">{{ card.subtext }}</p>
+        </div>
       </div>
-      <div class="metric-card-content">
-        <h3 class="metric-card-title">{{ card.title }}</h3>
-        <div class="metric-card-value">{{ card.value }}</div>
-        <p class="metric-card-subtext">{{ card.subtext }}</p>
-      </div>
-    </div>
+    }
   </div>
 
   <!-- Interactive Features Grid -->
@@ -59,57 +61,6 @@
     <app-latest-post></app-latest-post>
     <app-visitor-counter></app-visitor-counter>
     <app-quick-launch></app-quick-launch>
-  </div>
-
-  <!-- Main Content Grid -->
-  <div class="main-grid">
-
-    <!-- Single Column: Focus & Builds -->
-    <div class="col-single">
-      <!-- Time Tracker -->
-      <div class="widget-card widget-card-compact">
-        <app-time-tracker></app-time-tracker>
-      </div>
-
-      <!-- Current Focus List -->
-      <div class="widget-card">
-        <div class="widget-header">
-          <h3 class="widget-title">Current Focus</h3>
-          <button class="btn-text">View</button>
-        </div>
-        <div class="focus-list-simple">
-          <div *ngFor="let item of currentFocusItems" class="focus-item-simple">
-            <div class="focus-ring"></div>
-            <span class="focus-text">{{ item }}</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Featured Builds -->
-      <div class="widget-card">
-        <div class="widget-header">
-          <h3 class="widget-title">Featured Builds</h3>
-          <button class="btn-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-          </button>
-        </div>
-        <div class="builds-list">
-          <div *ngFor="let build of featuredBuilds" class="build-item">
-            <div class="build-icon">
-               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-            </div>
-            <div class="build-info">
-              <div class="build-name">{{ build.name }}</div>
-              <div class="build-desc">{{ build.desc }}</div>
-            </div>
-            <div class="build-arrow">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
   </div>
 </div>
 
