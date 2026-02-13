@@ -57,22 +57,8 @@
     </div>
   </div>
 
-  <!-- Dev Uptime Section -->
-  <div class="dev-uptime-section">
-    <span class="uptime-label">DEV UPTIME (Professional Experience)</span>
-    <div class="uptime-row">
-      <div class="uptime-stats">
-        <span class="uptime-years">{{ devUptimeYears() }}</span>
-        <span class="uptime-unit">yrs</span>
-        <span class="uptime-days">{{ devUptimeDays() }}</span>
-        <span class="uptime-unit">days</span>
-      </div>
-      <div class="uptime-timer">{{ devUptimeTimer() }}</div>
-    </div>
-    <div class="uptime-since">
-      Since first <span class="console-log">console.log()</span>
-    </div>
-  </div>
+  <!-- Fun Facts Section -->
+  <app-fun-facts></app-fun-facts>
 
   <div class="social-links">
     @for (link of socialLinks; track link.icon) {

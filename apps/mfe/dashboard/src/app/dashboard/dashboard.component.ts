@@ -1,5 +1,6 @@
 import { Component, inject, signal, OnInit, OnDestroy } from '@angular/core';
 import { AdminLoginModalComponent } from '../components/admin-login-modal/admin-login-modal.component';
+import { DevUptimeComponent } from '../components/dev-uptime/dev-uptime.component';
 import { IdentityCardComponent } from '../components/identity-card/identity-card.component';
 import { LifeStatsComponent } from '../components/life-stats/life-stats.component';
 import { NowPlayingComponent } from '../components/now-playing/now-playing.component';
@@ -24,6 +25,7 @@ interface MetricCard {
   selector: 'app-dashboard',
   imports: [
     AdminLoginModalComponent,
+    DevUptimeComponent,
     IdentityCardComponent,
     LifeStatsComponent,
     NowPlayingComponent,
@@ -60,12 +62,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   metricCards: MetricCard[] = [
-    {
-      title: 'Total Experience',
-      value: '9+ Years',
-      subtext: 'Design & Development Across Web and Mobile Apps',
-      isPrimary: true,
-    },
     {
       title: 'Worked on ',
       value: '15+',

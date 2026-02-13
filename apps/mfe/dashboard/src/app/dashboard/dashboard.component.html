@@ -3,7 +3,9 @@
   <div class="dashboard-header">
     <div class="header-content">
       <h1 class="dashboard-title">Dashboard</h1>
-      <p class="dashboard-subtitle">Engineering Command Center — Systems, Architecture & Impact</p>
+      <p class="dashboard-subtitle">
+        Engineering Command Center — Systems, Architecture & Impact
+      </p>
     </div>
   </div>
 
@@ -27,21 +29,12 @@
   </div>
 
   <!-- Top Metrics Cards -->
-  <div class="metrics-grid">
-    @for (card of metricCards; track card.title) {
-      <div [class]="'metric-card' + (card.isPrimary ? ' metric-card-primary' : '')">
-        <div class="metric-card-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-          </svg>
-        </div>
-        <div class="metric-card-content">
-          <h3 class="metric-card-title">{{ card.title }}</h3>
-          <div class="metric-card-value">{{ card.value }}</div>
-          <p class="metric-card-subtext">{{ card.subtext }}</p>
-        </div>
-      </div>
-    }
+  <div class="quick-widgets-section">
+    <!-- <app-fun-facts></app-fun-facts> -->
+    <app-dev-uptime></app-dev-uptime>
+    <app-latest-post></app-latest-post>
+    <app-visitor-counter></app-visitor-counter>
+    <app-quick-launch></app-quick-launch>
   </div>
 
   <!-- Interactive Features Grid -->
@@ -56,12 +49,12 @@
   </div>
 
   <!-- Quick Widgets Section -->
-  <div class="quick-widgets-section">
+  <!-- <div class="quick-widgets-section">
     <app-fun-facts></app-fun-facts>
     <app-latest-post></app-latest-post>
     <app-visitor-counter></app-visitor-counter>
     <app-quick-launch></app-quick-launch>
-  </div>
+  </div> -->
 </div>
 
 <!-- Admin Login Modal -->

@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FunFactsComponent } from '../fun-facts/fun-facts.component';
 
 interface MoodConfig {
   emoji: string;
@@ -9,7 +10,7 @@ interface MoodConfig {
 @Component({
   selector: 'app-identity-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FunFactsComponent],
   templateUrl: './identity-card.component.html',
   styleUrls: ['./identity-card.component.scss'],
 })
