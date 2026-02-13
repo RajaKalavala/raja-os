@@ -1,0 +1,19 @@
+<div class="fun-facts">
+  <h4 class="widget-label">FUN FACT</h4>
+
+  <div class="fact-content">
+    <div class="fact-emoji">{{ currentFact.emoji }}</div>
+    <p class="fact-text">{{ currentFact.text }}</p>
+  </div>
+
+  <div class="fact-dots">
+    @for (fact of facts; track $index) {
+      <button
+        class="dot"
+        [class.active]="$index === currentIndex()"
+        (click)="goTo($index)"
+        [attr.aria-label]="'Go to fact ' + ($index + 1)">
+      </button>
+    }
+  </div>
+</div>

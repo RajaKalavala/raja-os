@@ -267,6 +267,36 @@
   }
 }
 
+// Quick Widgets Section
+.quick-widgets-section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 24px;
+
+  > * {
+    min-height: 180px;
+  }
+}
+
+// Responsive for quick widgets
+@media (max-width: 1200px) {
+  .quick-widgets-section {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .quick-widgets-section {
+    grid-template-columns: 1fr;
+    gap: 16px;
+
+    > * {
+      min-height: 160px;
+    }
+  }
+}
+
 // Main Layout Grid
 .main-grid {
   display: grid;
