@@ -17,18 +17,18 @@ interface Project {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './currently-building.component.html',
-  styleUrls: ['./currently-building.component.scss']
+  styleUrls: ['./currently-building.component.scss'],
 })
 export class CurrentlyBuildingComponent {
   project: Project = {
     name: 'Raja OS Portfolio',
-    techStack: ['Angular', 'Nx', 'SCSS'],
+    techStack: ['Angular', 'Nx', 'MFE'],
     progress: 65,
     sprint: {
       current: 4,
-      total: 6
+      total: 6,
     },
-    status: 'on-track'
+    status: 'on-track',
   };
 
   getStatusLabel(): string {
