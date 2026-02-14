@@ -1,10 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 interface QuickAction {
   label: string;
   icon: string;
-  route: string;
+  route?: string;
+  action?: 'download';
+  downloadUrl?: string;
 }
 
 @Component({
@@ -15,14 +18,30 @@ interface QuickAction {
   styleUrl: './quick-launch.component.scss',
 })
 export class QuickLaunchComponent {
+  private router = inject(Router);
+
   actions: QuickAction[] = [
-    { label: 'Resume', icon: 'resume', route: '/resume' },
+    { label: 'Resume', icon: 'resume', action: 'download', downloadUrl: 'images/Raja-Resume.pdf' },
     { label: 'Terminal', icon: 'terminal', route: '/terminal' },
-    { label: 'Projects', icon: 'projects', route: '/projects' },
+    { label: 'Projects', icon: 'projects', route: '/builds' },
     { label: 'Contact', icon: 'contact', route: '/ping-me' },
   ];
 
-  navigate(route: string) {
-    window.location.href = route;
+  handleAction(action: QuickAction) {
+    if (action.action === 'download' && action.downloadUrl) {
+      this.downloadFile(action.downloadUrl, 'Raja-Resume.pdf');
+    } else if (action.route) {
+      this.router.navigate([action.route]);
+    }
+  }
+
+  private downloadFile(url: string, filename: string) {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 }

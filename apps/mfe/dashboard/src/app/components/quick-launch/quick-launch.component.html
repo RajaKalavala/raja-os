@@ -3,7 +3,7 @@
 
   <div class="launch-grid">
     @for (action of actions; track action.label) {
-      <button class="launch-btn" (click)="navigate(action.route)">
+      <button class="launch-btn" (click)="handleAction(action)">
         <span class="launch-icon">
           @if (action.icon === 'resume') {
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
