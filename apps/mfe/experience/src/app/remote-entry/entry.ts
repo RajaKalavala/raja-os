@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NxWelcome } from './nx-welcome';
+import { ExperienceComponent } from '../experience/experience.component';
 
 @Component({
-  imports: [NxWelcome],
+  imports: [ExperienceComponent],
   selector: 'raja-experience-entry',
-  template: `<raja-nx-welcome></raja-nx-welcome>`,
+  template: `<app-experience></app-experience>`,
 })
 export class RemoteEntry {}
