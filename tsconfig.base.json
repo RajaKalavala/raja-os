@@ -30,6 +30,9 @@
       "@org/design-system": ["libs/design-system/src/index.ts"],
       "experience/Routes": [
         "apps/mfe/experience/src/app/remote-entry/entry.routes.ts"
+      ],
+      "aboutme/Routes": [
+        "apps/mfe/aboutme/src/app/remote-entry/entry.routes.ts"
       ]
     }
   },

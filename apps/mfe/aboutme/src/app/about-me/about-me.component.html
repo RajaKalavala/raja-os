@@ -1,0 +1,225 @@
+<div class="about-me-container">
+  <!-- Header Section -->
+  <header class="about-header">
+    <h1 class="about-title">About Me</h1>
+    <p class="about-subtitle">
+      Principal Software Architect, system thinker, and builder of things that
+      matter
+    </p>
+  </header>
+
+  <!-- Section 1: The Story -->
+  <section
+    id="story-section"
+    class="story-section"
+    [class.visible]="storyVisible()"
+  >
+    <div class="story-content">
+      <div class="photo-placeholder">
+        <div class="photo-frame">
+          <span class="photo-icon">📸</span>
+          <span class="photo-text">Photo Coming Soon</span>
+        </div>
+      </div>
+
+      <div class="story-text">
+        <p class="story-paragraph">
+          My journey into software began in 2016 when I wrote my first
+          <code>console.log("Hello, World!")</code>. What started as curiosity
+          quickly became an obsession. I spent countless nights debugging code,
+          learning new frameworks, and building projects that nobody asked for —
+          but that taught me everything.
+        </p>
+
+        <p class="story-paragraph">
+          Over the past 9+ years, I've evolved from a curious junior developer
+          to a Principal Software Architect. I've worked across e-commerce,
+          healthcare, and platform engineering — shipping products used by
+          millions. Each role taught me that great software isn't just about
+          code; it's about understanding people, processes, and problems.
+        </p>
+
+        <blockquote class="story-quote">
+          "The best architectures emerge from teams that communicate well, not
+          from individuals who code alone."
+        </blockquote>
+
+        <p class="story-paragraph">
+          I believe software engineering is a team sport. My role as an
+          architect isn't to dictate solutions but to enable teams to build
+          sustainable, scalable systems. I obsess over developer experience,
+          clean APIs, and documentation that people actually read.
+        </p>
+
+        <p class="story-paragraph">
+          When I'm not architecting systems or reviewing PRs, you'll find me
+          gaming, exploring new coffee shops, or going down rabbit holes about
+          system design. I'm a firm believer that the best engineers are
+          perpetual students — there's always something new to learn.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: By the Numbers -->
+  <section
+    id="stats-section"
+    class="stats-section"
+    [class.visible]="statsVisible()"
+  >
+    <h2 class="section-title">By the Numbers</h2>
+    <div class="stats-grid">
+      @for (stat of stats; track stat.label; let i = $index) {
+        <div class="stat-card" [style.animation-delay]="i * 100 + 'ms'">
+          <span class="stat-value">{{ stat.currentValue }}{{ stat.suffix }}</span>
+          <span class="stat-label">{{ stat.label }}</span>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Section 3: What I Believe -->
+  <section
+    id="philosophy-section"
+    class="philosophy-section"
+    [class.visible]="philosophyVisible()"
+  >
+    <h2 class="section-title">What I Believe</h2>
+    <div class="philosophy-grid">
+      @for (card of philosophyCards; track card.title; let i = $index) {
+        <div class="philosophy-card" [style.animation-delay]="i * 100 + 'ms'">
+          <span class="philosophy-emoji">{{ card.emoji }}</span>
+          <h3 class="philosophy-title">{{ card.title }}</h3>
+          <p class="philosophy-description">{{ card.description }}</p>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Section 4: Beyond the Code -->
+  <section
+    id="beyond-section"
+    class="beyond-section"
+    [class.visible]="beyondCodeVisible()"
+  >
+    <h2 class="section-title">Beyond the Code</h2>
+
+    <div class="beyond-content">
+      <!-- Interests -->
+      <div class="interests-grid">
+        @for (interest of interests; track interest.label; let i = $index) {
+          <div class="interest-card" [style.animation-delay]="i * 50 + 'ms'">
+            <span class="interest-icon">{{ interest.icon }}</span>
+            <span class="interest-label">{{ interest.label }}</span>
+          </div>
+        }
+      </div>
+
+      <!-- Currently -->
+      <div class="currently-section">
+        <div class="currently-card">
+          <span class="currently-label">Currently Reading</span>
+          <span class="currently-value">📖 {{ currentlyReading }}</span>
+        </div>
+        <div class="currently-card">
+          <span class="currently-label">Currently Learning</span>
+          <span class="currently-value">🧠 {{ currentlyLearning }}</span>
+        </div>
+      </div>
+
+      <!-- About JSON Easter Egg -->
+      <div class="json-easter-egg">
+        <div class="json-header">
+          <span class="json-filename">about.json</span>
+          <div class="json-dots">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+        </div>
+        <pre class="json-content"><code>{{ aboutJson }}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5: My Setup -->
+  <section
+    id="setup-section"
+    class="setup-section"
+    [class.visible]="setupVisible()"
+  >
+    <h2 class="section-title">My Setup</h2>
+    <div class="setup-grid">
+      @for (item of setupItems; track item.category; let i = $index) {
+        <div class="setup-card" [style.animation-delay]="i * 100 + 'ms'">
+          <span class="setup-icon">{{ item.icon }}</span>
+          <span class="setup-category">{{ item.category }}</span>
+          <span class="setup-name">{{ item.name }}</span>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Section 6: Connect -->
+  <section
+    id="connect-section"
+    class="connect-section"
+    [class.visible]="connectVisible()"
+  >
+    <h2 class="connect-title">Want to build something together?</h2>
+    <p class="connect-text">
+      I'm always excited to discuss architecture, collaborate on interesting
+      projects, or just chat about tech. Let's connect!
+    </p>
+
+    <a routerLink="/ping-me" class="cta-button">
+      <span>Get in Touch</span>
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M5 12h14M12 5l7 7-7 7" />
+      </svg>
+    </a>
+
+    <div class="social-links">
+      @for (link of socialLinks; track link.icon) {
+        <a
+          [href]="link.url"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-link"
+        >
+          @switch (link.icon) {
+            @case ('github') {
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                />
+              </svg>
+            }
+            @case ('linkedin') {
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+                />
+              </svg>
+            }
+            @case ('twitter') {
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+                />
+              </svg>
+            }
+          }
+          <span>{{ link.label }}</span>
+        </a>
+      }
+    </div>
+  </section>
+</div>

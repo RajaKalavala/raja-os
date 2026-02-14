@@ -25,6 +25,7 @@ export class SidebarComponent {
 
   menuItems: MenuItem[] = [
     { label: 'Dashboard', route: '/dashboard', icon: 'grid' },
+    { label: 'About Me', route: '/aboutme', icon: 'resume' },
     { label: 'Projects', route: '/projects', icon: 'folder' },
     { label: 'Experience', route: '/experience', icon: 'history' },
     { label: 'Blogs', route: '/blogs', icon: 'book' },
@@ -52,10 +53,12 @@ export class SidebarComponent {
   openAdminLogin() {
     // Trigger admin login modal in dashboard via localStorage event
     localStorage.setItem('openAdminLogin', Date.now().toString());
-    window.dispatchEvent(new StorageEvent('storage', {
-      key: 'openAdminLogin',
-      newValue: Date.now().toString()
-    }));
+    window.dispatchEvent(
+      new StorageEvent('storage', {
+        key: 'openAdminLogin',
+        newValue: Date.now().toString(),
+      }),
+    );
     if (this.isMobile()) {
       this.closed.emit();
     }
