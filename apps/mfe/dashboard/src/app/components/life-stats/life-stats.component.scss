@@ -41,7 +41,7 @@
   transition: all 0.3s ease;
 
   &:hover {
-    border-color: #22c55e;
+    border-color: var(--accent-green);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(34, 197, 94, 0.1);
   }
@@ -60,20 +60,20 @@
     height: 28px;
   }
 
-  &.coffee {
-    color: #d97706;
+  &.book {
+    color: #8b5cf6; // Purple for books
   }
 
-  &.bug {
-    color: #22c55e;
+  &.lightbulb {
+    color: #f59e0b; // Amber for ideas
   }
 
-  &.commit {
-    color: #f59e0b;
+  &.git-commit {
+    color: #22c55e; // Green for commits
   }
 
-  &.code {
-    color: #3b82f6;
+  &.brain {
+    color: #3b82f6; // Blue for learning
   }
 }
 
@@ -83,22 +83,15 @@
   color: var(--text-value);
   line-height: 1;
   margin-bottom: 6px;
-  font-variant-numeric: tabular-nums;
 }
 
 .stat-label {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-secondary);
   line-height: 1.3;
 }
 
 // Responsive adjustments
-@media (max-width: 1200px) {
-  .stats-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
 @media (max-width: 768px) {
   .life-stats {
     padding: 16px;
@@ -121,6 +114,11 @@
     width: 32px;
     height: 32px;
     margin-bottom: 8px;
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
   }
 
   .stat-value {
@@ -129,11 +127,6 @@
   }
 
   .stat-label {
-    font-size: 11px;
-  }
-
-  .stat-icon svg {
-    width: 24px;
-    height: 24px;
+    font-size: 10px;
   }
 }
