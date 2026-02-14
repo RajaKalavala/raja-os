@@ -58,7 +58,7 @@ export class ExperienceComponent implements OnInit, AfterViewInit {
   });
 
   totalCompanies = computed(() => this.roles.length);
-  totalProjects = signal<number>(15);
+  totalProjects = signal<number>(5);
 
   roles: Role[] = [
     {
@@ -127,7 +127,8 @@ export class ExperienceComponent implements OnInit, AfterViewInit {
 
   education: Education[] = [
     {
-      institution: 'International Institute of Information Technology, Bangalore (IIIT-B)',
+      institution:
+        'International Institute of Information Technology, Bangalore (IIIT-B)',
       degree: 'Post Graduate Program',
       field: 'Machine Learning and Artificial Intelligence',
       year: '2024 - 2025',
