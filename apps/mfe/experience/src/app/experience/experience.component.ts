@@ -63,79 +63,88 @@ export class ExperienceComponent implements OnInit, AfterViewInit {
   roles: Role[] = [
     {
       id: 1,
-      company: 'TechCorp Solutions',
-      title: 'Principal Software Architect',
-      location: 'San Francisco, CA',
+      company: 'Dell Technologies',
+      title: 'Principal Software Engineer',
+      location: 'Bangalore, India',
       startDate: 'Jan 2022',
       endDate: null,
       duration: '3+ years',
       isCurrent: true,
       impacts: [
-        'Led migration to microfrontend architecture, serving 2M+ users',
-        'Reduced build times by 60% with Nx and affected-based CI',
-        'Mentored 5 engineers from junior to mid-level',
+        'Led migration to microfrontend architecture using Module Federation',
+        'Architected scalable enterprise solutions serving millions of users',
+        'Mentored engineers and drove best practices across teams',
       ],
       techStack: [
         'Angular',
         'Nx',
         'TypeScript',
         'Module Federation',
-        'AWS',
         'Node.js',
       ],
-      highlight: 'Promoted to Principal within 18 months',
+      highlight: 'Leading enterprise-scale frontend architecture',
     },
     {
       id: 2,
-      company: 'InnovateTech Inc.',
-      title: 'Senior Software Engineer',
-      location: 'Austin, TX',
-      startDate: 'Mar 2019',
+      company: 'Siemens Healthineers',
+      title: 'Design & Development Engineer',
+      location: 'Bangalore, India',
+      startDate: 'Jan 2019',
       endDate: 'Dec 2021',
-      duration: '2 years 10 months',
+      duration: '3 years',
       isCurrent: false,
       impacts: [
-        'Architected real-time data pipeline processing 1M+ events/day',
-        'Implemented CI/CD reducing deployment time from 2 hours to 15 minutes',
-        'Led team of 4 engineers delivering healthcare platform',
+        'Developed healthcare platform solutions for medical imaging',
+        'Implemented CI/CD pipelines improving deployment efficiency',
+        'Collaborated with cross-functional teams on product development',
       ],
-      techStack: ['React', 'Python', 'Kafka', 'PostgreSQL', 'Docker', 'GCP'],
+      techStack: ['Angular', 'TypeScript', 'C#', '.NET', 'Docker', 'Azure'],
     },
     {
       id: 3,
-      company: 'StartupLabs',
+      company: 'Happiest Minds',
       title: 'Software Engineer',
-      location: 'Seattle, WA',
+      location: 'Bangalore, India',
       startDate: 'Jun 2016',
-      endDate: 'Feb 2019',
-      duration: '2 years 9 months',
+      endDate: 'Dec 2018',
+      duration: '2.5 years',
       isCurrent: false,
       impacts: [
-        'Built e-commerce platform from scratch, reaching 100K users in first year',
-        'Developed RESTful APIs serving 50K+ daily requests',
-        'Introduced unit testing practices, achieving 80% code coverage',
+        'Built web applications and RESTful APIs for enterprise clients',
+        'Developed frontend solutions using modern JavaScript frameworks',
+        'Introduced unit testing practices and code quality standards',
       ],
-      techStack: ['JavaScript', 'Node.js', 'MongoDB', 'Express', 'Redis', 'AWS'],
+      techStack: [
+        'JavaScript',
+        'Angular',
+        'Node.js',
+        'MongoDB',
+        'Express',
+        'Git',
+      ],
     },
   ];
 
   education: Education[] = [
     {
-      institution: 'University of Technology',
-      degree: 'Master of Science',
-      field: 'Computer Science',
-      year: '2016',
+      institution: 'International Institute of Information Technology, Bangalore (IIIT-B)',
+      degree: 'Post Graduate Program',
+      field: 'Machine Learning and Artificial Intelligence',
+      year: '2024 - 2025',
       achievements: [
-        'Graduated with Distinction',
-        'Thesis: Distributed Systems Architecture',
+        'Advanced ML/AI specialization',
+        'Deep Learning & Neural Networks',
       ],
     },
     {
-      institution: 'State Engineering College',
-      degree: 'Bachelor of Engineering',
-      field: 'Information Technology',
-      year: '2014',
-      achievements: ["Dean's List", 'Best Project Award'],
+      institution: 'Centurion University of Technology and Management',
+      degree: 'Bachelor of Technology (B.Tech)',
+      field: 'Electronics and Communication Engineering',
+      year: '2012 - 2016',
+      achievements: [
+        'Odisha, India',
+        'Strong foundation in engineering principles',
+      ],
     },
   ];
 
@@ -189,7 +198,14 @@ export class ExperienceComponent implements OnInit, AfterViewInit {
         'GraphQL',
         'Kafka',
       ],
-      newSkills: ['Nx', 'Module Federation', 'GCP', 'Terraform', 'GraphQL', 'Kafka'],
+      newSkills: [
+        'Nx',
+        'Module Federation',
+        'GCP',
+        'Terraform',
+        'GraphQL',
+        'Kafka',
+      ],
     },
     {
       year: 'Now',
@@ -204,13 +220,19 @@ export class ExperienceComponent implements OnInit, AfterViewInit {
         'Cloud Architecture',
         'Team Leadership',
       ],
-      newSkills: ['AI/ML', 'LLMs', 'System Design', 'Cloud Architecture', 'Team Leadership'],
+      newSkills: [
+        'AI/ML',
+        'LLMs',
+        'System Design',
+        'Cloud Architecture',
+        'Team Leadership',
+      ],
     },
   ];
 
   currentSkills = computed(() => {
     const yearData = this.skillsTimeline.find(
-      (s) => s.year === this.selectedSkillYear()
+      (s) => s.year === this.selectedSkillYear(),
     );
     return yearData || this.skillsTimeline[this.skillsTimeline.length - 1];
   });
@@ -272,7 +294,8 @@ export class ExperienceComponent implements OnInit, AfterViewInit {
     if (typeof window !== 'undefined') {
       window.addEventListener('scroll', () => {
         const scrollTop = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const docHeight =
+          document.documentElement.scrollHeight - window.innerHeight;
         const progress = Math.min((scrollTop / docHeight) * 100, 100);
         this.timelineProgress.set(progress);
       });
