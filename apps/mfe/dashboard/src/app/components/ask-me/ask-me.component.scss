@@ -1,0 +1,202 @@
+.terminal {
+  background: #1a1b26;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+// Terminal Header (macOS style)
+.terminal-header {
+  background: #24283b;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #414868;
+}
+
+.terminal-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.terminal-buttons span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.btn-close {
+  background: #f7768e;
+}
+
+.btn-minimize {
+  background: #e0af68;
+}
+
+.btn-maximize {
+  background: #9ece6a;
+}
+
+.terminal-title {
+  font-size: 12px;
+  color: #7aa2f7;
+  font-weight: 500;
+}
+
+// Terminal Body
+.terminal-body {
+  flex: 1;
+  padding: 12px 14px;
+  overflow-y: auto;
+  max-height: 180px;
+  min-height: 120px;
+
+  // Custom scrollbar
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #414868;
+    border-radius: 3px;
+
+    &:hover {
+      background: #565f89;
+    }
+  }
+}
+
+// Terminal Lines
+.terminal-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 8px;
+  line-height: 1.5;
+  font-size: 13px;
+
+  &.command {
+    .text {
+      color: #c0caf5;
+    }
+  }
+
+  &.response {
+    .text {
+      color: #9ece6a;
+    }
+  }
+
+  &.system {
+    .text {
+      color: #7aa2f7;
+      font-style: italic;
+    }
+  }
+}
+
+.prompt {
+  color: #bb9af7;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.response-prompt {
+  color: #9ece6a;
+}
+
+.text {
+  flex: 1;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+// Typing cursor
+.cursor {
+  color: #9ece6a;
+  animation: blink 1s infinite;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+// Input Line
+.terminal-input-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  background: #1a1b26;
+  border-top: 1px solid #414868;
+}
+
+.terminal-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #c0caf5;
+  font-family: inherit;
+  font-size: 13px;
+  caret-color: #9ece6a;
+
+  &::placeholder {
+    color: #565f89;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// Mobile Responsive
+@media (max-width: 768px) {
+  .terminal-header {
+    padding: 8px 12px;
+  }
+
+  .terminal-buttons span {
+    width: 10px;
+    height: 10px;
+  }
+
+  .terminal-title {
+    font-size: 11px;
+  }
+
+  .terminal-body {
+    padding: 10px 12px;
+    max-height: 150px;
+    min-height: 100px;
+  }
+
+  .terminal-line {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  .terminal-input-line {
+    padding: 10px 12px;
+  }
+
+  .terminal-input {
+    font-size: 12px;
+  }
+}

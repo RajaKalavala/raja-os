@@ -1,0 +1,38 @@
+<div class="terminal">
+  <div class="terminal-header">
+    <div class="terminal-buttons">
+      <span class="btn-close"></span>
+      <span class="btn-minimize"></span>
+      <span class="btn-maximize"></span>
+    </div>
+    <span class="terminal-title">raja@terminal ~ ask-me-anything</span>
+  </div>
+
+  <div class="terminal-body" #terminalBody>
+    @for (line of lines(); track $index) {
+      <div class="terminal-line" [class.command]="line.type === 'command'" [class.response]="line.type === 'response'" [class.system]="line.type === 'system'">
+        @if (line.type === 'command') {
+          <span class="prompt">❯</span>
+        } @else if (line.type === 'response') {
+          <span class="prompt response-prompt">→</span>
+        }
+        <span class="text" [class.typing]="line.isTyping">{{ line.text }}@if (line.isTyping) {<span class="cursor">▋</span>}</span>
+      </div>
+    }
+  </div>
+
+  <div class="terminal-input-line">
+    <span class="prompt">❯</span>
+    <input
+      type="text"
+      class="terminal-input"
+      [(ngModel)]="command"
+      (keypress)="handleKeyPress($event)"
+      [disabled]="isProcessing()"
+      placeholder="Type a command or question..."
+      autocomplete="off"
+      spellcheck="false"
+      #inputField
+    />
+  </div>
+</div>

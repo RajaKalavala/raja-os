@@ -3,7 +3,7 @@ import { AdminLoginModalComponent } from '../components/admin-login-modal/admin-
 import { DevUptimeComponent } from '../components/dev-uptime/dev-uptime.component';
 import { IdentityCardComponent } from '../components/identity-card/identity-card.component';
 import { LifeStatsComponent } from '../components/life-stats/life-stats.component';
-import { NowPlayingComponent } from '../components/now-playing/now-playing.component';
+import { AskMeComponent } from '../components/ask-me/ask-me.component';
 import { CurrentlyBuildingComponent } from '../components/currently-building/currently-building.component';
 import { SkillTreeComponent } from '../components/skill-tree/skill-tree.component';
 import { GithubHeatmapComponent } from '../components/github-heatmap/github-heatmap.component';
@@ -27,7 +27,7 @@ interface MetricCard {
     DevUptimeComponent,
     IdentityCardComponent,
     LifeStatsComponent,
-    NowPlayingComponent,
+    AskMeComponent,
     CurrentlyBuildingComponent,
     SkillTreeComponent,
     GithubHeatmapComponent,

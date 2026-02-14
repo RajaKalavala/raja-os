@@ -65,7 +65,7 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  flex: 1;
+  margin-bottom: 16px;
 }
 
 .album-art {
@@ -83,6 +83,9 @@
     width: 32px;
     height: 32px;
     color: #22c55e;
+  }
+
+  &.spinning svg {
     animation: spin 4s linear infinite;
   }
 }
@@ -120,29 +123,117 @@
   text-overflow: ellipsis;
 }
 
+// Playback Controls
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.control-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    color: var(--text-primary);
+    background: var(--bg-card-alt);
+  }
+
+  &.play-btn {
+    width: 48px;
+    height: 48px;
+    background: #22c55e;
+    color: white;
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    &:hover {
+      background: #16a34a;
+      transform: scale(1.05);
+    }
+
+    &.loading {
+      background: var(--bg-card-alt);
+      color: #22c55e;
+    }
+
+    &.error {
+      background: #ef4444;
+      color: white;
+
+      &:hover {
+        background: #dc2626;
+      }
+    }
+  }
+}
+
+.spinner {
+  animation: spinLoader 1s linear infinite;
+}
+
+@keyframes spinLoader {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Progress Section
 .progress-section {
-  margin-top: 16px;
+  margin-bottom: 12px;
 }
 
 .progress-bar {
   height: 4px;
   background: var(--progress-bar-bg);
   border-radius: 2px;
-  overflow: hidden;
+  overflow: visible;
   margin-bottom: 8px;
+  cursor: pointer;
+  position: relative;
+
+  &:hover {
+    height: 6px;
+
+    .progress-fill::after {
+      width: 12px;
+      height: 12px;
+    }
+  }
 }
 
 .progress-fill {
   height: 100%;
   background: linear-gradient(90deg, #22c55e 0%, #16a34a 100%);
   border-radius: 2px;
-  transition: width 0.3s ease;
+  transition: width 0.1s linear;
   position: relative;
 
   &::after {
     content: '';
     position: absolute;
-    right: 0;
+    right: -4px;
     top: 50%;
     transform: translateY(-50%);
     width: 8px;
@@ -150,6 +241,7 @@
     background: #22c55e;
     border-radius: 50%;
     box-shadow: 0 0 6px rgba(34, 197, 94, 0.4);
+    transition: all 0.2s ease;
   }
 }
 
@@ -166,6 +258,82 @@
   font-weight: 600;
 }
 
+// Volume Section
+.volume-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.volume-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.volume-slider {
+  flex: 1;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--progress-bar-bg);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #22c55e;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+
+  &::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #22c55e;
+    cursor: pointer;
+    border: none;
+  }
+}
+
+// Track Indicator
+.track-indicator {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.track-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border-primary);
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--text-tertiary);
+  }
+
+  &.active {
+    background: #22c55e;
+    width: 16px;
+    border-radius: 3px;
+  }
+}
+
 // Mobile Responsive Styles
 @media (max-width: 768px) {
   .now-playing {
@@ -178,6 +346,7 @@
 
   .track-info {
     gap: 12px;
+    margin-bottom: 12px;
   }
 
   .album-art {
@@ -198,11 +367,39 @@
     font-size: 12px;
   }
 
+  .controls {
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .control-btn {
+    padding: 6px;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    &.play-btn {
+      width: 40px;
+      height: 40px;
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
   .progress-section {
-    margin-top: 12px;
+    margin-bottom: 10px;
   }
 
   .time-info {
     font-size: 10px;
+  }
+
+  .volume-section {
+    margin-bottom: 10px;
   }
 }
