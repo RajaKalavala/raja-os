@@ -3,18 +3,44 @@
   "version": 2,
   "buildCommand": "npm run build",
   "outputDirectory": "dist/apps/shell",
-  "framework": "angular",
+  "framework": null,
   "installCommand": "npm install",
   "devCommand": "npx nx serve shell",
+  "cleanUrls": true,
+  "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/:path*",
+      "source": "/dashboard",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/experience",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/aboutme",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/projects",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/projects/:slug",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/blogs",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/blogs/:slug",
       "destination": "/index.html"
     }
   ],
   "headers": [
     {
-      "source": "/:path*",
+      "source": "/(.*)",
       "headers": [
         {
           "key": "X-Content-Type-Options",
