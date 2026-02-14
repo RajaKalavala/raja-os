@@ -26,8 +26,10 @@ export class IdentityCardComponent implements OnInit, OnDestroy {
 
   taglines = [
     'I build things that make people smile.',
-    'Turning coffee into code since 2016.',
+    'Turning bugs into feature since 2016.',
+    'Writing code future-me won’t hate.',
     'Architecture enthusiast & problem solver.',
+    'Coding with care (and a lot of console logs).',
     'Making complex systems simple.',
   ];
 
@@ -117,14 +119,21 @@ export class IdentityCardComponent implements OnInit, OnDestroy {
   private updateMood(): void {
     const hour = new Date().getHours();
 
-    if (hour >= 6 && hour < 10) {
-      this.currentMood.set({ emoji: '☕', label: 'Coffee Mode' });
-    } else if (hour >= 10 && hour < 18) {
+    if (hour >= 5 && hour < 7) {
+      // 5am - 7am: Personal time, exercise, meditation
+      this.currentMood.set({ emoji: '🧘', label: 'Morning Ritual' });
+    } else if (hour >= 7 && hour < 9) {
+      // 7am - 9am: Planning the day
+      this.currentMood.set({ emoji: '📋', label: 'Planning Mode' });
+    } else if (hour >= 9 && hour < 18) {
+      // 9am - 6pm: Deep focus work time
       this.currentMood.set({ emoji: '🚀', label: 'Deep Focus' });
-    } else if (hour >= 18 && hour < 21) {
-      this.currentMood.set({ emoji: '🌙', label: 'Wind Down' });
+    } else if (hour >= 18 && hour < 22) {
+      // 6pm - 10pm: Building interesting things
+      this.currentMood.set({ emoji: '💡', label: 'Building Cool Stuff' });
     } else {
-      this.currentMood.set({ emoji: '🎮', label: 'Recharge' });
+      // 10pm - 5am: Sleep time
+      this.currentMood.set({ emoji: '😴', label: 'Recharging' });
     }
   }
 

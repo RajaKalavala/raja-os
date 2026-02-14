@@ -15,12 +15,25 @@ interface FunFact {
 })
 export class FunFactsComponent implements OnInit, OnDestroy {
   facts: FunFact[] = [
-    { emoji: '🤖', text: 'Talks to rubber ducks professionally' },
-    { emoji: '☕', text: 'Mass produced 500+ cups of coffee this year' },
+    {
+      emoji: '🧩',
+      text: 'Enjoys breaking things just to understand how they work',
+    },
+    {
+      emoji: '📚',
+      text: 'Bookmarks docs and then Googles the same thing again',
+    },
+    { emoji: '🧹', text: 'Refactors code to feel emotionally organized' },
+    { emoji: '🧪', text: 'Trusts tests… but still runs the app manually' },
     { emoji: '🎮', text: 'Debugs code in dreams sometimes' },
     { emoji: '🚀', text: 'Deployed to prod on a Friday and survived' },
     { emoji: '🌙', text: 'Best ideas come at 2 AM' },
     { emoji: '🎧', text: 'Codes faster with lo-fi beats' },
+    {
+      emoji: '📺',
+      text: 'Learns half of coding tips from random tech YouTube videos',
+    },
+    { emoji: '🧘', text: 'Finds inner peace after a green CI build' },
   ];
 
   currentIndex = signal(0);

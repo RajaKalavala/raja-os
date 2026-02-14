@@ -30,12 +30,14 @@
   align-items: center;
   justify-content: center;
   border: 2px solid #22c55e;
+  overflow: hidden;
 }
 
-.avatar-letter {
-  font-size: 24px;
-  font-weight: 700;
-  color: #ffffff;
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
 }
 
 .status-indicator {
@@ -322,10 +324,6 @@
     width: 48px;
     height: 48px;
     border-radius: 10px;
-  }
-
-  .avatar-letter {
-    font-size: 20px;
   }
 
   .name {
