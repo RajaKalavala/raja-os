@@ -33,6 +33,9 @@
       ],
       "aboutme/Routes": [
         "apps/mfe/aboutme/src/app/remote-entry/entry.routes.ts"
+      ],
+      "projects/Routes": [
+        "apps/mfe/projects/src/app/remote-entry/entry.routes.ts"
       ]
     }
   },

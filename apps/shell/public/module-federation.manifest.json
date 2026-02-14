@@ -1,5 +1,6 @@
 {
   "dashboard": "http://localhost:4202/mf-manifest.json",
   "experience": "http://localhost:4203/mf-manifest.json",
-  "aboutme": "http://localhost:4204/mf-manifest.json"
+  "aboutme": "http://localhost:4204/mf-manifest.json",
+  "projects": "http://localhost:4205/mf-manifest.json"
 }

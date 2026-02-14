@@ -28,4 +28,11 @@ export const appRoutes: Route[] = [
         (m) => m!.remoteRoutes,
       ),
   },
+  {
+    path: 'projects',
+    loadChildren: () =>
+      loadRemote<typeof import('projects/Routes')>('projects/Routes').then(
+        (m) => m!.remoteRoutes,
+      ),
+  },
 ];

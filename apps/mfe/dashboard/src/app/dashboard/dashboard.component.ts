@@ -8,7 +8,6 @@ import { CurrentlyBuildingComponent } from '../components/currently-building/cur
 import { SkillTreeComponent } from '../components/skill-tree/skill-tree.component';
 import { GithubHeatmapComponent } from '../components/github-heatmap/github-heatmap.component';
 import { DeveloperJourneyComponent } from '../components/developer-journey/developer-journey.component';
-import { FunFactsComponent } from '../components/fun-facts/fun-facts.component';
 import { LatestPostComponent } from '../components/latest-post/latest-post.component';
 import { VisitorCounterComponent } from '../components/visitor-counter/visitor-counter.component';
 import { QuickLaunchComponent } from '../components/quick-launch/quick-launch.component';
@@ -33,7 +32,6 @@ interface MetricCard {
     SkillTreeComponent,
     GithubHeatmapComponent,
     DeveloperJourneyComponent,
-    FunFactsComponent,
     LatestPostComponent,
     VisitorCounterComponent,
     QuickLaunchComponent,
