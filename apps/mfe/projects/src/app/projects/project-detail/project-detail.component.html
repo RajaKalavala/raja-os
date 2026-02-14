@@ -1,0 +1,262 @@
+@if (project()) {
+  <div class="project-detail-container">
+    <!-- Back Button -->
+    <button class="back-btn" (click)="goBack()">
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="m15 18-6-6 6-6"></path>
+      </svg>
+      <span>All Projects</span>
+    </button>
+
+    <!-- Hero Section -->
+    <div class="hero-section" [style.background]="project()!.thumbnail.gradient">
+      <span class="hero-initials">{{ project()!.thumbnail.initials }}</span>
+    </div>
+
+    <!-- Project Header -->
+    <div class="project-header">
+      <h1 class="project-title">{{ project()!.title }}</h1>
+
+      <div class="meta-row">
+        <span class="meta-tag category">{{ project()!.category }}</span>
+        <span class="meta-tag date">{{ project()!.date }}</span>
+        <span class="meta-tag team">{{ project()!.teamSize }}</span>
+      </div>
+
+      <div class="tech-stack-large">
+        @for (tech of project()!.techStack; track tech) {
+          <span class="tech-pill-large">{{ tech }}</span>
+        }
+      </div>
+
+      <div class="cta-buttons">
+        @if (project()!.links.demo) {
+          <a
+            [href]="project()!.links.demo"
+            target="_blank"
+            class="btn-primary"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+              ></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+            View Live Demo
+          </a>
+        }
+        @if (project()!.links.github) {
+          <a
+            [href]="project()!.links.github"
+            target="_blank"
+            class="btn-secondary"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+              ></path>
+            </svg>
+            View Source
+          </a>
+        }
+      </div>
+    </div>
+
+    <!-- Content Sections -->
+    <div class="content-sections">
+      <!-- Overview -->
+      <section class="content-section">
+        <h2 class="section-title">Overview</h2>
+        @for (paragraph of project()!.overview; track paragraph) {
+          <p class="section-text">{{ paragraph }}</p>
+        }
+      </section>
+
+      <!-- The Problem -->
+      <section class="content-section">
+        <h2 class="section-title">The Problem</h2>
+        <p class="section-text">{{ project()!.problem }}</p>
+      </section>
+
+      <!-- My Role -->
+      <section class="content-section">
+        <h2 class="section-title">My Role</h2>
+        <p class="section-text">{{ project()!.role }}</p>
+      </section>
+
+      <!-- Key Features -->
+      <section class="content-section">
+        <h2 class="section-title">Key Features</h2>
+        <div class="features-grid">
+          @for (feature of project()!.features; track feature.title) {
+            <div class="feature-card">
+              <h3 class="feature-title">{{ feature.title }}</h3>
+              <p class="feature-description">{{ feature.description }}</p>
+            </div>
+          }
+        </div>
+      </section>
+
+      <!-- Technical Challenges -->
+      <section class="content-section">
+        <h2 class="section-title">Technical Challenges & Solutions</h2>
+        <div class="challenges-list">
+          @for (item of project()!.challenges; track item.challenge) {
+            <div class="challenge-item">
+              <div class="challenge-header">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"
+                  ></path>
+                  <path d="M12 8v4"></path>
+                  <path d="M12 16h.01"></path>
+                </svg>
+                <span class="challenge-label">Challenge</span>
+              </div>
+              <p class="challenge-text">{{ item.challenge }}</p>
+
+              <div class="solution-header">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                <span class="solution-label">Solution</span>
+              </div>
+              <p class="solution-text">{{ item.solution }}</p>
+            </div>
+          }
+        </div>
+      </section>
+
+      <!-- Results -->
+      <section class="content-section">
+        <h2 class="section-title">Results & Impact</h2>
+        <ul class="results-list">
+          @for (result of project()!.results; track result) {
+            <li class="result-item">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>{{ result }}</span>
+            </li>
+          }
+        </ul>
+      </section>
+    </div>
+
+    <!-- Related Projects -->
+    @if (relatedProjects().length > 0) {
+      <section class="related-section">
+        <h2 class="section-title">Related Projects</h2>
+        <div class="related-grid">
+          @for (related of relatedProjects(); track related.id) {
+            <div class="related-card" (click)="navigateToProject(related.slug)">
+              <div
+                class="related-thumbnail"
+                [style.background]="related.thumbnail.gradient"
+              >
+                <span class="related-initials">{{ related.thumbnail.initials }}</span>
+              </div>
+              <div class="related-content">
+                <h3 class="related-title">{{ related.title }}</h3>
+                <span class="related-category">{{ related.category }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+    }
+
+    <!-- Project Navigation -->
+    <nav class="project-nav">
+      @if (previousProject()) {
+        <button
+          class="nav-btn prev"
+          (click)="navigateToProject(previousProject()!.slug)"
+        >
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="m15 18-6-6 6-6"></path>
+          </svg>
+          <div class="nav-text">
+            <span class="nav-label">Previous</span>
+            <span class="nav-title">{{ previousProject()!.title }}</span>
+          </div>
+        </button>
+      } @else {
+        <div></div>
+      }
+
+      @if (nextProject()) {
+        <button
+          class="nav-btn next"
+          (click)="navigateToProject(nextProject()!.slug)"
+        >
+          <div class="nav-text">
+            <span class="nav-label">Next</span>
+            <span class="nav-title">{{ nextProject()!.title }}</span>
+          </div>
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="m9 18 6-6-6-6"></path>
+          </svg>
+        </button>
+      }
+    </nav>
+  </div>
+}

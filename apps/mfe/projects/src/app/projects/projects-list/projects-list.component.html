@@ -1,0 +1,174 @@
+<div class="projects-container">
+  <!-- Page Header -->
+  <header class="projects-header">
+    <h1 class="projects-title">Projects</h1>
+    <p class="projects-subtitle">Things I've built, broken, and shipped.</p>
+    <div class="stats-row">
+      <span class="stat">{{ totalProjects() }} projects</span>
+      <span class="stat-dot"></span>
+      <span class="stat">{{ openSourceCount() }} open source</span>
+      <span class="stat-dot"></span>
+      <span class="stat">{{ productionCount() }} production apps</span>
+    </div>
+  </header>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <div class="search-wrapper">
+      <svg
+        class="search-icon"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="m21 21-4.35-4.35"></path>
+      </svg>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search projects..."
+        [value]="searchQuery()"
+        (input)="onSearchInput($event)"
+      />
+    </div>
+
+    <div class="filter-chips">
+      @for (category of categories; track category) {
+        <button
+          class="filter-chip"
+          [class.active]="selectedCategory() === category"
+          (click)="selectCategory(category)"
+        >
+          {{ category }}
+        </button>
+      }
+    </div>
+
+    <p class="results-count">
+      Showing {{ filteredProjects().length }} of {{ totalProjects() }} projects
+    </p>
+  </div>
+
+  <!-- Projects Grid -->
+  <div class="projects-grid">
+    @for (project of filteredProjects(); track project.id) {
+      <article class="project-card" (click)="navigateToProject(project.slug)">
+        <!-- Thumbnail -->
+        <div class="card-thumbnail" [style.background]="project.thumbnail.gradient">
+          <span class="thumbnail-initials">{{ project.thumbnail.initials }}</span>
+          @if (project.isFeatured) {
+            <span class="featured-badge">Featured</span>
+          }
+        </div>
+
+        <!-- Content -->
+        <div class="card-content">
+          <h3 class="card-title">{{ project.title }}</h3>
+          <p class="card-description">{{ project.description }}</p>
+
+          <!-- Tech Stack -->
+          <div class="card-tech-stack">
+            @for (tech of getVisibleTechStack(project.techStack); track tech) {
+              <span class="tech-pill">{{ tech }}</span>
+            }
+            @if (getRemainingCount(project.techStack) > 0) {
+              <span class="tech-pill more">+{{ getRemainingCount(project.techStack) }} more</span>
+            }
+          </div>
+
+          <!-- Bottom Links -->
+          <div class="card-links">
+            <div class="link-icons">
+              @if (project.links.github) {
+                <a
+                  [href]="project.links.github"
+                  target="_blank"
+                  class="link-icon"
+                  (click)="$event.stopPropagation()"
+                  aria-label="View GitHub repository"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                    ></path>
+                  </svg>
+                </a>
+              }
+              @if (project.links.demo) {
+                <a
+                  [href]="project.links.demo"
+                  target="_blank"
+                  class="link-icon"
+                  (click)="$event.stopPropagation()"
+                  aria-label="View live demo"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+                    ></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                  </svg>
+                </a>
+              }
+            </div>
+            <span class="view-details">
+              View Details
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M5 12h14"></path>
+                <path d="m12 5 7 7-7 7"></path>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </article>
+    }
+  </div>
+
+  <!-- Empty State -->
+  @if (filteredProjects().length === 0) {
+    <div class="empty-state">
+      <svg
+        width="48"
+        height="48"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="m21 21-4.35-4.35"></path>
+      </svg>
+      <h3>No projects found</h3>
+      <p>Try adjusting your search or filter criteria</p>
+      <button class="reset-btn" (click)="searchQuery.set(''); selectedCategory.set('All')">
+        Reset Filters
+      </button>
+    </div>
+  }
+</div>
