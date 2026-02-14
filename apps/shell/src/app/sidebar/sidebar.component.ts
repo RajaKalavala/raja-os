@@ -25,15 +25,10 @@ export class SidebarComponent {
 
   menuItems: MenuItem[] = [
     { label: 'Dashboard', route: '/dashboard', icon: 'grid' },
-    { label: 'About Me', route: '/aboutme', icon: 'resume' },
+    { label: 'About Me', route: '/aboutme', icon: 'person' },
     { label: 'Projects', route: '/projects', icon: 'folder' },
     { label: 'Experience', route: '/experience', icon: 'history' },
     { label: 'Blogs', route: '/blogs', icon: 'book' },
-  ];
-
-  sidebarActions = [
-    { icon: 'github', url: 'https://github.com/rajakalavala' },
-    { icon: 'linkedin', url: 'https://linkedin.com/in/rajakalavala' },
   ];
 
   onNavItemClick() {
