@@ -15,20 +15,24 @@
     [class.visible]="storyVisible()"
   >
     <div class="story-content">
-      <div class="photo-placeholder">
+      <div class="photo-container">
         <div class="photo-frame">
-          <span class="photo-icon">📸</span>
-          <span class="photo-text">Photo Coming Soon</span>
+          <img
+            src="images/rajapic1.png"
+            alt="Raja Kalavala"
+            class="profile-photo"
+          />
         </div>
+        <div class="photo-decoration"></div>
       </div>
 
       <div class="story-text">
         <p class="story-paragraph">
-          My journey into software began in 2016 when I wrote my first
-          <code>console.log("Hello, World!")</code>. What started as curiosity
-          quickly became an obsession. I spent countless nights debugging code,
-          learning new frameworks, and building projects that nobody asked for —
-          but that taught me everything.
+          I fell in love with building software the moment I realized code could
+          turn ideas into reality. What started as tinkering with small scripts
+          quickly evolved into an obsession with crafting elegant solutions.
+          I spent countless nights debugging code, learning new frameworks, and
+          building projects that nobody asked for — but that taught me everything.
         </p>
 
         <p class="story-paragraph">
@@ -53,16 +57,19 @@
 
         <p class="story-paragraph">
           When I'm not architecting systems or reviewing PRs, you'll find me
-          gaming, exploring new coffee shops, or going down rabbit holes about
-          system design. I'm a firm believer that the best engineers are
-          perpetual students — there's always something new to learn.
+          traveling to new places, playing football or badminton with friends,
+          gaming, or exploring cozy coffee shops. I believe life is about
+          balance — the same discipline I bring to coding, I bring to staying
+          active and exploring the world. I'm a firm believer that the best
+          engineers are perpetual students — there's always something new to
+          learn, both in code and in life.
         </p>
       </div>
     </div>
   </section>
 
   <!-- Section 2: By the Numbers -->
-  <section
+  <!-- <section
     id="stats-section"
     class="stats-section"
     [class.visible]="statsVisible()"
@@ -71,12 +78,12 @@
     <div class="stats-grid">
       @for (stat of stats; track stat.label; let i = $index) {
         <div class="stat-card" [style.animation-delay]="i * 100 + 'ms'">
-          <span class="stat-value">{{ stat.currentValue }}{{ stat.suffix }}</span>
+          <span class="stat-value">{{ getStatValue(i) }}{{ stat.suffix }}</span>
           <span class="stat-label">{{ stat.label }}</span>
         </div>
       }
     </div>
-  </section>
+  </section> -->
 
   <!-- Section 3: What I Believe -->
   <section

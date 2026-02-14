@@ -11,7 +11,6 @@ interface Stat {
   value: number;
   suffix: string;
   label: string;
-  currentValue: number;
 }
 
 interface PhilosophyCard {
@@ -50,14 +49,16 @@ export class AboutMeComponent implements OnInit, AfterViewInit, OnDestroy {
   setupVisible = signal(false);
   connectVisible = signal(false);
 
-  // Stats data
+  // Stats data with signal for animated values
   stats: Stat[] = [
-    { value: 9, suffix: '+', label: 'Years Experience', currentValue: 0 },
-    { value: 4, suffix: '', label: 'Companies', currentValue: 0 },
-    { value: 15, suffix: '+', label: 'Projects Delivered', currentValue: 0 },
-    { value: 284, suffix: 'k+', label: 'Lines of Code', currentValue: 0 },
-    { value: 20, suffix: '+', label: 'People Mentored', currentValue: 0 },
+    { value: 9, suffix: '+', label: 'Years Experience' },
+    { value: 3, suffix: '', label: 'Companies' },
+    { value: 5, suffix: '+', label: 'Projects Delivered' },
+    { value: 284, suffix: 'k+', label: 'Lines of Code' },
   ];
+
+  // Signal to hold current animated values
+  statValues = signal<number[]>([0, 0, 0, 0]);
 
   // Philosophy cards
   philosophyCards: PhilosophyCard[] = [
@@ -89,11 +90,11 @@ export class AboutMeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Interests
   interests: Interest[] = [
+    { icon: '✈️', label: 'Traveling' },
+    { icon: '⚽', label: 'Football' },
+    { icon: '🏸', label: 'Badminton' },
     { icon: '🎮', label: 'Gaming' },
-    { icon: '🎵', label: 'Music' },
-    { icon: '💪', label: 'Fitness' },
     { icon: '📚', label: 'Reading' },
-    { icon: '✈️', label: 'Travel' },
     { icon: '☕', label: 'Coffee' },
   ];
 
@@ -111,15 +112,16 @@ export class AboutMeComponent implements OnInit, AfterViewInit, OnDestroy {
     "system design",
     "mentoring"
   ],
-  "dislikes": [
-    "spaghetti code",
-    "meetings that could be emails",
-    "premature optimization"
+  "hobbies": [
+    "traveling",
+    "football",
+    "badminton",
+    "gaming"
   ],
   "motto": "Ship it. Learn. Iterate.",
   "currently": {
     "building": "Raja OS",
-    "learning": "Rust",
+    "learning": "GenAI & LLMs",
     "reading": "System Design Interview"
   }
 }`;
@@ -146,8 +148,7 @@ export class AboutMeComponent implements OnInit, AfterViewInit, OnDestroy {
   ];
 
   ngOnInit(): void {
-    // Initialize stats current values
-    this.stats = this.stats.map((stat) => ({ ...stat, currentValue: 0 }));
+    // Stats are initialized with signal default values
   }
 
   ngAfterViewInit(): void {
@@ -242,10 +243,11 @@ export class AboutMeComponent implements OnInit, AfterViewInit, OnDestroy {
       const progress = Math.min(elapsed / duration, 1);
       const easeOut = 1 - Math.pow(1 - progress, 3);
 
-      this.stats = this.stats.map((stat) => ({
-        ...stat,
-        currentValue: Math.floor(stat.value * easeOut),
-      }));
+      // Update signal with new animated values
+      const newValues = this.stats.map((stat) =>
+        Math.floor(stat.value * easeOut),
+      );
+      this.statValues.set(newValues);
 
       if (progress < 1) {
         const frame = requestAnimationFrame(animate);
@@ -255,5 +257,10 @@ export class AboutMeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const frame = requestAnimationFrame(animate);
     this.countAnimationFrames.push(frame);
+  }
+
+  // Helper method to get current value for a stat by index
+  getStatValue(index: number): number {
+    return this.statValues()[index];
   }
 }
