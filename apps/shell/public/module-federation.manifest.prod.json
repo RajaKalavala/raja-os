@@ -2,5 +2,6 @@
   "dashboard": "/dashboard/mf-manifest.json",
   "experience": "/experience/mf-manifest.json",
   "aboutme": "/aboutme/mf-manifest.json",
-  "projects": "/projects/mf-manifest.json"
+  "projects": "/projects/mf-manifest.json",
+  "blogs": "/blogs/mf-manifest.json"
 }
