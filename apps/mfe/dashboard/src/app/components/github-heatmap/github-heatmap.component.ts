@@ -118,11 +118,17 @@ export class GithubHeatmapComponent implements OnInit, OnDestroy {
     // The API returns totals per year, so sum them all for the displayed period
     let totalContribs = 0;
     if (data.total && typeof data.total === 'object') {
-      totalContribs = Object.values(data.total).reduce((sum, count) => sum + count, 0);
+      totalContribs = Object.values(data.total).reduce(
+        (sum, count) => sum + count,
+        0,
+      );
     }
     // Fallback: calculate from contributions array if total is empty
     if (totalContribs === 0 && data.contributions) {
-      totalContribs = data.contributions.reduce((sum, day) => sum + day.count, 0);
+      totalContribs = data.contributions.reduce(
+        (sum, day) => sum + day.count,
+        0,
+      );
     }
     this.animateValue(this.totalContributions, totalContribs);
 
@@ -183,7 +189,7 @@ export class GithubHeatmapComponent implements OnInit, OnDestroy {
   private buildHeatmapGrid(
     contributions: ContributionData['contributions'],
   ): void {
-    const weeksCount = 32; // 1 year
+    const weeksCount = 42; // 1 year
     const today = new Date();
 
     // Create a map for quick lookup

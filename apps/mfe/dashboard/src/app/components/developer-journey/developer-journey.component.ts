@@ -29,18 +29,18 @@ export class DeveloperJourneyComponent {
       color: '#10b981',
     },
     {
-      year: 2018,
-      title: 'Senior Software Engineer',
-      description:
-        'Established as Senior Full-stack developer at Happiest Minds',
-      icon: '🎯',
-      color: '#3b82f6',
-    },
-    {
       year: 2019,
       title: 'Design & Development Engineer',
       description:
         'Transitioned to Design & Development at Siemens Healthineers',
+      icon: '🚀',
+      color: '#8b5cf6',
+    },
+    {
+      year: 2021,
+      title: 'Senior Design & Development Engineer',
+      description:
+        'Transitioned to Senior Design & Development at Siemens Healthineers',
       icon: '🚀',
       color: '#8b5cf6',
     },

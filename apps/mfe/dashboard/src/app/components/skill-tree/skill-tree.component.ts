@@ -16,7 +16,7 @@ interface Skill {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './skill-tree.component.html',
-  styleUrls: ['./skill-tree.component.scss']
+  styleUrls: ['./skill-tree.component.scss'],
 })
 export class SkillTreeComponent {
   expandedSkill = signal<string | null>(null);
@@ -29,7 +29,14 @@ export class SkillTreeComponent {
       maxXP: 10000,
       icon: '🎨',
       color: '#22c55e',
-      technologies: ['Angular', 'React', 'TypeScript', 'Tailwind', 'RxJS']
+      technologies: [
+        'Angular',
+        'React',
+        'TypeScript',
+        'Tailwind',
+        'RxJS',
+        'MocroFrontend',
+      ],
     },
     {
       name: 'Backend',
@@ -38,26 +45,26 @@ export class SkillTreeComponent {
       maxXP: 10000,
       icon: '⚙️',
       color: '#8b5cf6',
-      technologies: ['Node.js', 'Python', 'Java', 'Spring Boot', 'GraphQL']
+      technologies: ['Node.js', 'Python', 'C#', '.Net', 'MongoDB'],
     },
     {
-      name: 'Database',
+      name: 'AI/ML',
       level: 82,
       currentXP: 6150,
       maxXP: 10000,
-      icon: '🗄️',
+      icon: '🤖',
       color: '#10b981',
-      technologies: ['PostgreSQL', 'MongoDB', 'Redis', 'Elasticsearch']
+      technologies: ['Langchain', 'Huggingface', 'RAG', 'GenAI', 'NLP'],
     },
     {
-      name: 'DevOps',
+      name: 'DevOps/MLOps',
       level: 75,
       currentXP: 4890,
       maxXP: 10000,
       icon: '🚀',
       color: '#f59e0b',
-      technologies: ['Docker', 'Kubernetes', 'AWS', 'CI/CD', 'Terraform']
-    }
+      technologies: ['Docker', 'Jenkins', 'Azure', 'CI/CD', 'Github Actions'],
+    },
   ];
 
   toggleSkill(skillName: string): void {
