@@ -1,0 +1,235 @@
+@if (post()) {
+  <div class="blog-detail-container">
+    <!-- Table of Contents - Desktop Sidebar -->
+    @if (tableOfContents().length > 0) {
+      <aside class="toc-sidebar">
+        <h4 class="toc-title">On this page</h4>
+        <nav class="toc-nav">
+          @for (item of tableOfContents(); track item.id) {
+            <button
+              class="toc-item"
+              [class.active]="activeHeadingId() === item.id"
+              [class.level-3]="item.level === 3"
+              (click)="scrollToHeading(item.id)"
+            >
+              {{ item.text }}
+            </button>
+          }
+        </nav>
+      </aside>
+    }
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Back Button -->
+      <button class="back-btn" (click)="goBack()">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="m15 18-6-6 6-6"></path>
+        </svg>
+        <span>All Posts</span>
+      </button>
+
+      <!-- Post Header -->
+      <header class="post-header">
+        <h1 class="post-title">{{ post()!.title }}</h1>
+        <div class="post-meta">
+          <span class="post-date">{{ formatDate(post()!.date) }}</span>
+          <span class="meta-dot"></span>
+          <span class="reading-time">{{ post()!.readingTime }}</span>
+          <div class="post-tags">
+            @for (tag of post()!.tags; track tag) {
+              <span class="tag-pill">{{ tag }}</span>
+            }
+          </div>
+        </div>
+      </header>
+
+      <!-- Article Body -->
+      <article
+        class="article-body"
+        #articleContent
+        [innerHTML]="parseMarkdown(post()!.content)"
+      ></article>
+
+      <!-- Post Footer -->
+      <footer class="post-footer">
+        <hr class="footer-divider" />
+
+        <!-- Share Buttons -->
+        <div class="share-section">
+          <span class="share-label">Share this article</span>
+          <div class="share-buttons">
+            <button
+              class="share-btn"
+              [class.copied]="linkCopied()"
+              (click)="copyLink()"
+            >
+              @if (linkCopied()) {
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span>Copied!</span>
+              } @else {
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+                  ></path>
+                  <path
+                    d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+                  ></path>
+                </svg>
+                <span>Copy Link</span>
+              }
+            </button>
+            <button class="share-btn" (click)="shareOnTwitter()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+                />
+              </svg>
+              <span>Twitter</span>
+            </button>
+            <button class="share-btn" (click)="shareOnLinkedIn()">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
+                ></path>
+                <rect x="2" y="9" width="4" height="12"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+              </svg>
+              <span>LinkedIn</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Tags -->
+        <div class="footer-tags">
+          @for (tag of post()!.tags; track tag) {
+            <span class="footer-tag-pill">{{ tag }}</span>
+          }
+        </div>
+
+        <!-- Related Posts -->
+        @if (relatedPosts().length > 0) {
+          <section class="related-section">
+            <h3 class="related-title">Related Posts</h3>
+            <div class="related-grid">
+              @for (related of relatedPosts(); track related.id) {
+                <article
+                  class="related-card"
+                  (click)="navigateToPost(related.slug)"
+                >
+                  <h4 class="related-card-title">{{ related.title }}</h4>
+                  <div class="related-card-meta">
+                    <span>{{ related.readingTime }}</span>
+                    <span class="related-tags">
+                      @for (tag of related.tags.slice(0, 2); track tag) {
+                        <span class="mini-tag">{{ tag }}</span>
+                      }
+                    </span>
+                  </div>
+                </article>
+              }
+            </div>
+          </section>
+        }
+
+        <!-- Post Navigation -->
+        <nav class="post-nav">
+          @if (previousPost()) {
+            <button
+              class="nav-btn prev"
+              (click)="navigateToPost(previousPost()!.slug)"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="m15 18-6-6 6-6"></path>
+              </svg>
+              <div class="nav-text">
+                <span class="nav-label">Previous</span>
+                <span class="nav-title">{{ previousPost()!.title }}</span>
+              </div>
+            </button>
+          } @else {
+            <div></div>
+          }
+
+          @if (nextPost()) {
+            <button
+              class="nav-btn next"
+              (click)="navigateToPost(nextPost()!.slug)"
+            >
+              <div class="nav-text">
+                <span class="nav-label">Next</span>
+                <span class="nav-title">{{ nextPost()!.title }}</span>
+              </div>
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="m9 18 6-6-6-6"></path>
+              </svg>
+            </button>
+          }
+        </nav>
+
+        <!-- CTA -->
+        <div class="cta-section">
+          <p class="cta-text">Enjoyed this article? Let's connect.</p>
+          <a routerLink="/contact" class="cta-link">
+            Get in touch
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M5 12h14"></path>
+              <path d="m12 5 7 7-7 7"></path>
+            </svg>
+          </a>
+        </div>
+      </footer>
+    </main>
+  </div>
+}
