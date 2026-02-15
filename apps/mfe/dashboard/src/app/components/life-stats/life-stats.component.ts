@@ -41,7 +41,7 @@ export class LifeStatsComponent implements OnInit {
       icon: 'brain',
       value: 14,
       displayValue: signal('0'),
-      label: 'Concepts Learned This Month',
+      label: 'New Concepts Learned This Month',
     },
   ];
 

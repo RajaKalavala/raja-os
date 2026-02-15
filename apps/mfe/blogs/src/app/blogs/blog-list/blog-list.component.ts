@@ -1,6 +1,5 @@
 import { Component, signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
-import { DatePipe } from '@angular/common';
 import { BlogPost, BlogTag } from '../models/blog.model';
 import { BLOGS_DATA } from '../data/blogs.data';
 
@@ -9,7 +8,7 @@ import { BLOGS_DATA } from '../data/blogs.data';
   templateUrl: './blog-list.component.html',
   styleUrl: './blog-list.component.scss',
   standalone: true,
-  imports: [DatePipe],
+  imports: [],
 })
 export class BlogListComponent {
   searchQuery = signal<string>('');
@@ -43,7 +42,7 @@ export class BlogListComponent {
         (p) =>
           p.title.toLowerCase().includes(query) ||
           p.excerpt.toLowerCase().includes(query) ||
-          p.tags.some((t) => t.toLowerCase().includes(query))
+          p.tags.some((t) => t.toLowerCase().includes(query)),
       );
     }
 

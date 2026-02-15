@@ -71,8 +71,8 @@ export class ExperienceComponent implements OnInit, AfterViewInit {
       duration: '3+ years',
       isCurrent: true,
       impacts: [
-        'Led migration to microfrontend architecture using Module Federation',
-        'Architected scalable enterprise solutions serving millions of users',
+        'Led the GUI migration project for Dell BMC UI application',
+        'Worked on AI-driven projects including chatbot development, log analysis, and data analysis solutions.',
         'Mentored engineers and drove best practices across teams',
       ],
       techStack: [
@@ -94,7 +94,7 @@ export class ExperienceComponent implements OnInit, AfterViewInit {
       duration: '3 years',
       isCurrent: false,
       impacts: [
-        'Developed healthcare platform solutions for medical imaging',
+        'Developed healthcare platform solutions for CT Intervention',
         'Implemented CI/CD pipelines improving deployment efficiency',
         'Collaborated with cross-functional teams on product development',
       ],
@@ -143,7 +143,7 @@ export class ExperienceComponent implements OnInit, AfterViewInit {
       field: 'Electronics and Communication Engineering',
       year: '2012 - 2016',
       achievements: [
-        'Odisha, India',
+        'Excellent academic performance',
         'Strong foundation in engineering principles',
       ],
     },
@@ -253,6 +253,16 @@ export class ExperienceComponent implements OnInit, AfterViewInit {
   isNewSkill(skill: string): boolean {
     const currentSkillData = this.currentSkills();
     return currentSkillData.newSkills?.includes(skill) || false;
+  }
+
+  downloadResume(): void {
+    const link = document.createElement('a');
+    link.href = 'images/Raja-Resume.pdf';
+    link.download = 'Raja-Resume.pdf';
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 
   private setupScrollAnimations(): void {

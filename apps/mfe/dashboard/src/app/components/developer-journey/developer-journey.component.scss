@@ -167,6 +167,14 @@
     margin-bottom: 16px;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    gap: 8px;
+
+    // Hide scrollbar but allow scrolling
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
   .timeline-line {
@@ -175,13 +183,15 @@
   }
 
   .milestone {
-    min-width: 60px;
+    min-width: 50px;
+    flex-shrink: 0;
   }
 
   .milestone-icon {
     width: 36px;
     height: 36px;
     font-size: 18px;
+    border-width: 2px;
   }
 
   .milestone-year {
@@ -199,5 +209,32 @@
 
   .milestone-description {
     font-size: 12px;
+  }
+}
+
+// Extra small mobile
+@media (max-width: 480px) {
+  .timeline {
+    padding: 12px 0;
+  }
+
+  .milestone {
+    min-width: 45px;
+  }
+
+  .milestone-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+
+  .milestone-year {
+    font-size: 9px;
+  }
+
+  .timeline-progress::after {
+    width: 8px;
+    height: 8px;
+    right: -4px;
   }
 }

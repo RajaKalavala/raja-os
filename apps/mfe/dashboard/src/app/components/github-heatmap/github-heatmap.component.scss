@@ -295,3 +295,78 @@
     font-size: 11px;
   }
 }
+
+// Extra small mobile
+@media (max-width: 480px) {
+  .github-heatmap {
+    padding: 12px;
+  }
+
+  .heatmap-header {
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .heatmap-title {
+    font-size: 10px;
+  }
+
+  .contribution-count {
+    font-size: 13px;
+  }
+
+  .contribution-label {
+    font-size: 10px;
+  }
+
+  .heatmap-grid {
+    gap: 1px;
+    padding: 2px 0;
+  }
+
+  .week-column {
+    gap: 1px;
+  }
+
+  .day-cell {
+    width: 6px;
+    height: 6px;
+  }
+
+  .skeleton-cell {
+    width: 6px;
+    height: 6px;
+  }
+
+  .heatmap-legend {
+    margin-bottom: 8px;
+    gap: 4px;
+  }
+
+  .legend-label {
+    font-size: 9px;
+  }
+
+  .legend-cells {
+    gap: 2px;
+  }
+
+  .legend-cell {
+    width: 6px;
+    height: 6px;
+  }
+
+  .heatmap-stats {
+    gap: 6px;
+    padding-top: 8px;
+  }
+
+  .stat-item {
+    font-size: 10px;
+    gap: 4px;
+  }
+
+  .stat-icon {
+    font-size: 12px;
+  }
+}

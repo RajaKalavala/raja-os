@@ -5,7 +5,7 @@
     <p class="experience-subtitle">
       From first commit to Principal Architect — and everything in between
     </p>
-    <div class="stats-bar">
+    <!-- <div class="stats-bar">
       <div class="stat-item">
         <span class="stat-value">{{ totalYears() }}</span>
         <span class="stat-label">years</span>
@@ -20,7 +20,7 @@
         <span class="stat-value">{{ totalProjects() }}+</span>
         <span class="stat-label">projects</span>
       </div>
-    </div>
+    </div> -->
   </header>
 
   <!-- Main Timeline Section -->
@@ -72,8 +72,9 @@
                   <line x1="3" y1="10" x2="21" y2="10"></line>
                 </svg>
                 <span
-                  >{{ role.startDate }} —
-                  {{ role.endDate || 'Present' }} ({{ role.duration }})</span
+                  >{{ role.startDate }} — {{ role.endDate || 'Present' }} ({{
+                    role.duration
+                  }})</span
                 >
               </div>
               <div class="meta-item">
@@ -85,7 +86,9 @@
                   stroke="currentColor"
                   stroke-width="2"
                 >
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <path
+                    d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"
+                  ></path>
                   <circle cx="12" cy="10" r="3"></circle>
                 </svg>
                 <span>{{ role.location }}</span>
@@ -145,17 +148,13 @@
               stroke="currentColor"
               stroke-width="2"
             >
-              <path
-                d="M22 10v6M2 10l10-5 10 5-10 5z"
-              ></path>
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
               <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
             </svg>
           </div>
           <div class="edu-content">
             <h3 class="edu-institution">{{ edu.institution }}</h3>
-            <p class="edu-degree">
-              {{ edu.degree }} in {{ edu.field }}
-            </p>
+            <p class="edu-degree">{{ edu.degree }} in {{ edu.field }}</p>
             <span class="edu-year">{{ edu.year }}</span>
             <ul class="edu-achievements">
               @for (achievement of edu.achievements; track achievement) {
@@ -203,7 +202,7 @@
 
   <!-- Bottom CTA -->
   <section class="cta-section">
-    <button class="download-resume-btn">
+    <button class="download-resume-btn" (click)="downloadResume()">
       <svg
         width="20"
         height="20"

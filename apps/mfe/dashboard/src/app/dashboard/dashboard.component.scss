@@ -267,6 +267,20 @@
   }
 }
 
+@media (max-width: 768px) {
+  .interactive-grid {
+    gap: 16px;
+  }
+
+  .interactive-col-left {
+    min-height: auto;
+  }
+
+  .interactive-col-right {
+    gap: 16px;
+  }
+}
+
 // Quick Widgets Section
 .quick-widgets-section {
   display: grid;
@@ -839,5 +853,58 @@
 
   .donut-percentage {
     font-size: 28px;
+  }
+}
+
+// Extra small mobile (480px and below)
+@media (max-width: 480px) {
+  .dashboard-container {
+    padding: 12px;
+  }
+
+  .dashboard-title {
+    font-size: 20px;
+  }
+
+  .dashboard-subtitle {
+    font-size: 13px;
+  }
+
+  .hero-widgets-section {
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .hero-col-right {
+    gap: 12px;
+  }
+
+  .hero-right-bottom {
+    gap: 12px;
+  }
+
+  .interactive-grid {
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .interactive-col-right {
+    gap: 12px;
+  }
+
+  .quick-widgets-section {
+    gap: 12px;
+
+    > * {
+      min-height: 140px;
+    }
+  }
+
+  .widget-card {
+    padding: 12px;
+  }
+
+  .widget-header {
+    margin-bottom: 12px;
   }
 }
