@@ -29,7 +29,7 @@
 
         <!-- Subtitle -->
         <p class="hero-subtitle" [class.visible]="heroVisible()">
-          Principal Software Architect
+          A Personal Operating System
         </p>
 
         <!-- Decorative Line -->
@@ -65,7 +65,10 @@
         @for (item of infoItems; track item.label) {
           <div class="info-item">
             <div class="info-label">{{ item.label }}</div>
-            <div class="info-value" [class.operational]="item.value.includes('●')">
+            <div
+              class="info-value"
+              [class.operational]="item.value.includes('●')"
+            >
               {{ item.value }}
             </div>
           </div>
@@ -96,7 +99,8 @@
           @if (bootPhase() >= 1) {
             <div class="progress-container">
               <div class="progress-line">
-                Loading skills database: [{{ getProgressBar() }}] {{ bootProgress() }}%
+                Loading skills database: [{{ getProgressBar() }}]
+                {{ bootProgress() }}%
               </div>
               @if (bootProgress() >= 100) {
                 <div class="ready-message">
@@ -121,11 +125,8 @@
 
       <!-- Skip Button -->
       @if (bootPhase() < 3) {
-        <button class="skip-button" (click)="skipBoot()">
-          Skip ▸
-        </button>
+        <button class="skip-button" (click)="skipBoot()">Skip ▸</button>
       }
     </div>
   }
-
 </div>
