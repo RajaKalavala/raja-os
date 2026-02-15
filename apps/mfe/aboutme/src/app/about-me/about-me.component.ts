@@ -95,11 +95,10 @@ export class AboutMeComponent implements OnInit, AfterViewInit, OnDestroy {
     { icon: '🏸', label: 'Badminton' },
     { icon: '🎮', label: 'Gaming' },
     { icon: '📚', label: 'Reading' },
-    { icon: '☕', label: 'Coffee' },
   ];
 
-  currentlyReading = 'System Design Interview by Alex Xu';
-  currentlyLearning = 'Rust & WebAssembly';
+  currentlyReading = 'Think Like A Monk By Jay Shetty';
+  currentlyLearning = 'Microfrontend, GenAI & LLMs';
 
   // About JSON for easter egg
   aboutJson = `{
@@ -122,17 +121,17 @@ export class AboutMeComponent implements OnInit, AfterViewInit, OnDestroy {
   "currently": {
     "building": "Raja OS",
     "learning": "GenAI & LLMs",
-    "reading": "System Design Interview"
+    "reading": "System Design"
   }
 }`;
 
   // Setup items
   setupItems: SetupItem[] = [
-    { category: 'Editor', name: 'VS Code + One Dark Pro', icon: '💻' },
+    { category: 'Editor', name: 'VS Code + Claude Code', icon: '💻' },
     { category: 'Terminal', name: 'iTerm2 + Oh My Zsh', icon: '⌨️' },
-    { category: 'Browser', name: 'Arc / Chrome', icon: '🌐' },
-    { category: 'OS', name: 'macOS Sonoma', icon: '🍎' },
-    { category: 'Notes', name: 'Notion + Obsidian', icon: '📝' },
+    { category: 'Browser', name: 'Chrome', icon: '🌐' },
+    { category: 'OS', name: 'macOS', icon: '🍎' },
+    { category: 'Notes', name: 'Notion', icon: '📝' },
     { category: 'Design', name: 'Figma', icon: '🎨' },
   ];
 
