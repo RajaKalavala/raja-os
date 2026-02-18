@@ -32,11 +32,17 @@ npx nx g @nx/angular:host apps/shell --prefix=app --dynamic
 ### Step 4: Add MFE Apps
 
 ```bash
-npx nx g @nx/angular:remote apps/mfe/dashboard --prefix=raja
+npx nx g @nx/angular:remote apps/mfe/dashboard --host=shell --prefix=raja
 ```
 
 ### Step 5: Add Shared Libraries
 
 ```bash
 npx nx g @nx/angular:lib libs/design-system
+```
+
+### Step 6: Run the Application
+
+```bash
+npx nx serve shell
 ```
