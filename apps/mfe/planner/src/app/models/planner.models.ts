@@ -95,6 +95,46 @@ export const PRIORITY_CONFIG: Record<
   low: { label: 'Low', color: '#22c55e', bgColor: 'rgba(34, 197, 94, 0.1)' },
 };
 
+// ─── AI Brainstorm Types ─────────────────────────────────────
+
+export interface AiPlanResponse {
+  type: 'questions' | 'plan';
+  message: string;
+  questions?: string[];
+  mission?: {
+    title: string;
+    description: string;
+    category: Category;
+    priority: Priority;
+  };
+  milestones?: {
+    title: string;
+    description: string;
+    tasks: {
+      title: string;
+      description: string;
+      priority: Priority;
+      category: Category;
+    }[];
+  }[];
+}
+
+export interface BrainstormMessage {
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: string;
+  plan?: AiPlanResponse;
+}
+
+export const BRAINSTORM_EXAMPLES = [
+  'I want to build a personal fitness tracker web app',
+  'Plan my AWS Solutions Architect certification preparation',
+  'Organize a complete home renovation for my kitchen',
+  'Create a monthly budget and savings plan',
+  'Launch my side project SaaS product',
+  'Learn React Native and build a mobile app',
+];
+
 export const TASK_STATUS_CONFIG: Record<
   TaskStatus,
   { label: string; color: string }

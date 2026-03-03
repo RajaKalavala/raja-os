@@ -2,6 +2,7 @@ import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PlannerService } from '../services/planner.service';
+import { AiService } from '../services/ai.service';
 import {
   Category,
   Priority,
@@ -9,9 +10,12 @@ import {
   Mission,
   Milestone,
   Task,
+  BrainstormMessage,
+  AiPlanResponse,
   CATEGORY_CONFIG,
   PRIORITY_CONFIG,
   TASK_STATUS_CONFIG,
+  BRAINSTORM_EXAMPLES,
 } from '../models/planner.models';
 
 @Component({
@@ -32,8 +36,18 @@ export class PlannerComponent {
   readonly priorities = Object.keys(PRIORITY_CONFIG) as Priority[];
   readonly taskStatuses: TaskStatus[] = ['backlog', 'todo', 'in-progress', 'done'];
 
+  // AI Brainstorm
+  readonly aiService = inject(AiService);
+  readonly brainstormExamples = BRAINSTORM_EXAMPLES;
+  brainstormInput = '';
+  brainstormMessages = signal<BrainstormMessage[]>([]);
+  isAiLoading = signal(false);
+  latestPlan = signal<AiPlanResponse | null>(null);
+  showApiKeyModal = signal(false);
+  apiKeyInput = '';
+
   // View state
-  activeTab = signal<'overview' | 'board'>('overview');
+  activeTab = signal<'overview' | 'board' | 'brainstorm'>('overview');
   expandedMissionId = signal<string | null>(null);
   expandedMilestoneId = signal<string | null>(null);
 
@@ -95,7 +109,7 @@ export class PlannerComponent {
 
   // ─── Tab ───────────────────────────────────────────────────
 
-  setTab(tab: 'overview' | 'board') {
+  setTab(tab: 'overview' | 'board' | 'brainstorm') {
     this.activeTab.set(tab);
   }
 
@@ -339,6 +353,128 @@ export class PlannerComponent {
       this.showMissionForm.set(false);
       this.showMilestoneForm.set(false);
       this.showTaskForm.set(false);
+      this.showApiKeyModal.set(false);
     }
+  }
+
+  // ─── AI Brainstorm ─────────────────────────────────────────
+
+  useExample(example: string) {
+    this.brainstormInput = example;
+  }
+
+  onBrainstormKeydown(event: KeyboardEvent) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      this.submitBrainstorm();
+    }
+  }
+
+  async submitBrainstorm() {
+    if (!this.brainstormInput.trim() || this.isAiLoading()) return;
+
+    if (!this.aiService.hasApiKey()) {
+      this.showApiKeyModal.set(true);
+      return;
+    }
+
+    const userText = this.brainstormInput.trim();
+    this.brainstormInput = '';
+
+    this.brainstormMessages.update((msgs) => [
+      ...msgs,
+      {
+        role: 'user' as const,
+        content: userText,
+        timestamp: new Date().toISOString(),
+      },
+    ]);
+
+    this.isAiLoading.set(true);
+    try {
+      const response = await this.aiService.sendMessage(userText);
+
+      this.brainstormMessages.update((msgs) => [
+        ...msgs,
+        {
+          role: 'assistant' as const,
+          content: response.message,
+          timestamp: new Date().toISOString(),
+          plan: response,
+        },
+      ]);
+
+      if (response.type === 'plan') {
+        this.latestPlan.set(response);
+      }
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : 'Something went wrong';
+      this.brainstormMessages.update((msgs) => [
+        ...msgs,
+        {
+          role: 'assistant' as const,
+          content: `Error: ${message}`,
+          timestamp: new Date().toISOString(),
+        },
+      ]);
+    }
+    this.isAiLoading.set(false);
+  }
+
+  acceptPlan() {
+    const plan = this.latestPlan();
+    if (!plan?.mission || !plan.milestones) return;
+
+    const mission = this.plannerService.addMission({
+      title: plan.mission.title,
+      description: plan.mission.description,
+      category: plan.mission.category,
+      priority: plan.mission.priority,
+    });
+
+    for (const ms of plan.milestones) {
+      const milestone = this.plannerService.addMilestone({
+        missionId: mission.id,
+        title: ms.title,
+        description: ms.description,
+      });
+
+      for (const task of ms.tasks) {
+        this.plannerService.addTask({
+          missionId: mission.id,
+          milestoneId: milestone.id,
+          title: task.title,
+          description: task.description,
+          category: task.category || plan.mission.category,
+          priority: task.priority,
+        });
+      }
+    }
+
+    this.latestPlan.set(null);
+    this.aiService.clearConversation();
+    this.brainstormMessages.set([]);
+    this.activeTab.set('overview');
+    this.expandedMissionId.set(mission.id);
+  }
+
+  clearBrainstorm() {
+    this.brainstormMessages.set([]);
+    this.latestPlan.set(null);
+    this.aiService.clearConversation();
+    this.brainstormInput = '';
+  }
+
+  saveApiKey() {
+    if (this.apiKeyInput.trim()) {
+      this.aiService.setApiKey(this.apiKeyInput.trim());
+      this.apiKeyInput = '';
+      this.showApiKeyModal.set(false);
+    }
+  }
+
+  removeApiKey() {
+    this.aiService.removeApiKey();
   }
 }
