@@ -4,6 +4,13 @@ import { LandingComponent } from './landing/landing.component';
 
 export const appRoutes: Route[] = [
   {
+    path: 'planner',
+    loadChildren: () =>
+      loadRemote<typeof import('planner/Routes')>('planner/Routes').then(
+        (m) => m!.remoteRoutes,
+      ),
+  },
+  {
     path: '',
     component: LandingComponent,
   },

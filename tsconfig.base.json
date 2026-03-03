@@ -37,7 +37,10 @@
       "projects/Routes": [
         "apps/mfe/projects/src/app/remote-entry/entry.routes.ts"
       ],
-      "blogs/Routes": ["apps/mfe/blogs/src/app/remote-entry/entry.routes.ts"]
+      "blogs/Routes": ["apps/mfe/blogs/src/app/remote-entry/entry.routes.ts"],
+      "planner/Routes": [
+        "apps/mfe/planner/src/app/remote-entry/entry.routes.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

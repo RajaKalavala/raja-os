@@ -1,0 +1,97 @@
+<div class="planner-container">
+  <!-- Header -->
+  <div class="planner-header">
+    <div class="header-left">
+      <h1 class="planner-title">My Planner</h1>
+      <p class="planner-subtitle">
+        Plan, track, and conquer your missions
+      </p>
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="summary-grid">
+    <div class="summary-card" *ngFor="let card of summaryCards">
+      <div class="card-icon" [ngClass]="'icon-' + card.icon">
+        <!-- Target icon for Missions -->
+        <svg
+          *ngIf="card.icon === 'target'"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="10"></circle>
+          <circle cx="12" cy="12" r="6"></circle>
+          <circle cx="12" cy="12" r="2"></circle>
+        </svg>
+        <!-- Flag icon for Milestones -->
+        <svg
+          *ngIf="card.icon === 'flag'"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+          <line x1="4" y1="22" x2="4" y2="15"></line>
+        </svg>
+        <!-- Check icon for Tasks -->
+        <svg
+          *ngIf="card.icon === 'check'"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+      </div>
+      <div class="card-content">
+        <span class="card-count">{{ card.count }}</span>
+        <span class="card-label">{{ card.label }}</span>
+        <span class="card-description">{{ card.description }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state">
+    <div class="empty-icon">
+      <svg
+        width="64"
+        height="64"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+        <path d="M9 14l2 2 4-4"></path>
+      </svg>
+    </div>
+    <h2>Ready to plan your missions?</h2>
+    <p>
+      Create your first mission to start organizing your projects, personal
+      goals, and tasks. Missions break down into milestones and tasks for
+      easy tracking.
+    </p>
+    <p class="coming-soon">Full planner with Kanban board coming soon...</p>
+  </div>
+</div>

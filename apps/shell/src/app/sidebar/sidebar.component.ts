@@ -28,6 +28,7 @@ export class SidebarComponent {
     { label: 'About Me', route: '/aboutme', icon: 'person' },
     { label: 'Projects', route: '/projects', icon: 'folder' },
     { label: 'Experience', route: '/experience', icon: 'history' },
+    { label: 'My Planner', route: '/planner', icon: 'clipboard' },
     { label: 'Blogs', route: '/blogs', icon: 'book' },
   ];
 
