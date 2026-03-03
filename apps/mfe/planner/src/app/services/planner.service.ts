@@ -123,10 +123,6 @@ export class PlannerService {
   }
 
   deleteMission(id: string): void {
-    // Delete all associated milestones and tasks
-    const milestoneIds = this.milestones()
-      .filter((m) => m.missionId === id)
-      .map((m) => m.id);
     this.tasks.update((list) =>
       list.filter((t) => t.missionId !== id)
     );
@@ -139,6 +135,10 @@ export class PlannerService {
 
   getMission(id: string): Mission | undefined {
     return this.missions().find((m) => m.id === id);
+  }
+
+  getMilestone(id: string): Milestone | undefined {
+    return this.milestones().find((m) => m.id === id);
   }
 
   // ─── Milestone CRUD ────────────────────────────────────────
@@ -306,9 +306,6 @@ export class PlannerService {
     }
 
     // Auto-update mission status
-    const missionMilestones = this.milestones().filter(
-      (m) => m.missionId === missionId
-    );
     const missionTasks = this.tasks().filter(
       (t) => t.missionId === missionId
     );
