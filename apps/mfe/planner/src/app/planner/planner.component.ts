@@ -1,5 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { PlannerService } from '../services/planner.service';
+import {
+  CATEGORY_CONFIG,
+  PRIORITY_CONFIG,
+  TASK_STATUS_CONFIG,
+} from '../models/planner.models';
 
 @Component({
   selector: 'raja-planner',
@@ -9,24 +15,10 @@ import { CommonModule } from '@angular/common';
   styleUrl: './planner.component.scss',
 })
 export class PlannerComponent {
-  readonly summaryCards = [
-    {
-      label: 'Missions',
-      count: 0,
-      icon: 'target',
-      description: 'High-level goals & projects',
-    },
-    {
-      label: 'Milestones',
-      count: 0,
-      icon: 'flag',
-      description: 'Key outcomes within missions',
-    },
-    {
-      label: 'Tasks',
-      count: 0,
-      icon: 'check',
-      description: 'Actionable items to complete',
-    },
-  ];
+  readonly plannerService = inject(PlannerService);
+  readonly stats = this.plannerService.stats;
+  readonly missionsWithProgress = this.plannerService.missionsWithProgress;
+  readonly categoryConfig = CATEGORY_CONFIG;
+  readonly priorityConfig = PRIORITY_CONFIG;
+  readonly taskStatusConfig = TASK_STATUS_CONFIG;
 }
