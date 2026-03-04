@@ -3,6 +3,7 @@ import {
   Mission,
   Milestone,
   Task,
+  Idea,
   PlannerData,
   MissionWithProgress,
   MilestoneWithProgress,
@@ -21,6 +22,7 @@ export class PlannerService {
   readonly missions = signal<Mission[]>([]);
   readonly milestones = signal<Milestone[]>([]);
   readonly tasks = signal<Task[]>([]);
+  readonly ideas = signal<Idea[]>([]);
 
   // Computed: missions with progress
   readonly missionsWithProgress = computed<MissionWithProgress[]>(() => {
@@ -54,6 +56,7 @@ export class PlannerService {
     const m = this.missions();
     const ms = this.milestones();
     const t = this.tasks();
+    const i = this.ideas();
     return {
       missions: {
         total: m.length,
@@ -73,6 +76,9 @@ export class PlannerService {
         todo: t.filter((x) => x.status === 'todo').length,
         inProgress: t.filter((x) => x.status === 'in-progress').length,
         done: t.filter((x) => x.status === 'done').length,
+      },
+      ideas: {
+        total: i.length,
       },
       overallProgress:
         t.length > 0
@@ -336,6 +342,43 @@ export class PlannerService {
     this.saveToStorage();
   }
 
+  // ─── Idea CRUD ───────────────────────────────────────────────
+
+  addIdea(data: {
+    title: string;
+    notes?: string;
+    category?: Category;
+    priority?: Priority;
+  }): Idea {
+    const now = new Date().toISOString();
+    const idea: Idea = {
+      id: this.generateId(),
+      title: data.title,
+      notes: data.notes,
+      category: data.category || 'personal',
+      priority: data.priority || 'medium',
+      createdAt: now,
+      updatedAt: now,
+    };
+    this.ideas.update((list) => [...list, idea]);
+    this.saveToStorage();
+    return idea;
+  }
+
+  updateIdea(id: string, changes: Partial<Idea>): void {
+    this.ideas.update((list) =>
+      list.map((i) =>
+        i.id === id ? { ...i, ...changes, updatedAt: new Date().toISOString() } : i
+      )
+    );
+    this.saveToStorage();
+  }
+
+  deleteIdea(id: string): void {
+    this.ideas.update((list) => list.filter((i) => i.id !== id));
+    this.saveToStorage();
+  }
+
   // ─── Persistence ───────────────────────────────────────────
 
   private loadFromStorage(): void {
@@ -346,6 +389,7 @@ export class PlannerService {
         this.missions.set(data.missions || []);
         this.milestones.set(data.milestones || []);
         this.tasks.set(data.tasks || []);
+        this.ideas.set(data.ideas || []);
       }
     } catch {
       console.warn('Failed to load planner data from localStorage');
@@ -358,6 +402,7 @@ export class PlannerService {
         missions: this.missions(),
         milestones: this.milestones(),
         tasks: this.tasks(),
+        ideas: this.ideas(),
       };
       localStorage.setItem(this.storageKey, JSON.stringify(data));
     } catch {

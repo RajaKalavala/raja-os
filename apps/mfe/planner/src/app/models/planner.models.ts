@@ -52,10 +52,21 @@ export interface Task {
   dueDate?: string;
 }
 
+export interface Idea {
+  id: string;
+  title: string;
+  notes?: string;
+  category: Category;
+  priority: Priority;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface PlannerData {
   missions: Mission[];
   milestones: Milestone[];
   tasks: Task[];
+  ideas: Idea[];
 }
 
 export interface MissionWithProgress extends Mission {

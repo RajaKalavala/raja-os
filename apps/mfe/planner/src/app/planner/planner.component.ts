@@ -10,6 +10,7 @@ import {
   Mission,
   Milestone,
   Task,
+  Idea,
   BrainstormMessage,
   AiPlanResponse,
   CATEGORY_CONFIG,
@@ -47,7 +48,7 @@ export class PlannerComponent {
   apiKeyInput = '';
 
   // View state
-  activeTab = signal<'overview' | 'board' | 'brainstorm'>('overview');
+  activeTab = signal<'overview' | 'board' | 'ideas' | 'brainstorm'>('overview');
   expandedMissionId = signal<string | null>(null);
   expandedMilestoneId = signal<string | null>(null);
 
@@ -75,6 +76,17 @@ export class PlannerComponent {
     category: 'work' as Category,
     priority: 'medium' as Priority,
     dueDate: '',
+  };
+
+  // Idea state
+  newIdeaTitle = '';
+  showIdeaForm = signal(false);
+  editingIdeaId: string | null = null;
+  ideaForm = {
+    title: '',
+    notes: '',
+    category: 'personal' as Category,
+    priority: 'medium' as Priority,
   };
 
   // Editing state
@@ -109,7 +121,7 @@ export class PlannerComponent {
 
   // ─── Tab ───────────────────────────────────────────────────
 
-  setTab(tab: 'overview' | 'board' | 'brainstorm') {
+  setTab(tab: 'overview' | 'board' | 'ideas' | 'brainstorm') {
     this.activeTab.set(tab);
   }
 
@@ -353,8 +365,81 @@ export class PlannerComponent {
       this.showMissionForm.set(false);
       this.showMilestoneForm.set(false);
       this.showTaskForm.set(false);
+      this.showIdeaForm.set(false);
       this.showApiKeyModal.set(false);
     }
+  }
+
+  // ─── Ideas ──────────────────────────────────────────────────
+
+  addQuickIdea() {
+    if (!this.newIdeaTitle.trim()) return;
+    this.plannerService.addIdea({ title: this.newIdeaTitle.trim() });
+    this.newIdeaTitle = '';
+  }
+
+  openIdeaForm(idea?: Idea) {
+    if (idea) {
+      this.editingIdeaId = idea.id;
+      this.ideaForm = {
+        title: idea.title,
+        notes: idea.notes || '',
+        category: idea.category,
+        priority: idea.priority,
+      };
+    } else {
+      this.editingIdeaId = null;
+      this.ideaForm = {
+        title: '',
+        notes: '',
+        category: 'personal',
+        priority: 'medium',
+      };
+    }
+    this.showIdeaForm.set(true);
+  }
+
+  saveIdea() {
+    if (!this.ideaForm.title.trim()) return;
+    if (this.editingIdeaId) {
+      this.plannerService.updateIdea(this.editingIdeaId, {
+        title: this.ideaForm.title.trim(),
+        notes: this.ideaForm.notes.trim() || undefined,
+        category: this.ideaForm.category,
+        priority: this.ideaForm.priority,
+      });
+    } else {
+      this.plannerService.addIdea({
+        title: this.ideaForm.title.trim(),
+        notes: this.ideaForm.notes.trim() || undefined,
+        category: this.ideaForm.category,
+        priority: this.ideaForm.priority,
+      });
+    }
+    this.showIdeaForm.set(false);
+  }
+
+  deleteIdea(id: string) {
+    this.plannerService.deleteIdea(id);
+  }
+
+  convertIdeaToMission(idea: Idea) {
+    this.plannerService.addMission({
+      title: idea.title,
+      description: idea.notes || '',
+      category: idea.category,
+      priority: idea.priority,
+    });
+    this.plannerService.deleteIdea(idea.id);
+    this.activeTab.set('overview');
+  }
+
+  sendIdeaToBrainstorm(idea: Idea) {
+    this.brainstormInput = idea.notes
+      ? `${idea.title}\n${idea.notes}`
+      : idea.title;
+    this.plannerService.deleteIdea(idea.id);
+    this.activeTab.set('brainstorm');
   }
 
   // ─── AI Brainstorm ─────────────────────────────────────────

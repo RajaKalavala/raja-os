@@ -34,6 +34,15 @@
         </svg>
         Board
       </button>
+      <button class="tab" [class.active]="activeTab() === 'ideas'" (click)="setTab('ideas')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+        </svg>
+        Ideas
+        @if (stats().ideas.total > 0) {
+          <span class="tab-count">{{ stats().ideas.total }}</span>
+        }
+      </button>
       <button class="tab tab-ai" [class.active]="activeTab() === 'brainstorm'" (click)="setTab('brainstorm')">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
@@ -385,6 +394,151 @@
         }
       </div>
     }
+  }
+
+  <!-- ─── IDEAS TAB ────────────────────────────────────────── -->
+  @if (activeTab() === 'ideas') {
+    <div class="ideas-container">
+      <!-- Quick Add -->
+      <div class="quick-add">
+        <input
+          type="text"
+          class="quick-add-input"
+          [(ngModel)]="newIdeaTitle"
+          placeholder="Capture an idea..."
+          (keydown.enter)="addQuickIdea()"
+        />
+        <button class="btn-primary" (click)="addQuickIdea()" [disabled]="!newIdeaTitle.trim()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          Add
+        </button>
+        <button class="btn-secondary" (click)="openIdeaForm()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+          </svg>
+          Detailed
+        </button>
+      </div>
+
+      <!-- Ideas List -->
+      @if (plannerService.ideas().length === 0) {
+        <div class="empty-state">
+          <div class="empty-icon">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+            </svg>
+          </div>
+          <h2>No ideas yet</h2>
+          <p>Quickly capture ideas as they come to mind. When they're ready, convert them into missions or send them to AI Brainstorm for planning.</p>
+        </div>
+      } @else {
+        <div class="ideas-list">
+          @for (idea of plannerService.ideas(); track idea.id) {
+            <div class="idea-card">
+              <div class="idea-card-top">
+                <h4 class="idea-title">{{ idea.title }}</h4>
+                <div class="idea-badges">
+                  <span class="badge category-badge small"
+                    [style.color]="categoryConfig[idea.category].color"
+                    [style.background]="categoryConfig[idea.category].bgColor">
+                    {{ categoryConfig[idea.category].label }}
+                  </span>
+                  <span class="badge priority-badge small"
+                    [style.color]="priorityConfig[idea.priority].color"
+                    [style.background]="priorityConfig[idea.priority].bgColor">
+                    {{ priorityConfig[idea.priority].label }}
+                  </span>
+                </div>
+              </div>
+              @if (idea.notes) {
+                <p class="idea-notes">{{ idea.notes }}</p>
+              }
+              <div class="idea-footer">
+                <span class="idea-timestamp">{{ idea.createdAt | date:'MMM d, y' }}</span>
+                <div class="idea-actions">
+                  <button class="btn-icon" title="Edit" (click)="openIdeaForm(idea)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                  </button>
+                  <button class="btn-icon" title="Convert to Mission" (click)="convertIdeaToMission(idea)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>
+                    </svg>
+                  </button>
+                  <button class="btn-icon" title="Send to Brainstorm" (click)="sendIdeaToBrainstorm(idea)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                    </svg>
+                  </button>
+                  <button class="btn-icon btn-icon-danger" title="Delete" (click)="deleteIdea(idea.id)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+
+  <!-- ─── IDEA FORM MODAL ──────────────────────────────────── -->
+  @if (showIdeaForm()) {
+    <div class="modal-overlay" role="dialog" tabindex="-1" (click)="closeModal($event)" (keydown.escape)="showIdeaForm.set(false)">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>{{ editingIdeaId ? 'Edit' : 'New' }} Idea</h2>
+          <button class="btn-icon" (click)="showIdeaForm.set(false)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <form (ngSubmit)="saveIdea()">
+          <div class="form-group">
+            <label for="i-title">Title <span class="required">*</span></label>
+            <input id="i-title" type="text" [(ngModel)]="ideaForm.title" name="title" placeholder="e.g., Build a CLI tool for..." required>
+          </div>
+          <div class="form-group">
+            <label for="i-notes">Notes</label>
+            <textarea id="i-notes" [(ngModel)]="ideaForm.notes" name="notes" rows="3" placeholder="Any details or context..."></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="i-cat">Category</label>
+              <select id="i-cat" [(ngModel)]="ideaForm.category" name="category">
+                @for (cat of categories; track cat) {
+                  <option [value]="cat">{{ categoryConfig[cat].label }}</option>
+                }
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="i-pri">Priority</label>
+              <select id="i-pri" [(ngModel)]="ideaForm.priority" name="priority">
+                @for (pri of priorities; track pri) {
+                  <option [value]="pri">{{ priorityConfig[pri].label }}</option>
+                }
+              </select>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" (click)="showIdeaForm.set(false)">Cancel</button>
+            <button type="submit" class="btn-primary" [disabled]="!ideaForm.title.trim()">
+              {{ editingIdeaId ? 'Update' : 'Create' }} Idea
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   }
 
   <!-- ─── MISSION FORM MODAL ─────────────────────────────── -->
