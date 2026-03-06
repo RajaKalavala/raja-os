@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, signal } from '@angular/core';
+import { Component, EventEmitter, Output, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
@@ -13,27 +13,30 @@ import { AuthService } from '../../services/auth.service';
 export class AdminLoginModalComponent {
   @Output() close = new EventEmitter<void>();
 
-  username = '';
+  private authService = inject(AuthService);
+
+  email = '';
   password = '';
   errorMessage = signal<string>('');
+  isLoading = signal<boolean>(false);
 
-  constructor(private authService: AuthService) {}
-
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     this.errorMessage.set('');
 
-    if (!this.username || !this.password) {
-      this.errorMessage.set('Please enter both username and password');
+    if (!this.email || !this.password) {
+      this.errorMessage.set('Please enter both email and password');
       return;
     }
 
-    const success = this.authService.login(this.username, this.password);
+    this.isLoading.set(true);
+    const { error } = await this.authService.login(this.email, this.password);
+    this.isLoading.set(false);
 
-    if (success) {
-      this.close.emit();
+    if (error) {
+      this.errorMessage.set(error);
+      this.password = '';
     } else {
-      this.errorMessage.set('Invalid username or password');
-      this.password = ''; // Clear password on failed attempt
+      this.close.emit();
     }
   }
 
@@ -42,7 +45,6 @@ export class AdminLoginModalComponent {
   }
 
   onBackdropClick(event: MouseEvent): void {
-    // Close modal if clicking on backdrop (not the modal content)
     if (event.target === event.currentTarget) {
       this.onClose();
     }

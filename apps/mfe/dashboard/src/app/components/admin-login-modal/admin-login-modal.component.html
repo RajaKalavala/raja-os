@@ -12,14 +12,14 @@
 
     <form (submit)="onSubmit(); $event.preventDefault()">
       <div class="form-group">
-        <label for="username">Username</label>
+        <label for="email">Email</label>
         <input
-          type="text"
-          id="username"
-          [(ngModel)]="username"
-          name="username"
-          placeholder="Enter username"
-          autocomplete="username"
+          type="email"
+          id="email"
+          [(ngModel)]="email"
+          name="email"
+          placeholder="Enter email"
+          autocomplete="email"
         />
       </div>
 
@@ -43,7 +43,9 @@
 
       <div class="modal-actions">
         <button type="button" class="btn-cancel" (click)="onClose()">Cancel</button>
-        <button type="submit" class="btn-login">Login</button>
+        <button type="submit" class="btn-login" [disabled]="isLoading()">
+          {{ isLoading() ? 'Signing in...' : 'Login' }}
+        </button>
       </div>
     </form>
   </div>

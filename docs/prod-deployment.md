@@ -109,12 +109,12 @@ Understanding the build pipeline helps prevent mistakes:
 
 ## Common Errors
 
-| Error | Cause | Fix |
-|-------|-------|-----|
-| `RUNTIME-004: Failed to locate remote` | Remote not registered in manifest or build output missing | Verify all 5 files above are updated |
-| 404 on `/<name>/mf-manifest.json` | MFE not built or not copied to shell output dir | Check build script `--projects` list and `cp` command |
-| Works locally but not in production | Local manifest has the entry but production manifest doesn't | Update `build-for-vercel.sh` inline manifest JSON |
-| `ChunkLoadError` | MFE built but with wrong `publicPath` | Ensure `webpack.prod.config.ts` uses `publicPath: 'auto'` |
+| Error                                  | Cause                                                        | Fix                                                       |
+| -------------------------------------- | ------------------------------------------------------------ | --------------------------------------------------------- |
+| `RUNTIME-004: Failed to locate remote` | Remote not registered in manifest or build output missing    | Verify all 5 files above are updated                      |
+| 404 on `/<name>/mf-manifest.json`      | MFE not built or not copied to shell output dir              | Check build script `--projects` list and `cp` command     |
+| Works locally but not in production    | Local manifest has the entry but production manifest doesn't | Update `build-for-vercel.sh` inline manifest JSON         |
+| `ChunkLoadError`                       | MFE built but with wrong `publicPath`                        | Ensure `webpack.prod.config.ts` uses `publicPath: 'auto'` |
 
 ## Quick Copy-Paste Template
 

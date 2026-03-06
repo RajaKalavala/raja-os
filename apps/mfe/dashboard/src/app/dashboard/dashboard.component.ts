@@ -86,7 +86,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.showLoginModal.set(false);
   }
 
-  logout(): void {
-    this.authService.logout();
+  async logout(): Promise<void> {
+    await this.authService.logout();
   }
 }

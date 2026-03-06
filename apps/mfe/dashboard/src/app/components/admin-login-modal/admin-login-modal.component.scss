@@ -159,8 +159,13 @@ form {
   background: #22c55e;
   color: #ffffff;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: #16a34a;
     box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 }

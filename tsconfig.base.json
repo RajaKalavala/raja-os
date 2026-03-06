@@ -40,7 +40,8 @@
       "blogs/Routes": ["apps/mfe/blogs/src/app/remote-entry/entry.routes.ts"],
       "planner/Routes": [
         "apps/mfe/planner/src/app/remote-entry/entry.routes.ts"
-      ]
+      ],
+      "@org/supabase": ["libs/shared/supabase/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

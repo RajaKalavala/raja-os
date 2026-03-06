@@ -1,50 +1,23 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { SupabaseService } from '@org/supabase';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly ADMIN_KEY = 'rajaos_admin_logged_in';
-  private readonly ADMIN_USERNAME = 'admin';
-  private readonly ADMIN_PASSWORD = 'admin123';
+  private supabase = inject(SupabaseService);
 
-  // Signal to track admin status
-  isAdminLoggedIn = signal<boolean>(this.checkAdminStatus());
+  isAdminLoggedIn = this.supabase.isAdmin;
 
-  constructor() {}
-
-  /**
-   * Check if admin is logged in from localStorage
-   */
-  private checkAdminStatus(): boolean {
-    return localStorage.getItem(this.ADMIN_KEY) === 'true';
+  async login(email: string, password: string): Promise<{ error: string | null }> {
+    return this.supabase.signIn(email, password);
   }
 
-  /**
-   * Attempt to login with provided credentials
-   * @returns true if login successful, false otherwise
-   */
-  login(username: string, password: string): boolean {
-    if (username === this.ADMIN_USERNAME && password === this.ADMIN_PASSWORD) {
-      localStorage.setItem(this.ADMIN_KEY, 'true');
-      this.isAdminLoggedIn.set(true);
-      return true;
-    }
-    return false;
+  async logout(): Promise<void> {
+    await this.supabase.signOut();
   }
 
-  /**
-   * Logout the admin user
-   */
-  logout(): void {
-    localStorage.removeItem(this.ADMIN_KEY);
-    this.isAdminLoggedIn.set(false);
-  }
-
-  /**
-   * Get current admin status
-   */
   isAdmin(): boolean {
-    return this.isAdminLoggedIn();
+    return this.supabase.isAdmin();
   }
 }
