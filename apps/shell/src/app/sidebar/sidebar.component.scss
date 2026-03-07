@@ -20,6 +20,7 @@
     z-index: 200;
     transform: translateX(-100%);
     box-shadow: 2px 0 16px rgba(0, 0, 0, 0.3);
+    padding-top: calc(24px + env(safe-area-inset-top, 0px));
 
     &.open {
       transform: translateX(0);

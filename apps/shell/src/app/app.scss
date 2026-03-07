@@ -27,7 +27,7 @@
   &.mobile-view {
     margin-left: 0;
     width: 100%;
-    padding-top: 60px; // Space for mobile header
+    padding-top: calc(60px + env(safe-area-inset-top, 0px)); // Space for mobile header + iOS safe area
   }
 }
 
@@ -38,10 +38,12 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 60px;
+  height: calc(60px + env(safe-area-inset-top, 0px));
+  padding-top: env(safe-area-inset-top, 0px);
   background-color: #1a2e26;
   z-index: 150;
-  padding: 0 16px;
+  padding-left: 16px;
+  padding-right: 16px;
   align-items: center;
   gap: 12px;
 
