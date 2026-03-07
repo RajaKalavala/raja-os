@@ -2,6 +2,7 @@ import { Component, input, output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ThemeService } from '../services/theme.service';
+import { SupabaseService } from '@org/supabase';
 
 interface MenuItem {
   label: string;
@@ -22,6 +23,7 @@ export class SidebarComponent {
   isMobile = input(false);
   closed = output<void>();
   themeService = inject(ThemeService);
+  supabaseService = inject(SupabaseService);
 
   menuItems: MenuItem[] = [
     { label: 'Dashboard', route: '/dashboard', icon: 'grid' },
@@ -55,6 +57,13 @@ export class SidebarComponent {
         newValue: Date.now().toString(),
       }),
     );
+    if (this.isMobile()) {
+      this.closed.emit();
+    }
+  }
+
+  async adminLogout() {
+    await this.supabaseService.signOut();
     if (this.isMobile()) {
       this.closed.emit();
     }

@@ -198,6 +198,56 @@
     }
 }
 
+.admin-logged-in {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.admin-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    background-color: rgba(34, 197, 94, 0.15);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    border-radius: 8px;
+    color: #4ae081;
+    font-size: 13px;
+    font-weight: 600;
+
+    svg {
+        flex-shrink: 0;
+    }
+}
+
+.admin-logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 8px 12px;
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 150ms;
+
+    &:hover {
+        background-color: rgba(239, 68, 68, 0.15);
+        border-color: rgba(239, 68, 68, 0.4);
+        color: #fca5a5;
+    }
+
+    svg {
+        flex-shrink: 0;
+    }
+}
+
 // Bottom Actions Section
 .sidebar-bottom-actions {
     display: flex;

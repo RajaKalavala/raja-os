@@ -24,37 +24,30 @@ Limit to 2-4 targeted, practical questions.
 {
   "type": "plan",
   "message": "A short summary of the plan you created",
-  "mission": {
-    "title": "Clear, concise mission title",
-    "description": "What this mission achieves (1-2 sentences)",
+  "goal": {
+    "title": "Clear, concise goal title",
+    "description": "What this goal achieves (1-2 sentences)",
     "category": "work|personal|health|finance|learning|side-projects|home",
     "priority": "critical|high|medium|low"
   },
-  "milestones": [
+  "tasks": [
     {
-      "title": "Milestone title",
-      "description": "What this milestone achieves",
-      "tasks": [
-        {
-          "title": "Specific, actionable task title",
-          "description": "Brief details about what to do",
-          "priority": "critical|high|medium|low",
-          "category": "work|personal|health|finance|learning|side-projects|home"
-        }
-      ]
+      "title": "Specific, actionable task title",
+      "description": "Brief details about what to do",
+      "priority": "critical|high|medium|low",
+      "category": "work|personal|health|finance|learning|side-projects|home"
     }
   ]
 }
 
 Guidelines:
-- Create 2-5 milestones per mission, ordered logically
-- Each milestone should have 2-6 specific, actionable tasks
+- Create 5-15 tasks per goal, ordered logically by dependency/priority
 - Tasks should be clear enough to start working on immediately
 - Pick the most fitting category from: work, personal, health, finance, learning, side-projects, home
 - Set realistic priorities (don't make everything critical)
 - Keep descriptions concise but informative
-- Think about dependencies — order milestones so earlier ones enable later ones
-- Tasks inherit the mission's category by default, but can override if appropriate
+- Think about dependencies — order tasks so earlier ones enable later ones
+- Tasks inherit the goal's category by default, but can override if appropriate
 - ALWAYS respond with ONLY valid JSON — no markdown, no code blocks, no extra text`;
 
 @Injectable({ providedIn: 'root' })

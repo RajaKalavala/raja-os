@@ -1,16 +1,13 @@
 import { Injectable, signal, computed } from '@angular/core';
 import {
-  Mission,
-  Milestone,
+  Goal,
   Task,
   Idea,
   PlannerData,
-  MissionWithProgress,
-  MilestoneWithProgress,
+  GoalWithProgress,
   Category,
   Priority,
-  MissionStatus,
-  MilestoneStatus,
+  GoalStatus,
   TaskStatus,
 } from '../models/planner.models';
 
@@ -19,31 +16,19 @@ export class PlannerService {
   private readonly storageKey = 'raja-os-planner';
 
   // Signals for reactive state
-  readonly missions = signal<Mission[]>([]);
-  readonly milestones = signal<Milestone[]>([]);
+  readonly goals = signal<Goal[]>([]);
   readonly tasks = signal<Task[]>([]);
   readonly ideas = signal<Idea[]>([]);
 
-  // Computed: missions with progress
-  readonly missionsWithProgress = computed<MissionWithProgress[]>(() => {
-    const allMilestones = this.milestones();
+  // Computed: goals with progress
+  readonly goalsWithProgress = computed<GoalWithProgress[]>(() => {
     const allTasks = this.tasks();
-    return this.missions().map((mission) => {
-      const mMilestones = allMilestones.filter(
-        (m) => m.missionId === mission.id
-      );
-      const mTasks = allTasks.filter((t) => t.missionId === mission.id);
-      const completedMilestones = mMilestones.filter(
-        (m) => m.status === 'completed'
-      ).length;
-      const completedTasks = mTasks.filter(
-        (t) => t.status === 'done'
-      ).length;
-      const total = mTasks.length;
+    return this.goals().map((goal) => {
+      const gTasks = allTasks.filter((t) => t.goalId === goal.id);
+      const completedTasks = gTasks.filter((t) => t.status === 'done').length;
+      const total = gTasks.length;
       return {
-        ...mission,
-        totalMilestones: mMilestones.length,
-        completedMilestones,
+        ...goal,
         totalTasks: total,
         completedTasks,
         progress: total > 0 ? Math.round((completedTasks / total) * 100) : 0,
@@ -53,22 +38,15 @@ export class PlannerService {
 
   // Computed: summary stats
   readonly stats = computed(() => {
-    const m = this.missions();
-    const ms = this.milestones();
+    const g = this.goals();
     const t = this.tasks();
     const i = this.ideas();
     return {
-      missions: {
-        total: m.length,
-        active: m.filter((x) => x.status === 'active').length,
-        completed: m.filter((x) => x.status === 'completed').length,
-        onHold: m.filter((x) => x.status === 'on-hold').length,
-      },
-      milestones: {
-        total: ms.length,
-        active: ms.filter((x) => x.status === 'active').length,
-        completed: ms.filter((x) => x.status === 'completed').length,
-        onHold: ms.filter((x) => x.status === 'on-hold').length,
+      goals: {
+        total: g.length,
+        active: g.filter((x) => x.status === 'active').length,
+        completed: g.filter((x) => x.status === 'completed').length,
+        onHold: g.filter((x) => x.status === 'on-hold').length,
       },
       tasks: {
         total: t.length,
@@ -93,17 +71,17 @@ export class PlannerService {
     this.loadFromStorage();
   }
 
-  // ─── Mission CRUD ──────────────────────────────────────────
+  // ─── Goal CRUD ──────────────────────────────────────────
 
-  addMission(data: {
+  addGoal(data: {
     title: string;
     description: string;
     category: Category;
     priority: Priority;
     dueDate?: string;
-  }): Mission {
+  }): Goal {
     const now = new Date().toISOString();
-    const mission: Mission = {
+    const goal: Goal = {
       id: this.generateId(),
       title: data.title,
       description: data.description,
@@ -114,104 +92,34 @@ export class PlannerService {
       updatedAt: now,
       dueDate: data.dueDate,
     };
-    this.missions.update((list) => [...list, mission]);
+    this.goals.update((list) => [...list, goal]);
     this.saveToStorage();
-    return mission;
+    return goal;
   }
 
-  updateMission(id: string, changes: Partial<Mission>): void {
-    this.missions.update((list) =>
-      list.map((m) =>
-        m.id === id ? { ...m, ...changes, updatedAt: new Date().toISOString() } : m
+  updateGoal(id: string, changes: Partial<Goal>): void {
+    this.goals.update((list) =>
+      list.map((g) =>
+        g.id === id ? { ...g, ...changes, updatedAt: new Date().toISOString() } : g
       )
     );
     this.saveToStorage();
   }
 
-  deleteMission(id: string): void {
-    this.tasks.update((list) =>
-      list.filter((t) => t.missionId !== id)
-    );
-    this.milestones.update((list) =>
-      list.filter((m) => m.missionId !== id)
-    );
-    this.missions.update((list) => list.filter((m) => m.id !== id));
+  deleteGoal(id: string): void {
+    this.tasks.update((list) => list.filter((t) => t.goalId !== id));
+    this.goals.update((list) => list.filter((g) => g.id !== id));
     this.saveToStorage();
   }
 
-  getMission(id: string): Mission | undefined {
-    return this.missions().find((m) => m.id === id);
-  }
-
-  getMilestone(id: string): Milestone | undefined {
-    return this.milestones().find((m) => m.id === id);
-  }
-
-  // ─── Milestone CRUD ────────────────────────────────────────
-
-  addMilestone(data: {
-    missionId: string;
-    title: string;
-    description: string;
-    dueDate?: string;
-  }): Milestone {
-    const now = new Date().toISOString();
-    const milestone: Milestone = {
-      id: this.generateId(),
-      missionId: data.missionId,
-      title: data.title,
-      description: data.description,
-      status: 'active',
-      createdAt: now,
-      updatedAt: now,
-      dueDate: data.dueDate,
-    };
-    this.milestones.update((list) => [...list, milestone]);
-    this.saveToStorage();
-    return milestone;
-  }
-
-  updateMilestone(id: string, changes: Partial<Milestone>): void {
-    this.milestones.update((list) =>
-      list.map((m) =>
-        m.id === id ? { ...m, ...changes, updatedAt: new Date().toISOString() } : m
-      )
-    );
-    this.saveToStorage();
-  }
-
-  deleteMilestone(id: string): void {
-    this.tasks.update((list) =>
-      list.filter((t) => t.milestoneId !== id)
-    );
-    this.milestones.update((list) => list.filter((m) => m.id !== id));
-    this.saveToStorage();
-  }
-
-  getMilestonesForMission(missionId: string): MilestoneWithProgress[] {
-    const allTasks = this.tasks();
-    return this.milestones()
-      .filter((m) => m.missionId === missionId)
-      .map((milestone) => {
-        const mTasks = allTasks.filter((t) => t.milestoneId === milestone.id);
-        const completedTasks = mTasks.filter((t) => t.status === 'done').length;
-        return {
-          ...milestone,
-          totalTasks: mTasks.length,
-          completedTasks,
-          progress:
-            mTasks.length > 0
-              ? Math.round((completedTasks / mTasks.length) * 100)
-              : 0,
-        };
-      });
+  getGoal(id: string): Goal | undefined {
+    return this.goals().find((g) => g.id === id);
   }
 
   // ─── Task CRUD ─────────────────────────────────────────────
 
   addTask(data: {
-    milestoneId: string;
-    missionId: string;
+    goalId: string;
     title: string;
     description: string;
     category: Category;
@@ -221,8 +129,7 @@ export class PlannerService {
     const now = new Date().toISOString();
     const task: Task = {
       id: this.generateId(),
-      milestoneId: data.milestoneId,
-      missionId: data.missionId,
+      goalId: data.goalId,
       title: data.title,
       description: data.description,
       category: data.category,
@@ -234,7 +141,7 @@ export class PlannerService {
     };
     this.tasks.update((list) => [...list, task]);
     this.saveToStorage();
-    this.autoUpdateParentStatuses(task.milestoneId, task.missionId);
+    this.autoUpdateGoalStatus(task.goalId);
     return task;
   }
 
@@ -247,7 +154,7 @@ export class PlannerService {
     );
     this.saveToStorage();
     if (existing) {
-      this.autoUpdateParentStatuses(existing.milestoneId, existing.missionId);
+      this.autoUpdateGoalStatus(existing.goalId);
     }
   }
 
@@ -260,16 +167,12 @@ export class PlannerService {
     this.tasks.update((list) => list.filter((t) => t.id !== id));
     this.saveToStorage();
     if (task) {
-      this.autoUpdateParentStatuses(task.milestoneId, task.missionId);
+      this.autoUpdateGoalStatus(task.goalId);
     }
   }
 
-  getTasksForMilestone(milestoneId: string): Task[] {
-    return this.tasks().filter((t) => t.milestoneId === milestoneId);
-  }
-
-  getTasksForMission(missionId: string): Task[] {
-    return this.tasks().filter((t) => t.missionId === missionId);
+  getTasksForGoal(goalId: string): Task[] {
+    return this.tasks().filter((t) => t.goalId === goalId);
   }
 
   getTasksByStatus(status: TaskStatus): Task[] {
@@ -278,67 +181,31 @@ export class PlannerService {
 
   // ─── Auto Status Updates ───────────────────────────────────
 
-  private autoUpdateParentStatuses(
-    milestoneId: string,
-    missionId: string
-  ): void {
-    // Auto-update milestone status
-    const milestoneTasks = this.tasks().filter(
-      (t) => t.milestoneId === milestoneId
-    );
-    if (milestoneTasks.length > 0) {
-      const allDone = milestoneTasks.every((t) => t.status === 'done');
-      if (allDone) {
-        this.milestones.update((list) =>
-          list.map((m) =>
-            m.id === milestoneId
-              ? { ...m, status: 'completed' as MilestoneStatus, updatedAt: new Date().toISOString() }
-              : m
-          )
-        );
-      } else {
-        // If milestone was completed but tasks are no longer all done, reactivate
-        const milestone = this.milestones().find((m) => m.id === milestoneId);
-        if (milestone?.status === 'completed') {
-          this.milestones.update((list) =>
-            list.map((m) =>
-              m.id === milestoneId
-                ? { ...m, status: 'active' as MilestoneStatus, updatedAt: new Date().toISOString() }
-                : m
-            )
-          );
-        }
-      }
-    }
-
-    // Auto-update mission status
-    const missionTasks = this.tasks().filter(
-      (t) => t.missionId === missionId
-    );
-    if (missionTasks.length > 0) {
-      const allTasksDone = missionTasks.every((t) => t.status === 'done');
+  private autoUpdateGoalStatus(goalId: string): void {
+    const goalTasks = this.tasks().filter((t) => t.goalId === goalId);
+    if (goalTasks.length > 0) {
+      const allTasksDone = goalTasks.every((t) => t.status === 'done');
       if (allTasksDone) {
-        this.missions.update((list) =>
-          list.map((m) =>
-            m.id === missionId
-              ? { ...m, status: 'completed' as MissionStatus, updatedAt: new Date().toISOString() }
-              : m
+        this.goals.update((list) =>
+          list.map((g) =>
+            g.id === goalId
+              ? { ...g, status: 'completed' as GoalStatus, updatedAt: new Date().toISOString() }
+              : g
           )
         );
       } else {
-        const mission = this.missions().find((m) => m.id === missionId);
-        if (mission?.status === 'completed') {
-          this.missions.update((list) =>
-            list.map((m) =>
-              m.id === missionId
-                ? { ...m, status: 'active' as MissionStatus, updatedAt: new Date().toISOString() }
-                : m
+        const goal = this.goals().find((g) => g.id === goalId);
+        if (goal?.status === 'completed') {
+          this.goals.update((list) =>
+            list.map((g) =>
+              g.id === goalId
+                ? { ...g, status: 'active' as GoalStatus, updatedAt: new Date().toISOString() }
+                : g
             )
           );
         }
       }
     }
-
     this.saveToStorage();
   }
 
@@ -385,11 +252,26 @@ export class PlannerService {
     try {
       const raw = localStorage.getItem(this.storageKey);
       if (raw) {
-        const data: PlannerData = JSON.parse(raw);
-        this.missions.set(data.missions || []);
-        this.milestones.set(data.milestones || []);
-        this.tasks.set(data.tasks || []);
-        this.ideas.set(data.ideas || []);
+        const data = JSON.parse(raw);
+        // Support legacy data: migrate missions -> goals, flatten milestones
+        if (data.missions) {
+          this.goals.set(data.missions.map((m: Goal & { id: string }) => ({
+            ...m,
+          })));
+          // Migrate tasks: remove milestoneId, rename missionId to goalId
+          const tasks = (data.tasks || []).map((t: Task & { missionId?: string; milestoneId?: string }) => ({
+            ...t,
+            goalId: t.goalId || t.missionId || '',
+          }));
+          this.tasks.set(tasks);
+          this.ideas.set(data.ideas || []);
+          // Save in new format
+          this.saveToStorage();
+        } else {
+          this.goals.set(data.goals || []);
+          this.tasks.set(data.tasks || []);
+          this.ideas.set(data.ideas || []);
+        }
       }
     } catch {
       console.warn('Failed to load planner data from localStorage');
@@ -399,8 +281,7 @@ export class PlannerService {
   private saveToStorage(): void {
     try {
       const data: PlannerData = {
-        missions: this.missions(),
-        milestones: this.milestones(),
+        goals: this.goals(),
         tasks: this.tasks(),
         ideas: this.ideas(),
       };

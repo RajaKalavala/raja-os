@@ -7,8 +7,7 @@ import {
   Category,
   Priority,
   TaskStatus,
-  Mission,
-  Milestone,
+  Goal,
   Task,
   Idea,
   BrainstormMessage,
@@ -29,7 +28,7 @@ import {
 export class PlannerComponent {
   readonly plannerService = inject(PlannerService);
   readonly stats = this.plannerService.stats;
-  readonly missionsWithProgress = this.plannerService.missionsWithProgress;
+  readonly goalsWithProgress = this.plannerService.goalsWithProgress;
   readonly categoryConfig = CATEGORY_CONFIG;
   readonly priorityConfig = PRIORITY_CONFIG;
   readonly taskStatusConfig = TASK_STATUS_CONFIG;
@@ -49,27 +48,23 @@ export class PlannerComponent {
 
   // View state
   activeTab = signal<'overview' | 'board' | 'ideas' | 'brainstorm'>('overview');
-  expandedMissionId = signal<string | null>(null);
-  expandedMilestoneId = signal<string | null>(null);
+  expandedGoalId = signal<string | null>(null);
 
   // Modal state
-  showMissionForm = signal(false);
-  showMilestoneForm = signal(false);
+  showGoalForm = signal(false);
   showTaskForm = signal(false);
 
   // Form context
-  formMissionId = '';
-  formMilestoneId = '';
+  formGoalId = '';
 
   // Form data
-  missionForm = {
+  goalForm = {
     title: '',
     description: '',
     category: 'work' as Category,
     priority: 'medium' as Priority,
     dueDate: '',
   };
-  milestoneForm = { title: '', description: '', dueDate: '' };
   taskForm = {
     title: '',
     description: '',
@@ -90,8 +85,7 @@ export class PlannerComponent {
   };
 
   // Editing state
-  editingMissionId: string | null = null;
-  editingMilestoneId: string | null = null;
+  editingGoalId: string | null = null;
   editingTaskId: string | null = null;
 
   // Kanban drag and drop
@@ -100,17 +94,17 @@ export class PlannerComponent {
 
   // Kanban filters
   kanbanFilterCategory = signal<Category | 'all'>('all');
-  kanbanFilterMission = signal<string>('all');
+  kanbanFilterGoal = signal<string>('all');
 
   readonly filteredTasks = computed(() => {
     let tasks = this.plannerService.tasks();
     const cat = this.kanbanFilterCategory();
-    const missionId = this.kanbanFilterMission();
+    const goalId = this.kanbanFilterGoal();
     if (cat !== 'all') {
       tasks = tasks.filter((t) => t.category === cat);
     }
-    if (missionId !== 'all') {
-      tasks = tasks.filter((t) => t.missionId === missionId);
+    if (goalId !== 'all') {
+      tasks = tasks.filter((t) => t.goalId === goalId);
     }
     return tasks;
   });
@@ -127,34 +121,27 @@ export class PlannerComponent {
 
   // ─── Expand / Collapse ─────────────────────────────────────
 
-  toggleMission(id: string) {
-    this.expandedMissionId.set(
-      this.expandedMissionId() === id ? null : id
-    );
-    this.expandedMilestoneId.set(null);
-  }
-
-  toggleMilestone(id: string) {
-    this.expandedMilestoneId.set(
-      this.expandedMilestoneId() === id ? null : id
+  toggleGoal(id: string) {
+    this.expandedGoalId.set(
+      this.expandedGoalId() === id ? null : id
     );
   }
 
-  // ─── Mission CRUD ──────────────────────────────────────────
+  // ─── Goal CRUD ──────────────────────────────────────────
 
-  openMissionForm(mission?: Mission) {
-    if (mission) {
-      this.editingMissionId = mission.id;
-      this.missionForm = {
-        title: mission.title,
-        description: mission.description,
-        category: mission.category,
-        priority: mission.priority,
-        dueDate: mission.dueDate || '',
+  openGoalForm(goal?: Goal) {
+    if (goal) {
+      this.editingGoalId = goal.id;
+      this.goalForm = {
+        title: goal.title,
+        description: goal.description,
+        category: goal.category,
+        priority: goal.priority,
+        dueDate: goal.dueDate || '',
       };
     } else {
-      this.editingMissionId = null;
-      this.missionForm = {
+      this.editingGoalId = null;
+      this.goalForm = {
         title: '',
         description: '',
         category: 'work',
@@ -162,98 +149,47 @@ export class PlannerComponent {
         dueDate: '',
       };
     }
-    this.showMissionForm.set(true);
+    this.showGoalForm.set(true);
   }
 
-  saveMission() {
-    if (!this.missionForm.title.trim()) return;
-    if (this.editingMissionId) {
-      this.plannerService.updateMission(this.editingMissionId, {
-        title: this.missionForm.title.trim(),
-        description: this.missionForm.description.trim(),
-        category: this.missionForm.category,
-        priority: this.missionForm.priority,
-        dueDate: this.missionForm.dueDate || undefined,
+  saveGoal() {
+    if (!this.goalForm.title.trim()) return;
+    if (this.editingGoalId) {
+      this.plannerService.updateGoal(this.editingGoalId, {
+        title: this.goalForm.title.trim(),
+        description: this.goalForm.description.trim(),
+        category: this.goalForm.category,
+        priority: this.goalForm.priority,
+        dueDate: this.goalForm.dueDate || undefined,
       });
     } else {
-      this.plannerService.addMission({
-        title: this.missionForm.title.trim(),
-        description: this.missionForm.description.trim(),
-        category: this.missionForm.category,
-        priority: this.missionForm.priority,
-        dueDate: this.missionForm.dueDate || undefined,
+      this.plannerService.addGoal({
+        title: this.goalForm.title.trim(),
+        description: this.goalForm.description.trim(),
+        category: this.goalForm.category,
+        priority: this.goalForm.priority,
+        dueDate: this.goalForm.dueDate || undefined,
       });
     }
-    this.showMissionForm.set(false);
+    this.showGoalForm.set(false);
   }
 
-  deleteMission(id: string, event: Event) {
+  deleteGoal(id: string, event: Event) {
     event.stopPropagation();
-    if (confirm('Delete this mission and all its milestones/tasks?')) {
-      this.plannerService.deleteMission(id);
-      if (this.expandedMissionId() === id) {
-        this.expandedMissionId.set(null);
+    if (confirm('Delete this goal and all its tasks?')) {
+      this.plannerService.deleteGoal(id);
+      if (this.expandedGoalId() === id) {
+        this.expandedGoalId.set(null);
       }
-    }
-  }
-
-  // ─── Milestone CRUD ────────────────────────────────────────
-
-  openMilestoneForm(missionId: string, event: Event, milestone?: Milestone) {
-    event.stopPropagation();
-    this.formMissionId = missionId;
-    if (milestone) {
-      this.editingMilestoneId = milestone.id;
-      this.milestoneForm = {
-        title: milestone.title,
-        description: milestone.description,
-        dueDate: milestone.dueDate || '',
-      };
-    } else {
-      this.editingMilestoneId = null;
-      this.milestoneForm = { title: '', description: '', dueDate: '' };
-    }
-    this.showMilestoneForm.set(true);
-  }
-
-  saveMilestone() {
-    if (!this.milestoneForm.title.trim()) return;
-    if (this.editingMilestoneId) {
-      this.plannerService.updateMilestone(this.editingMilestoneId, {
-        title: this.milestoneForm.title.trim(),
-        description: this.milestoneForm.description.trim(),
-        dueDate: this.milestoneForm.dueDate || undefined,
-      });
-    } else {
-      this.plannerService.addMilestone({
-        missionId: this.formMissionId,
-        title: this.milestoneForm.title.trim(),
-        description: this.milestoneForm.description.trim(),
-        dueDate: this.milestoneForm.dueDate || undefined,
-      });
-    }
-    this.showMilestoneForm.set(false);
-  }
-
-  deleteMilestone(id: string, event: Event) {
-    event.stopPropagation();
-    if (confirm('Delete this milestone and all its tasks?')) {
-      this.plannerService.deleteMilestone(id);
     }
   }
 
   // ─── Task CRUD ─────────────────────────────────────────────
 
-  openTaskForm(
-    missionId: string,
-    milestoneId: string,
-    event: Event,
-    task?: Task
-  ) {
+  openTaskForm(goalId: string, event: Event, task?: Task) {
     event.stopPropagation();
-    this.formMissionId = missionId;
-    this.formMilestoneId = milestoneId;
-    const mission = this.plannerService.getMission(missionId);
+    this.formGoalId = goalId;
+    const goal = this.plannerService.getGoal(goalId);
     if (task) {
       this.editingTaskId = task.id;
       this.taskForm = {
@@ -268,7 +204,7 @@ export class PlannerComponent {
       this.taskForm = {
         title: '',
         description: '',
-        category: mission?.category || 'work',
+        category: goal?.category || 'work',
         priority: 'medium',
         dueDate: '',
       };
@@ -288,8 +224,7 @@ export class PlannerComponent {
       });
     } else {
       this.plannerService.addTask({
-        missionId: this.formMissionId,
-        milestoneId: this.formMilestoneId,
+        goalId: this.formGoalId,
         title: this.taskForm.title.trim(),
         description: this.taskForm.description.trim(),
         category: this.taskForm.category,
@@ -352,18 +287,13 @@ export class PlannerComponent {
 
   // ─── Helpers ───────────────────────────────────────────────
 
-  getMissionTitle(missionId: string): string {
-    return this.plannerService.getMission(missionId)?.title || '';
-  }
-
-  getMilestoneTitle(milestoneId: string): string {
-    return this.plannerService.getMilestone(milestoneId)?.title || '';
+  getGoalTitle(goalId: string): string {
+    return this.plannerService.getGoal(goalId)?.title || '';
   }
 
   closeModal(event: MouseEvent) {
     if ((event.target as HTMLElement).classList.contains('modal-overlay')) {
-      this.showMissionForm.set(false);
-      this.showMilestoneForm.set(false);
+      this.showGoalForm.set(false);
       this.showTaskForm.set(false);
       this.showIdeaForm.set(false);
       this.showApiKeyModal.set(false);
@@ -423,8 +353,8 @@ export class PlannerComponent {
     this.plannerService.deleteIdea(id);
   }
 
-  convertIdeaToMission(idea: Idea) {
-    this.plannerService.addMission({
+  convertIdeaToGoal(idea: Idea) {
+    this.plannerService.addGoal({
       title: idea.title,
       description: idea.notes || '',
       category: idea.category,
@@ -509,39 +439,30 @@ export class PlannerComponent {
 
   acceptPlan() {
     const plan = this.latestPlan();
-    if (!plan?.mission || !plan.milestones) return;
+    if (!plan?.goal || !plan.tasks) return;
 
-    const mission = this.plannerService.addMission({
-      title: plan.mission.title,
-      description: plan.mission.description,
-      category: plan.mission.category,
-      priority: plan.mission.priority,
+    const goal = this.plannerService.addGoal({
+      title: plan.goal.title,
+      description: plan.goal.description,
+      category: plan.goal.category,
+      priority: plan.goal.priority,
     });
 
-    for (const ms of plan.milestones) {
-      const milestone = this.plannerService.addMilestone({
-        missionId: mission.id,
-        title: ms.title,
-        description: ms.description,
+    for (const task of plan.tasks) {
+      this.plannerService.addTask({
+        goalId: goal.id,
+        title: task.title,
+        description: task.description,
+        category: task.category || plan.goal.category,
+        priority: task.priority,
       });
-
-      for (const task of ms.tasks) {
-        this.plannerService.addTask({
-          missionId: mission.id,
-          milestoneId: milestone.id,
-          title: task.title,
-          description: task.description,
-          category: task.category || plan.mission.category,
-          priority: task.priority,
-        });
-      }
     }
 
     this.latestPlan.set(null);
     this.aiService.clearConversation();
     this.brainstormMessages.set([]);
     this.activeTab.set('overview');
-    this.expandedMissionId.set(mission.id);
+    this.expandedGoalId.set(goal.id);
   }
 
   clearBrainstorm() {

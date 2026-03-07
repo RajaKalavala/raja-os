@@ -9,30 +9,17 @@ export type Category =
 
 export type Priority = 'critical' | 'high' | 'medium' | 'low';
 
-export type MissionStatus = 'active' | 'completed' | 'on-hold' | 'archived';
-
-export type MilestoneStatus = 'active' | 'completed' | 'on-hold';
+export type GoalStatus = 'active' | 'completed' | 'on-hold' | 'archived';
 
 export type TaskStatus = 'backlog' | 'todo' | 'in-progress' | 'done';
 
-export interface Mission {
+export interface Goal {
   id: string;
   title: string;
   description: string;
   category: Category;
   priority: Priority;
-  status: MissionStatus;
-  createdAt: string;
-  updatedAt: string;
-  dueDate?: string;
-}
-
-export interface Milestone {
-  id: string;
-  missionId: string;
-  title: string;
-  description: string;
-  status: MilestoneStatus;
+  status: GoalStatus;
   createdAt: string;
   updatedAt: string;
   dueDate?: string;
@@ -40,8 +27,7 @@ export interface Milestone {
 
 export interface Task {
   id: string;
-  milestoneId: string;
-  missionId: string;
+  goalId: string;
   title: string;
   description: string;
   category: Category;
@@ -63,21 +49,12 @@ export interface Idea {
 }
 
 export interface PlannerData {
-  missions: Mission[];
-  milestones: Milestone[];
+  goals: Goal[];
   tasks: Task[];
   ideas: Idea[];
 }
 
-export interface MissionWithProgress extends Mission {
-  totalMilestones: number;
-  completedMilestones: number;
-  totalTasks: number;
-  completedTasks: number;
-  progress: number;
-}
-
-export interface MilestoneWithProgress extends Milestone {
+export interface GoalWithProgress extends Goal {
   totalTasks: number;
   completedTasks: number;
   progress: number;
@@ -112,21 +89,17 @@ export interface AiPlanResponse {
   type: 'questions' | 'plan';
   message: string;
   questions?: string[];
-  mission?: {
+  goal?: {
     title: string;
     description: string;
     category: Category;
     priority: Priority;
   };
-  milestones?: {
+  tasks?: {
     title: string;
     description: string;
-    tasks: {
-      title: string;
-      description: string;
-      priority: Priority;
-      category: Category;
-    }[];
+    priority: Priority;
+    category: Category;
   }[];
 }
 
