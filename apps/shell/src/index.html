@@ -4,8 +4,29 @@
     <meta charset="utf-8" />
     <title>Raja Kalavala</title>
     <base href="/" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content="RajaOS - Personal Operating System by Raja Kalavala" />
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.webmanifest" />
+    <meta name="theme-color" content="#22c55e" />
+
+    <!-- iOS PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="RajaOS" />
+    <link rel="apple-touch-icon" href="icons/icon-180x180.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="128x128" href="icons/icon-128x128.png" />
+
+    <!-- iOS Splash Screens (most common sizes) -->
+    <link rel="apple-touch-startup-image" href="icons/icon-512x512.png" />
+
+    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+    <!-- Theme init (prevents FOUC) -->
     <script>
       (function () {
         var stored = localStorage.getItem('raja-os-theme');
