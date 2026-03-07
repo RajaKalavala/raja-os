@@ -47,7 +47,7 @@ export class PlannerComponent {
   apiKeyInput = '';
 
   // View state
-  activeTab = signal<'overview' | 'board' | 'ideas' | 'brainstorm'>('overview');
+  activeTab = signal<'overview' | 'goals' | 'board' | 'ideas' | 'brainstorm'>('overview');
   expandedGoalId = signal<string | null>(null);
 
   // Modal state
@@ -109,13 +109,53 @@ export class PlannerComponent {
     return tasks;
   });
 
+  // Overview computed
+  readonly activeGoals = computed(() =>
+    this.goalsWithProgress().filter((g) => g.status === 'active' || g.status === 'on-hold')
+  );
+
+  readonly recentTasks = computed(() => {
+    const tasks = this.plannerService.tasks();
+    return [...tasks]
+      .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+      .slice(0, 5);
+  });
+
+  readonly inProgressGoals = computed(() =>
+    this.goalsWithProgress().filter((g) => g.status === 'active')
+  );
+
+  readonly plannedGoals = computed(() =>
+    this.goalsWithProgress().filter((g) => g.status === 'on-hold')
+  );
+
+  readonly completedGoals = computed(() =>
+    this.goalsWithProgress().filter((g) => g.status === 'completed')
+  );
+
+  readonly categoryBreakdown = computed(() => {
+    const tasks = this.plannerService.tasks();
+    const breakdown: { category: Category; count: number; done: number }[] = [];
+    for (const cat of this.categories) {
+      const catTasks = tasks.filter((t) => t.category === cat);
+      if (catTasks.length > 0) {
+        breakdown.push({
+          category: cat,
+          count: catTasks.length,
+          done: catTasks.filter((t) => t.status === 'done').length,
+        });
+      }
+    }
+    return breakdown.sort((a, b) => b.count - a.count);
+  });
+
   tasksByStatus(status: TaskStatus): Task[] {
     return this.filteredTasks().filter((t) => t.status === status);
   }
 
   // ─── Tab ───────────────────────────────────────────────────
 
-  setTab(tab: 'overview' | 'board' | 'ideas' | 'brainstorm') {
+  setTab(tab: 'overview' | 'goals' | 'board' | 'ideas' | 'brainstorm') {
     this.activeTab.set(tab);
   }
 
@@ -361,7 +401,7 @@ export class PlannerComponent {
       priority: idea.priority,
     });
     this.plannerService.deleteIdea(idea.id);
-    this.activeTab.set('overview');
+    this.activeTab.set('goals');
   }
 
   sendIdeaToBrainstorm(idea: Idea) {
@@ -461,7 +501,7 @@ export class PlannerComponent {
     this.latestPlan.set(null);
     this.aiService.clearConversation();
     this.brainstormMessages.set([]);
-    this.activeTab.set('overview');
+    this.activeTab.set('goals');
     this.expandedGoalId.set(goal.id);
   }
 

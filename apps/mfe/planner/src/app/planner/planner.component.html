@@ -6,13 +6,21 @@
         <h1 class="planner-title">My Planner</h1>
         <p class="planner-subtitle">Plan, track, and conquer your goals</p>
       </div>
-      <button class="btn-primary" (click)="openGoalForm()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <line x1="12" y1="5" x2="12" y2="19"></line>
-          <line x1="5" y1="12" x2="19" y2="12"></line>
-        </svg>
-        New Goal
-      </button>
+      <div class="header-actions">
+        <button class="btn-primary" (click)="openGoalForm()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          New Goal
+        </button>
+        <button class="btn-secondary" (click)="openIdeaForm()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+          </svg>
+          New Idea
+        </button>
+      </div>
     </div>
 
     <!-- Tabs -->
@@ -26,13 +34,14 @@
         </svg>
         Overview
       </button>
-      <button class="tab" [class.active]="activeTab() === 'board'" (click)="setTab('board')">
+      <button class="tab" [class.active]="activeTab() === 'goals'" (click)="setTab('goals')">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="4" y="3" width="4" height="18" rx="1"></rect>
-          <rect x="10" y="3" width="4" height="12" rx="1"></rect>
-          <rect x="16" y="3" width="4" height="15" rx="1"></rect>
+          <circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>
         </svg>
-        Board
+        Goals
+        @if (stats().goals.total > 0) {
+          <span class="tab-count">{{ stats().goals.total }}</span>
+        }
       </button>
       <button class="tab" [class.active]="activeTab() === 'ideas'" (click)="setTab('ideas')">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -43,6 +52,14 @@
           <span class="tab-count">{{ stats().ideas.total }}</span>
         }
       </button>
+      <button class="tab" [class.active]="activeTab() === 'board'" (click)="setTab('board')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="4" y="3" width="4" height="18" rx="1"></rect>
+          <rect x="10" y="3" width="4" height="12" rx="1"></rect>
+          <rect x="16" y="3" width="4" height="15" rx="1"></rect>
+        </svg>
+        Board
+      </button>
       <button class="tab tab-ai" [class.active]="activeTab() === 'brainstorm'" (click)="setTab('brainstorm')">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
@@ -52,292 +69,398 @@
     </div>
   </div>
 
-  <!-- ─── SUMMARY CARDS ──────────────────────────────────── -->
-  <div class="summary-grid">
-    <div class="summary-card">
-      <div class="card-icon icon-target">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>
-        </svg>
-      </div>
-      <div class="card-content">
-        <span class="card-count">{{ stats().goals.total }}</span>
-        <span class="card-label">Goals</span>
-        <span class="card-description">
-          @if (stats().goals.total > 0) {
-            {{ stats().goals.active }} active, {{ stats().goals.completed }} done
-          } @else { High-level goals &amp; projects }
-        </span>
-      </div>
-    </div>
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- ─── OVERVIEW TAB ────────────────────────────────────────── -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  @if (activeTab() === 'overview') {
+    <!-- Summary Cards (clickable) -->
+    <div class="summary-grid">
+      <button class="summary-card clickable" (click)="setTab('goals')">
+        <div class="card-icon icon-target">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>
+          </svg>
+        </div>
+        <div class="card-content">
+          <span class="card-count">{{ stats().goals.total }}</span>
+          <span class="card-label">Goals</span>
+          <span class="card-description">
+            @if (stats().goals.total > 0) {
+              {{ stats().goals.active }} active, {{ stats().goals.completed }} done
+            } @else { Set your targets }
+          </span>
+        </div>
+      </button>
 
-    <div class="summary-card">
-      <div class="card-icon icon-check">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-          <polyline points="22 4 12 14.01 9 11.01"></polyline>
-        </svg>
-      </div>
-      <div class="card-content">
-        <span class="card-count">{{ stats().tasks.total }}</span>
-        <span class="card-label">Tasks</span>
-        <span class="card-description">
-          @if (stats().tasks.total > 0) {
-            {{ stats().tasks.done }}/{{ stats().tasks.total }} completed
-          } @else { Actionable items to complete }
-        </span>
-      </div>
-    </div>
+      <button class="summary-card clickable" (click)="setTab('ideas')">
+        <div class="card-icon icon-idea">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+          </svg>
+        </div>
+        <div class="card-content">
+          <span class="card-count">{{ stats().ideas.total }}</span>
+          <span class="card-label">Ideas</span>
+          <span class="card-description">Capture &amp; refine</span>
+        </div>
+      </button>
 
-    <div class="summary-card progress-card">
-      <div class="card-icon icon-progress">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="18" y1="20" x2="18" y2="10"></line>
-          <line x1="12" y1="20" x2="12" y2="4"></line>
-          <line x1="6" y1="20" x2="6" y2="14"></line>
-        </svg>
-      </div>
-      <div class="card-content">
-        <span class="card-count">{{ stats().overallProgress }}%</span>
-        <span class="card-label">Progress</span>
-        <div class="progress-bar-container">
-          <div class="progress-bar" [style.width.%]="stats().overallProgress"></div>
+      <button class="summary-card clickable" (click)="setTab('board')">
+        <div class="card-icon icon-check">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        </div>
+        <div class="card-content">
+          <span class="card-count">{{ stats().tasks.total }}</span>
+          <span class="card-label">Tasks</span>
+          <span class="card-description">
+            @if (stats().tasks.total > 0) {
+              {{ stats().tasks.done }}/{{ stats().tasks.total }} completed
+            } @else { Actionable items }
+          </span>
+        </div>
+      </button>
+
+      <div class="summary-card progress-card">
+        <div class="card-icon icon-progress">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
+        </div>
+        <div class="card-content">
+          <span class="card-count">{{ stats().overallProgress }}%</span>
+          <span class="card-label">Progress</span>
+          <div class="progress-bar-container">
+            <div class="progress-bar" [style.width.%]="stats().overallProgress"></div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- ─── OVERVIEW TAB ───────────────────────────────────── -->
-  @if (activeTab() === 'overview') {
+    <!-- Overview Metrics Grid -->
+    <div class="overview-grid">
+      <!-- Task Status Breakdown -->
+      <div class="overview-panel">
+        <div class="panel-header">
+          <h3>Task Status</h3>
+          <button class="btn-small" (click)="setTab('board')">View Board</button>
+        </div>
+        <div class="status-bars">
+          @for (status of taskStatuses; track status) {
+            <div class="status-bar-row">
+              <div class="status-bar-label">
+                <span class="status-dot" [style.background]="taskStatusConfig[status].color"></span>
+                <span>{{ taskStatusConfig[status].label }}</span>
+              </div>
+              <div class="status-bar-track">
+                <div class="status-bar-fill" [style.background]="taskStatusConfig[status].color"
+                  [style.width.%]="stats().tasks.total > 0 ? (tasksByStatus(status).length / stats().tasks.total * 100) : 0">
+                </div>
+              </div>
+              <span class="status-bar-count">{{ tasksByStatus(status).length }}</span>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Category Breakdown -->
+      <div class="overview-panel">
+        <div class="panel-header">
+          <h3>By Category</h3>
+        </div>
+        @if (categoryBreakdown().length === 0) {
+          <p class="no-items">No tasks yet</p>
+        } @else {
+          <div class="category-list">
+            @for (item of categoryBreakdown(); track item.category) {
+              <div class="category-row">
+                <span class="badge category-badge"
+                  [style.color]="categoryConfig[item.category].color"
+                  [style.background]="categoryConfig[item.category].bgColor">
+                  {{ categoryConfig[item.category].label }}
+                </span>
+                <span class="category-stat">{{ item.done }}/{{ item.count }}</span>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="overview-panel wide">
+        <div class="panel-header">
+          <h3>Recent Tasks</h3>
+          <button class="btn-small" (click)="setTab('goals')">View All Goals</button>
+        </div>
+        @if (recentTasks().length === 0) {
+          <p class="no-items">No tasks yet. Create a goal and add tasks to get started.</p>
+        } @else {
+          <div class="recent-tasks-list">
+            @for (task of recentTasks(); track task.id) {
+              <div class="recent-task-row">
+                <div class="recent-task-left">
+                  <span class="status-dot" [style.background]="taskStatusConfig[task.status].color"></span>
+                  <span class="recent-task-title" [class.task-done]="task.status === 'done'">{{ task.title }}</span>
+                </div>
+                <div class="recent-task-right">
+                  <span class="badge category-badge small"
+                    [style.color]="categoryConfig[task.category].color"
+                    [style.background]="categoryConfig[task.category].bgColor">
+                    {{ categoryConfig[task.category].label }}
+                  </span>
+                  <span class="recent-task-goal">{{ getGoalTitle(task.goalId) }}</span>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- ─── GOALS TAB ──────────────────────────────────────────── -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  @if (activeTab() === 'goals') {
     @if (goalsWithProgress().length === 0) {
       <div class="empty-state">
         <div class="empty-icon">
           <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-            <path d="M9 14l2 2 4-4"></path>
+            <circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>
           </svg>
         </div>
-        <h2>Ready to plan your goals?</h2>
+        <h2>Ready to set your goals?</h2>
         <p>Create your first goal to start organizing your projects, personal targets, and tasks.</p>
         <button class="btn-primary" (click)="openGoalForm()">Create First Goal</button>
       </div>
     } @else {
-      <div class="missions-list">
-        @for (goal of goalsWithProgress(); track goal.id) {
-          <div class="mission-card" [class.expanded]="expandedGoalId() === goal.id">
-            <!-- Goal Header -->
-            <div class="mission-header" role="button" tabindex="0" (click)="toggleGoal(goal.id)" (keydown.enter)="toggleGoal(goal.id)">
-              <div class="mission-header-left">
-                <span class="expand-icon" [class.rotated]="expandedGoalId() === goal.id">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                  </svg>
-                </span>
-                <span class="badge category-badge"
-                  [style.color]="categoryConfig[goal.category].color"
-                  [style.background]="categoryConfig[goal.category].bgColor">
-                  {{ categoryConfig[goal.category].label }}
-                </span>
-                <span class="badge priority-badge"
-                  [style.color]="priorityConfig[goal.priority].color"
-                  [style.background]="priorityConfig[goal.priority].bgColor">
-                  {{ priorityConfig[goal.priority].label }}
-                </span>
-                <h3 class="mission-title">{{ goal.title }}</h3>
-              </div>
-              <div class="mission-header-right">
-                <div class="mission-stats">
-                  <span class="stat">{{ goal.completedTasks }}/{{ goal.totalTasks }} tasks</span>
+      <!-- In Progress Goals -->
+      @if (inProgressGoals().length > 0) {
+        <div class="goals-section">
+          <h3 class="goals-section-title">
+            <span class="section-dot active"></span>
+            In Progress <span class="section-count">{{ inProgressGoals().length }}</span>
+          </h3>
+          <div class="missions-list">
+            @for (goal of inProgressGoals(); track goal.id) {
+              <div class="mission-card" [class.expanded]="expandedGoalId() === goal.id">
+              <div class="mission-header" role="button" tabindex="0" (click)="toggleGoal(goal.id)" (keydown.enter)="toggleGoal(goal.id)">
+                <div class="mission-header-left">
+                  <span class="expand-icon" [class.rotated]="expandedGoalId() === goal.id">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                  </span>
+                  <span class="badge category-badge" [style.color]="categoryConfig[goal.category].color" [style.background]="categoryConfig[goal.category].bgColor">{{ categoryConfig[goal.category].label }}</span>
+                  <span class="badge priority-badge" [style.color]="priorityConfig[goal.priority].color" [style.background]="priorityConfig[goal.priority].bgColor">{{ priorityConfig[goal.priority].label }}</span>
+                  <h3 class="mission-title">{{ goal.title }}</h3>
                 </div>
-                <div class="mission-progress-mini">
-                  <div class="progress-bar-container mini">
-                    <div class="progress-bar" [style.width.%]="goal.progress"></div>
+                <div class="mission-header-right">
+                  <div class="mission-stats"><span class="stat">{{ goal.completedTasks }}/{{ goal.totalTasks }} tasks</span></div>
+                  <div class="mission-progress-mini">
+                    <div class="progress-bar-container mini"><div class="progress-bar" [style.width.%]="goal.progress"></div></div>
+                    <span class="progress-text">{{ goal.progress }}%</span>
                   </div>
-                  <span class="progress-text">{{ goal.progress }}%</span>
-                </div>
-                <div class="mission-actions">
-                  <button class="btn-icon" title="Edit" (click)="openGoalForm(goal); $event.stopPropagation()">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                    </svg>
-                  </button>
-                  <button class="btn-icon btn-icon-danger" title="Delete" (click)="deleteGoal(goal.id, $event)">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <polyline points="3 6 5 6 21 6"></polyline>
-                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                    </svg>
-                  </button>
+                  <div class="mission-actions">
+                    <button class="btn-icon" title="Edit" (click)="openGoalForm(goal); $event.stopPropagation()">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                    </button>
+                    <button class="btn-icon btn-icon-danger" title="Delete" (click)="deleteGoal(goal.id, $event)">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <!-- Goal Body (Expanded) — Tasks directly under goal -->
-            @if (expandedGoalId() === goal.id) {
-              <div class="mission-body">
-                @if (goal.description) {
-                  <p class="mission-description">{{ goal.description }}</p>
-                }
-
-                <div class="section-header">
-                  <h4>Tasks</h4>
-                  <button class="btn-small" (click)="openTaskForm(goal.id, $event)">+ Add Task</button>
-                </div>
-
-                @for (task of plannerService.getTasksForGoal(goal.id); track task.id) {
-                  <div class="task-item">
-                    <div class="task-item-left">
-                      <span class="badge category-badge small"
-                        [style.color]="categoryConfig[task.category].color"
-                        [style.background]="categoryConfig[task.category].bgColor">
-                        {{ categoryConfig[task.category].label }}
-                      </span>
-                      <span class="badge priority-badge small"
-                        [style.color]="priorityConfig[task.priority].color"
-                        [style.background]="priorityConfig[task.priority].bgColor">
-                        {{ priorityConfig[task.priority].label }}
-                      </span>
-                      <span class="task-title" [class.task-done]="task.status === 'done'">{{ task.title }}</span>
+              @if (expandedGoalId() === goal.id) {
+                <div class="mission-body">
+                  @if (goal.description) { <p class="mission-description">{{ goal.description }}</p> }
+                  <div class="section-header">
+                    <h4>Tasks</h4>
+                    <button class="btn-small" (click)="openTaskForm(goal.id, $event)">+ Add Task</button>
+                  </div>
+                  @for (task of plannerService.getTasksForGoal(goal.id); track task.id) {
+                    <div class="task-item">
+                      <div class="task-item-left">
+                        <span class="badge category-badge small" [style.color]="categoryConfig[task.category].color" [style.background]="categoryConfig[task.category].bgColor">{{ categoryConfig[task.category].label }}</span>
+                        <span class="badge priority-badge small" [style.color]="priorityConfig[task.priority].color" [style.background]="priorityConfig[task.priority].bgColor">{{ priorityConfig[task.priority].label }}</span>
+                        <span class="task-title" [class.task-done]="task.status === 'done'">{{ task.title }}</span>
+                      </div>
+                      <div class="task-item-right">
+                        <select class="status-select" [ngModel]="task.status" (ngModelChange)="onTaskStatusChange(task.id, $event)" [style.color]="taskStatusConfig[task.status].color">
+                          @for (s of taskStatuses; track s) { <option [value]="s">{{ taskStatusConfig[s].label }}</option> }
+                        </select>
+                        <button class="btn-icon" title="Edit" (click)="openTaskForm(goal.id, $event, task)">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                        </button>
+                        <button class="btn-icon btn-icon-danger" title="Delete" (click)="deleteTask(task.id, $event)">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        </button>
+                      </div>
                     </div>
-                    <div class="task-item-right">
-                      <select class="status-select"
-                        [ngModel]="task.status"
-                        (ngModelChange)="onTaskStatusChange(task.id, $event)"
-                        [style.color]="taskStatusConfig[task.status].color">
-                        @for (s of taskStatuses; track s) {
-                          <option [value]="s">{{ taskStatusConfig[s].label }}</option>
-                        }
-                      </select>
-                      <button class="btn-icon" title="Edit" (click)="openTaskForm(goal.id, $event, task)">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                        </svg>
-                      </button>
-                      <button class="btn-icon btn-icon-danger" title="Delete" (click)="deleteTask(task.id, $event)">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                          <polyline points="3 6 5 6 21 6"></polyline>
-                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                } @empty {
-                  <p class="no-items">No tasks yet. Add one to get started.</p>
-                }
-              </div>
-            }
-          </div>
-        }
-      </div>
-    }
-  }
-
-  <!-- ─── BOARD TAB (KANBAN) ─────────────────────────────── -->
-  @if (activeTab() === 'board') {
-    @if (stats().tasks.total === 0) {
-      <div class="empty-state">
-        <div class="empty-icon">
-          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="4" y="3" width="4" height="18" rx="1"></rect>
-            <rect x="10" y="3" width="4" height="12" rx="1"></rect>
-            <rect x="16" y="3" width="4" height="15" rx="1"></rect>
-          </svg>
-        </div>
-        <h2>No tasks on the board yet</h2>
-        <p>Switch to Overview and create goals with tasks. They'll appear here for drag-and-drop status management.</p>
-      </div>
-    } @else {
-      <!-- Filters -->
-      <div class="board-filters">
-        <div class="filter-group">
-          <label for="filter-category">Category</label>
-          <select id="filter-category" [ngModel]="kanbanFilterCategory()" (ngModelChange)="kanbanFilterCategory.set($event)">
-            <option value="all">All Categories</option>
-            @for (cat of categories; track cat) {
-              <option [value]="cat">{{ categoryConfig[cat].label }}</option>
-            }
-          </select>
-        </div>
-        <div class="filter-group">
-          <label for="filter-goal">Goal</label>
-          <select id="filter-goal" [ngModel]="kanbanFilterGoal()" (ngModelChange)="kanbanFilterGoal.set($event)">
-            <option value="all">All Goals</option>
-            @for (goal of plannerService.goals(); track goal.id) {
-              <option [value]="goal.id">{{ goal.title }}</option>
-            }
-          </select>
-        </div>
-      </div>
-
-      <!-- Kanban Grid -->
-      <div class="kanban-grid">
-        @for (status of taskStatuses; track status) {
-          <div class="kanban-column"
-            [class.drag-over]="dragOverColumn() === status"
-            (dragover)="onDragOver($event, status)"
-            (dragleave)="onDragLeave(status)"
-            (drop)="onDrop($event, status)">
-            <div class="column-header">
-              <div class="column-header-dot" [style.background]="taskStatusConfig[status].color"></div>
-              <span class="column-title">{{ taskStatusConfig[status].label }}</span>
-              <span class="column-count">{{ tasksByStatus(status).length }}</span>
-            </div>
-            <div class="column-body">
-              @for (task of tasksByStatus(status); track task.id) {
-                <div class="kanban-card"
-                  draggable="true"
-                  [class.dragging]="draggedTaskId() === task.id"
-                  (dragstart)="onDragStart($event, task.id)"
-                  (dragend)="onDragEnd()">
-                  <div class="kanban-card-top">
-                    <span class="badge category-badge small"
-                      [style.color]="categoryConfig[task.category].color"
-                      [style.background]="categoryConfig[task.category].bgColor">
-                      {{ categoryConfig[task.category].label }}
-                    </span>
-                    <span class="badge priority-badge small"
-                      [style.color]="priorityConfig[task.priority].color"
-                      [style.background]="priorityConfig[task.priority].bgColor">
-                      {{ priorityConfig[task.priority].label }}
-                    </span>
-                  </div>
-                  <span class="kanban-card-title">{{ task.title }}</span>
-                  <div class="kanban-card-footer">
-                    <span class="kanban-card-parent">
-                      {{ getGoalTitle(task.goalId) }}
-                    </span>
-                  </div>
-                </div>
-              } @empty {
-                <div class="column-empty">
-                  <span>No tasks</span>
+                  } @empty { <p class="no-items">No tasks yet. Add one to get started.</p> }
                 </div>
               }
             </div>
+            }
           </div>
-        }
-      </div>
+        </div>
+      }
+
+      <!-- Planned / On Hold Goals -->
+      @if (plannedGoals().length > 0) {
+        <div class="goals-section">
+          <h3 class="goals-section-title">
+            <span class="section-dot planned"></span>
+            Planned <span class="section-count">{{ plannedGoals().length }}</span>
+          </h3>
+          <div class="missions-list">
+            @for (goal of plannedGoals(); track goal.id) {
+              <div class="mission-card" [class.expanded]="expandedGoalId() === goal.id">
+              <div class="mission-header" role="button" tabindex="0" (click)="toggleGoal(goal.id)" (keydown.enter)="toggleGoal(goal.id)">
+                <div class="mission-header-left">
+                  <span class="expand-icon" [class.rotated]="expandedGoalId() === goal.id">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                  </span>
+                  <span class="badge category-badge" [style.color]="categoryConfig[goal.category].color" [style.background]="categoryConfig[goal.category].bgColor">{{ categoryConfig[goal.category].label }}</span>
+                  <span class="badge priority-badge" [style.color]="priorityConfig[goal.priority].color" [style.background]="priorityConfig[goal.priority].bgColor">{{ priorityConfig[goal.priority].label }}</span>
+                  <h3 class="mission-title">{{ goal.title }}</h3>
+                </div>
+                <div class="mission-header-right">
+                  <div class="mission-stats"><span class="stat">{{ goal.completedTasks }}/{{ goal.totalTasks }} tasks</span></div>
+                  <div class="mission-progress-mini">
+                    <div class="progress-bar-container mini"><div class="progress-bar" [style.width.%]="goal.progress"></div></div>
+                    <span class="progress-text">{{ goal.progress }}%</span>
+                  </div>
+                  <div class="mission-actions">
+                    <button class="btn-icon" title="Edit" (click)="openGoalForm(goal); $event.stopPropagation()">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                    </button>
+                    <button class="btn-icon btn-icon-danger" title="Delete" (click)="deleteGoal(goal.id, $event)">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              @if (expandedGoalId() === goal.id) {
+                <div class="mission-body">
+                  @if (goal.description) { <p class="mission-description">{{ goal.description }}</p> }
+                  <div class="section-header">
+                    <h4>Tasks</h4>
+                    <button class="btn-small" (click)="openTaskForm(goal.id, $event)">+ Add Task</button>
+                  </div>
+                  @for (task of plannerService.getTasksForGoal(goal.id); track task.id) {
+                    <div class="task-item">
+                      <div class="task-item-left">
+                        <span class="badge category-badge small" [style.color]="categoryConfig[task.category].color" [style.background]="categoryConfig[task.category].bgColor">{{ categoryConfig[task.category].label }}</span>
+                        <span class="badge priority-badge small" [style.color]="priorityConfig[task.priority].color" [style.background]="priorityConfig[task.priority].bgColor">{{ priorityConfig[task.priority].label }}</span>
+                        <span class="task-title" [class.task-done]="task.status === 'done'">{{ task.title }}</span>
+                      </div>
+                      <div class="task-item-right">
+                        <select class="status-select" [ngModel]="task.status" (ngModelChange)="onTaskStatusChange(task.id, $event)" [style.color]="taskStatusConfig[task.status].color">
+                          @for (s of taskStatuses; track s) { <option [value]="s">{{ taskStatusConfig[s].label }}</option> }
+                        </select>
+                        <button class="btn-icon" title="Edit" (click)="openTaskForm(goal.id, $event, task)">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                        </button>
+                        <button class="btn-icon btn-icon-danger" title="Delete" (click)="deleteTask(task.id, $event)">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        </button>
+                      </div>
+                    </div>
+                  } @empty { <p class="no-items">No tasks yet. Add one to get started.</p> }
+                </div>
+              }
+            </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Completed Goals -->
+      @if (completedGoals().length > 0) {
+        <div class="goals-section">
+          <h3 class="goals-section-title">
+            <span class="section-dot completed"></span>
+            Completed <span class="section-count">{{ completedGoals().length }}</span>
+          </h3>
+          <div class="missions-list">
+            @for (goal of completedGoals(); track goal.id) {
+              <div class="mission-card" [class.expanded]="expandedGoalId() === goal.id">
+              <div class="mission-header" role="button" tabindex="0" (click)="toggleGoal(goal.id)" (keydown.enter)="toggleGoal(goal.id)">
+                <div class="mission-header-left">
+                  <span class="expand-icon" [class.rotated]="expandedGoalId() === goal.id">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                  </span>
+                  <span class="badge category-badge" [style.color]="categoryConfig[goal.category].color" [style.background]="categoryConfig[goal.category].bgColor">{{ categoryConfig[goal.category].label }}</span>
+                  <span class="badge priority-badge" [style.color]="priorityConfig[goal.priority].color" [style.background]="priorityConfig[goal.priority].bgColor">{{ priorityConfig[goal.priority].label }}</span>
+                  <h3 class="mission-title">{{ goal.title }}</h3>
+                </div>
+                <div class="mission-header-right">
+                  <div class="mission-stats"><span class="stat">{{ goal.completedTasks }}/{{ goal.totalTasks }} tasks</span></div>
+                  <div class="mission-progress-mini">
+                    <div class="progress-bar-container mini"><div class="progress-bar" [style.width.%]="goal.progress"></div></div>
+                    <span class="progress-text">{{ goal.progress }}%</span>
+                  </div>
+                  <div class="mission-actions">
+                    <button class="btn-icon" title="Edit" (click)="openGoalForm(goal); $event.stopPropagation()">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                    </button>
+                    <button class="btn-icon btn-icon-danger" title="Delete" (click)="deleteGoal(goal.id, $event)">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              @if (expandedGoalId() === goal.id) {
+                <div class="mission-body">
+                  @if (goal.description) { <p class="mission-description">{{ goal.description }}</p> }
+                  <div class="section-header">
+                    <h4>Tasks</h4>
+                    <button class="btn-small" (click)="openTaskForm(goal.id, $event)">+ Add Task</button>
+                  </div>
+                  @for (task of plannerService.getTasksForGoal(goal.id); track task.id) {
+                    <div class="task-item">
+                      <div class="task-item-left">
+                        <span class="badge category-badge small" [style.color]="categoryConfig[task.category].color" [style.background]="categoryConfig[task.category].bgColor">{{ categoryConfig[task.category].label }}</span>
+                        <span class="badge priority-badge small" [style.color]="priorityConfig[task.priority].color" [style.background]="priorityConfig[task.priority].bgColor">{{ priorityConfig[task.priority].label }}</span>
+                        <span class="task-title" [class.task-done]="task.status === 'done'">{{ task.title }}</span>
+                      </div>
+                      <div class="task-item-right">
+                        <select class="status-select" [ngModel]="task.status" (ngModelChange)="onTaskStatusChange(task.id, $event)" [style.color]="taskStatusConfig[task.status].color">
+                          @for (s of taskStatuses; track s) { <option [value]="s">{{ taskStatusConfig[s].label }}</option> }
+                        </select>
+                        <button class="btn-icon" title="Edit" (click)="openTaskForm(goal.id, $event, task)">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                        </button>
+                        <button class="btn-icon btn-icon-danger" title="Delete" (click)="deleteTask(task.id, $event)">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        </button>
+                      </div>
+                    </div>
+                  } @empty { <p class="no-items">No tasks yet. Add one to get started.</p> }
+                </div>
+              }
+            </div>
+            }
+          </div>
+        </div>
+      }
     }
   }
 
-  <!-- ─── IDEAS TAB ────────────────────────────────────────── -->
+  <!-- Goal Card Template -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- ─── IDEAS TAB ───────────────────────────────────────────── -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
   @if (activeTab() === 'ideas') {
     <div class="ideas-container">
-      <!-- Quick Add -->
       <div class="quick-add">
-        <input
-          type="text"
-          class="quick-add-input"
-          [(ngModel)]="newIdeaTitle"
-          placeholder="Capture an idea..."
-          (keydown.enter)="addQuickIdea()"
-        />
+        <input type="text" class="quick-add-input" [(ngModel)]="newIdeaTitle" placeholder="Capture an idea..." (keydown.enter)="addQuickIdea()" />
         <button class="btn-primary" (click)="addQuickIdea()" [disabled]="!newIdeaTitle.trim()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <line x1="12" y1="5" x2="12" y2="19"></line>
-            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line>
           </svg>
           Add
         </button>
@@ -350,7 +473,6 @@
         </button>
       </div>
 
-      <!-- Ideas List -->
       @if (plannerService.ideas().length === 0) {
         <div class="empty-state">
           <div class="empty-icon">
@@ -359,7 +481,7 @@
             </svg>
           </div>
           <h2>No ideas yet</h2>
-          <p>Quickly capture ideas as they come to mind. When they're ready, convert them into goals or send them to AI Brainstorm for planning.</p>
+          <p>Quickly capture ideas as they come to mind. Convert them into goals or send them to AI Brainstorm.</p>
         </div>
       } @else {
         <div class="ideas-list">
@@ -417,168 +539,91 @@
     </div>
   }
 
-  <!-- ─── IDEA FORM MODAL ──────────────────────────────────── -->
-  @if (showIdeaForm()) {
-    <div class="modal-overlay" role="dialog" tabindex="-1" (click)="closeModal($event)" (keydown.escape)="showIdeaForm.set(false)">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2>{{ editingIdeaId ? 'Edit' : 'New' }} Idea</h2>
-          <button class="btn-icon" (click)="showIdeaForm.set(false)">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- ─── BOARD TAB (KANBAN) ──────────────────────────────────── -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  @if (activeTab() === 'board') {
+    @if (stats().tasks.total === 0) {
+      <div class="empty-state">
+        <div class="empty-icon">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="3" width="4" height="18" rx="1"></rect>
+            <rect x="10" y="3" width="4" height="12" rx="1"></rect>
+            <rect x="16" y="3" width="4" height="15" rx="1"></rect>
+          </svg>
         </div>
-        <form (ngSubmit)="saveIdea()">
-          <div class="form-group">
-            <label for="i-title">Title <span class="required">*</span></label>
-            <input id="i-title" type="text" [(ngModel)]="ideaForm.title" name="title" placeholder="e.g., Build a CLI tool for..." required>
-          </div>
-          <div class="form-group">
-            <label for="i-notes">Notes</label>
-            <textarea id="i-notes" [(ngModel)]="ideaForm.notes" name="notes" rows="3" placeholder="Any details or context..."></textarea>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="i-cat">Category</label>
-              <select id="i-cat" [(ngModel)]="ideaForm.category" name="category">
-                @for (cat of categories; track cat) {
-                  <option [value]="cat">{{ categoryConfig[cat].label }}</option>
-                }
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="i-pri">Priority</label>
-              <select id="i-pri" [(ngModel)]="ideaForm.priority" name="priority">
-                @for (pri of priorities; track pri) {
-                  <option [value]="pri">{{ priorityConfig[pri].label }}</option>
-                }
-              </select>
-            </div>
-          </div>
-          <div class="form-actions">
-            <button type="button" class="btn-secondary" (click)="showIdeaForm.set(false)">Cancel</button>
-            <button type="submit" class="btn-primary" [disabled]="!ideaForm.title.trim()">
-              {{ editingIdeaId ? 'Update' : 'Create' }} Idea
-            </button>
-          </div>
-        </form>
+        <h2>No tasks on the board yet</h2>
+        <p>Switch to Goals and create goals with tasks. They'll appear here for drag-and-drop status management.</p>
       </div>
-    </div>
+    } @else {
+      <div class="board-filters">
+        <div class="filter-group">
+          <label for="filter-category">Category</label>
+          <select id="filter-category" [ngModel]="kanbanFilterCategory()" (ngModelChange)="kanbanFilterCategory.set($event)">
+            <option value="all">All Categories</option>
+            @for (cat of categories; track cat) {
+              <option [value]="cat">{{ categoryConfig[cat].label }}</option>
+            }
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="filter-goal">Goal</label>
+          <select id="filter-goal" [ngModel]="kanbanFilterGoal()" (ngModelChange)="kanbanFilterGoal.set($event)">
+            <option value="all">All Goals</option>
+            @for (goal of plannerService.goals(); track goal.id) {
+              <option [value]="goal.id">{{ goal.title }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="kanban-grid">
+        @for (status of taskStatuses; track status) {
+          <div class="kanban-column"
+            [class.drag-over]="dragOverColumn() === status"
+            (dragover)="onDragOver($event, status)"
+            (dragleave)="onDragLeave(status)"
+            (drop)="onDrop($event, status)">
+            <div class="column-header">
+              <div class="column-header-dot" [style.background]="taskStatusConfig[status].color"></div>
+              <span class="column-title">{{ taskStatusConfig[status].label }}</span>
+              <span class="column-count">{{ tasksByStatus(status).length }}</span>
+            </div>
+            <div class="column-body">
+              @for (task of tasksByStatus(status); track task.id) {
+                <div class="kanban-card" draggable="true" [class.dragging]="draggedTaskId() === task.id" (dragstart)="onDragStart($event, task.id)" (dragend)="onDragEnd()">
+                  <div class="kanban-card-top">
+                    <span class="badge category-badge small"
+                      [style.color]="categoryConfig[task.category].color"
+                      [style.background]="categoryConfig[task.category].bgColor">
+                      {{ categoryConfig[task.category].label }}
+                    </span>
+                    <span class="badge priority-badge small"
+                      [style.color]="priorityConfig[task.priority].color"
+                      [style.background]="priorityConfig[task.priority].bgColor">
+                      {{ priorityConfig[task.priority].label }}
+                    </span>
+                  </div>
+                  <span class="kanban-card-title">{{ task.title }}</span>
+                  <div class="kanban-card-footer">
+                    <span class="kanban-card-parent">{{ getGoalTitle(task.goalId) }}</span>
+                  </div>
+                </div>
+              } @empty {
+                <div class="column-empty"><span>No tasks</span></div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
   }
 
-  <!-- ─── GOAL FORM MODAL ─────────────────────────────────── -->
-  @if (showGoalForm()) {
-    <div class="modal-overlay" role="dialog" tabindex="-1" (click)="closeModal($event)" (keydown.escape)="showGoalForm.set(false); showTaskForm.set(false)">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2>{{ editingGoalId ? 'Edit' : 'New' }} Goal</h2>
-          <button class="btn-icon" (click)="showGoalForm.set(false)">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
-        </div>
-        <form (ngSubmit)="saveGoal()">
-          <div class="form-group">
-            <label for="g-title">Title <span class="required">*</span></label>
-            <input id="g-title" type="text" [(ngModel)]="goalForm.title" name="title" placeholder="e.g., Launch Portfolio v2" required>
-          </div>
-          <div class="form-group">
-            <label for="g-desc">Description</label>
-            <textarea id="g-desc" [(ngModel)]="goalForm.description" name="description" rows="3" placeholder="What's this goal about?"></textarea>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="g-cat">Category</label>
-              <select id="g-cat" [(ngModel)]="goalForm.category" name="category">
-                @for (cat of categories; track cat) {
-                  <option [value]="cat">{{ categoryConfig[cat].label }}</option>
-                }
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="g-pri">Priority</label>
-              <select id="g-pri" [(ngModel)]="goalForm.priority" name="priority">
-                @for (pri of priorities; track pri) {
-                  <option [value]="pri">{{ priorityConfig[pri].label }}</option>
-                }
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="g-due">Due Date</label>
-            <input id="g-due" type="date" [(ngModel)]="goalForm.dueDate" name="dueDate">
-          </div>
-          <div class="form-actions">
-            <button type="button" class="btn-secondary" (click)="showGoalForm.set(false)">Cancel</button>
-            <button type="submit" class="btn-primary" [disabled]="!goalForm.title.trim()">
-              {{ editingGoalId ? 'Update' : 'Create' }} Goal
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  }
-
-  <!-- ─── TASK FORM MODAL ────────────────────────────────── -->
-  @if (showTaskForm()) {
-    <div class="modal-overlay" role="dialog" tabindex="-1" (click)="closeModal($event)" (keydown.escape)="showGoalForm.set(false); showTaskForm.set(false)">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2>{{ editingTaskId ? 'Edit' : 'New' }} Task</h2>
-          <button class="btn-icon" (click)="showTaskForm.set(false)">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
-        </div>
-        <form (ngSubmit)="saveTask()">
-          <div class="form-group">
-            <label for="t-title">Title <span class="required">*</span></label>
-            <input id="t-title" type="text" [(ngModel)]="taskForm.title" name="title" placeholder="e.g., Build login page" required>
-          </div>
-          <div class="form-group">
-            <label for="t-desc">Description</label>
-            <textarea id="t-desc" [(ngModel)]="taskForm.description" name="description" rows="3" placeholder="What needs to be done?"></textarea>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="t-cat">Category</label>
-              <select id="t-cat" [(ngModel)]="taskForm.category" name="category">
-                @for (cat of categories; track cat) {
-                  <option [value]="cat">{{ categoryConfig[cat].label }}</option>
-                }
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="t-pri">Priority</label>
-              <select id="t-pri" [(ngModel)]="taskForm.priority" name="priority">
-                @for (pri of priorities; track pri) {
-                  <option [value]="pri">{{ priorityConfig[pri].label }}</option>
-                }
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="t-due">Due Date</label>
-            <input id="t-due" type="date" [(ngModel)]="taskForm.dueDate" name="dueDate">
-          </div>
-          <div class="form-actions">
-            <button type="button" class="btn-secondary" (click)="showTaskForm.set(false)">Cancel</button>
-            <button type="submit" class="btn-primary" [disabled]="!taskForm.title.trim()">
-              {{ editingTaskId ? 'Update' : 'Create' }} Task
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  }
-
-  <!-- ─── BRAINSTORM TAB ─────────────────────────────────── -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- ─── BRAINSTORM TAB ──────────────────────────────────────── -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
   @if (activeTab() === 'brainstorm') {
     <div class="brainstorm-container">
-      <!-- API Key Setup Banner (if no key) -->
       @if (!aiService.hasApiKey()) {
         <div class="api-key-banner">
           <div class="banner-icon">
@@ -589,16 +634,14 @@
           </div>
           <div class="banner-text">
             <strong>OpenAI API Key Required</strong>
-            <p>Add your API key to enable AI-powered brainstorming. Your key is stored locally in your browser and never sent anywhere except OpenAI.</p>
+            <p>Add your API key to enable AI-powered brainstorming. Your key is stored locally in your browser.</p>
           </div>
           <button class="btn-primary" (click)="showApiKeyModal.set(true)">Add API Key</button>
         </div>
       }
 
-      <!-- Chat Area -->
       <div class="chat-area">
         @if (brainstormMessages().length === 0) {
-          <!-- Empty State with Examples -->
           <div class="brainstorm-empty">
             <div class="brainstorm-empty-icon">
               <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -615,7 +658,6 @@
             </div>
           </div>
         } @else {
-          <!-- Messages -->
           <div class="messages-area">
             @for (msg of brainstormMessages(); track msg.timestamp) {
               <div class="chat-message" [class.user-message]="msg.role === 'user'" [class.ai-message]="msg.role === 'assistant'">
@@ -624,8 +666,6 @@
                 }
                 <div class="message-bubble">
                   <p class="message-text">{{ msg.content }}</p>
-
-                  <!-- AI Questions -->
                   @if (msg.plan?.type === 'questions' && msg.plan?.questions) {
                     <div class="ai-questions">
                       @for (q of msg.plan!.questions!; track q; let i = $index) {
@@ -636,8 +676,6 @@
                       }
                     </div>
                   }
-
-                  <!-- Generated Plan Preview -->
                   @if (msg.plan?.type === 'plan' && msg.plan?.goal) {
                     <div class="plan-preview">
                       <div class="plan-mission">
@@ -651,17 +689,11 @@
                             [style.background]="categoryConfig[msg.plan!.goal!.category]?.bgColor">
                             {{ categoryConfig[msg.plan!.goal!.category]?.label }}
                           </span>
-                          <span class="badge priority-badge small"
-                            [style.color]="priorityConfig[msg.plan!.goal!.priority]?.color"
-                            [style.background]="priorityConfig[msg.plan!.goal!.priority]?.bgColor">
-                            {{ priorityConfig[msg.plan!.goal!.priority]?.label }}
-                          </span>
                         </div>
                         @if (msg.plan!.goal!.description) {
                           <p class="plan-description">{{ msg.plan!.goal!.description }}</p>
                         }
                       </div>
-
                       @if (msg.plan?.tasks) {
                         @for (task of msg.plan!.tasks!; track task.title) {
                           <div class="plan-task">
@@ -672,8 +704,6 @@
                           </div>
                         }
                       }
-
-                      <!-- Plan Action Buttons -->
                       @if (latestPlan()?.type === 'plan') {
                         <div class="plan-actions">
                           <button class="btn-primary" (click)="acceptPlan()">
@@ -693,15 +723,11 @@
                 }
               </div>
             }
-
-            <!-- Loading Indicator -->
             @if (isAiLoading()) {
               <div class="chat-message ai-message">
                 <div class="message-avatar ai-avatar">AI</div>
                 <div class="message-bubble loading-bubble">
-                  <div class="typing-indicator">
-                    <span></span><span></span><span></span>
-                  </div>
+                  <div class="typing-indicator"><span></span><span></span><span></span></div>
                   <span class="thinking-text">Thinking...</span>
                 </div>
               </div>
@@ -710,17 +736,11 @@
         }
       </div>
 
-      <!-- Input Area -->
       <div class="brainstorm-input-area">
         <div class="input-wrapper">
-          <textarea
-            class="brainstorm-textarea"
-            [(ngModel)]="brainstormInput"
+          <textarea class="brainstorm-textarea" [(ngModel)]="brainstormInput"
             [placeholder]="brainstormMessages().length > 0 ? 'Answer the questions or type more details...' : 'Describe what you want to plan...'"
-            rows="3"
-            (keydown)="onBrainstormKeydown($event)"
-            [disabled]="isAiLoading()"
-          ></textarea>
+            rows="3" (keydown)="onBrainstormKeydown($event)" [disabled]="isAiLoading()"></textarea>
           <div class="input-actions">
             @if (brainstormMessages().length > 0) {
               <button class="btn-icon" title="Clear conversation" (click)="clearBrainstorm()">
@@ -749,7 +769,151 @@
     </div>
   }
 
-  <!-- ─── API KEY MODAL ──────────────────────────────────── -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- ─── MODALS ──────────────────────────────────────────────── -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+
+  <!-- Idea Form Modal -->
+  @if (showIdeaForm()) {
+    <div class="modal-overlay" role="dialog" tabindex="-1" (click)="closeModal($event)" (keydown.escape)="showIdeaForm.set(false)">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>{{ editingIdeaId ? 'Edit' : 'New' }} Idea</h2>
+          <button class="btn-icon" (click)="showIdeaForm.set(false)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <form (ngSubmit)="saveIdea()">
+          <div class="form-group">
+            <label for="i-title">Title <span class="required">*</span></label>
+            <input id="i-title" type="text" [(ngModel)]="ideaForm.title" name="title" placeholder="e.g., Build a CLI tool for..." required>
+          </div>
+          <div class="form-group">
+            <label for="i-notes">Notes</label>
+            <textarea id="i-notes" [(ngModel)]="ideaForm.notes" name="notes" rows="3" placeholder="Any details or context..."></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="i-cat">Category</label>
+              <select id="i-cat" [(ngModel)]="ideaForm.category" name="category">
+                @for (cat of categories; track cat) { <option [value]="cat">{{ categoryConfig[cat].label }}</option> }
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="i-pri">Priority</label>
+              <select id="i-pri" [(ngModel)]="ideaForm.priority" name="priority">
+                @for (pri of priorities; track pri) { <option [value]="pri">{{ priorityConfig[pri].label }}</option> }
+              </select>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" (click)="showIdeaForm.set(false)">Cancel</button>
+            <button type="submit" class="btn-primary" [disabled]="!ideaForm.title.trim()">{{ editingIdeaId ? 'Update' : 'Create' }} Idea</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  <!-- Goal Form Modal -->
+  @if (showGoalForm()) {
+    <div class="modal-overlay" role="dialog" tabindex="-1" (click)="closeModal($event)" (keydown.escape)="showGoalForm.set(false)">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>{{ editingGoalId ? 'Edit' : 'New' }} Goal</h2>
+          <button class="btn-icon" (click)="showGoalForm.set(false)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <form (ngSubmit)="saveGoal()">
+          <div class="form-group">
+            <label for="g-title">Title <span class="required">*</span></label>
+            <input id="g-title" type="text" [(ngModel)]="goalForm.title" name="title" placeholder="e.g., Launch Portfolio v2" required>
+          </div>
+          <div class="form-group">
+            <label for="g-desc">Description</label>
+            <textarea id="g-desc" [(ngModel)]="goalForm.description" name="description" rows="3" placeholder="What's this goal about?"></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="g-cat">Category</label>
+              <select id="g-cat" [(ngModel)]="goalForm.category" name="category">
+                @for (cat of categories; track cat) { <option [value]="cat">{{ categoryConfig[cat].label }}</option> }
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="g-pri">Priority</label>
+              <select id="g-pri" [(ngModel)]="goalForm.priority" name="priority">
+                @for (pri of priorities; track pri) { <option [value]="pri">{{ priorityConfig[pri].label }}</option> }
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="g-due">Due Date</label>
+            <input id="g-due" type="date" [(ngModel)]="goalForm.dueDate" name="dueDate">
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" (click)="showGoalForm.set(false)">Cancel</button>
+            <button type="submit" class="btn-primary" [disabled]="!goalForm.title.trim()">{{ editingGoalId ? 'Update' : 'Create' }} Goal</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  <!-- Task Form Modal -->
+  @if (showTaskForm()) {
+    <div class="modal-overlay" role="dialog" tabindex="-1" (click)="closeModal($event)" (keydown.escape)="showTaskForm.set(false)">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>{{ editingTaskId ? 'Edit' : 'New' }} Task</h2>
+          <button class="btn-icon" (click)="showTaskForm.set(false)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <form (ngSubmit)="saveTask()">
+          <div class="form-group">
+            <label for="t-title">Title <span class="required">*</span></label>
+            <input id="t-title" type="text" [(ngModel)]="taskForm.title" name="title" placeholder="e.g., Build login page" required>
+          </div>
+          <div class="form-group">
+            <label for="t-desc">Description</label>
+            <textarea id="t-desc" [(ngModel)]="taskForm.description" name="description" rows="3" placeholder="What needs to be done?"></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="t-cat">Category</label>
+              <select id="t-cat" [(ngModel)]="taskForm.category" name="category">
+                @for (cat of categories; track cat) { <option [value]="cat">{{ categoryConfig[cat].label }}</option> }
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="t-pri">Priority</label>
+              <select id="t-pri" [(ngModel)]="taskForm.priority" name="priority">
+                @for (pri of priorities; track pri) { <option [value]="pri">{{ priorityConfig[pri].label }}</option> }
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="t-due">Due Date</label>
+            <input id="t-due" type="date" [(ngModel)]="taskForm.dueDate" name="dueDate">
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" (click)="showTaskForm.set(false)">Cancel</button>
+            <button type="submit" class="btn-primary" [disabled]="!taskForm.title.trim()">{{ editingTaskId ? 'Update' : 'Create' }} Task</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  <!-- API Key Modal -->
   @if (showApiKeyModal()) {
     <div class="modal-overlay" role="dialog" tabindex="-1" (click)="closeModal($event)" (keydown.escape)="showApiKeyModal.set(false)">
       <div class="modal-content">
@@ -762,9 +926,7 @@
           </button>
         </div>
         <div class="api-key-form">
-          <p class="api-key-info">
-            Your API key is stored only in your browser's local storage. It is never saved in code or sent anywhere except directly to OpenAI's API.
-          </p>
+          <p class="api-key-info">Your API key is stored only in your browser's local storage.</p>
           <div class="form-group">
             <label for="api-key">API Key</label>
             <input id="api-key" type="password" [(ngModel)]="apiKeyInput" placeholder="sk-..." autocomplete="off">
