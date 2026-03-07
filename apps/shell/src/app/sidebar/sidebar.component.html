@@ -87,7 +87,7 @@
     <h3 class="sidebar-section-title">MENU</h3>
     <nav class="sidebar-nav">
       <a
-        *ngFor="let item of menuItems"
+        *ngFor="let item of visibleMenuItems()"
         [routerLink]="item.route"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"

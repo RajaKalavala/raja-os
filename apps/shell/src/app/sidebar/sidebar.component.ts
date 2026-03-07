@@ -1,4 +1,4 @@
-import { Component, input, output, inject } from '@angular/core';
+import { Component, input, output, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ThemeService } from '../services/theme.service';
@@ -9,6 +9,7 @@ interface MenuItem {
   route: string;
   icon: string;
   badge?: number;
+  adminOnly?: boolean;
 }
 
 @Component({
@@ -30,9 +31,13 @@ export class SidebarComponent {
     { label: 'About Me', route: '/aboutme', icon: 'person' },
     { label: 'Projects', route: '/projects', icon: 'folder' },
     { label: 'Experience', route: '/experience', icon: 'history' },
-    { label: 'My Planner', route: '/planner', icon: 'clipboard' },
+    { label: 'My Planner', route: '/planner', icon: 'clipboard', adminOnly: true },
     { label: 'Blogs', route: '/blogs', icon: 'book' },
   ];
+
+  readonly visibleMenuItems = computed(() =>
+    this.menuItems.filter((item) => !item.adminOnly || this.supabaseService.isAdmin())
+  );
 
   onNavItemClick() {
     if (this.isMobile()) {

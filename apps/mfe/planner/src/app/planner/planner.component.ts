@@ -192,10 +192,10 @@ export class PlannerComponent {
     this.showGoalForm.set(true);
   }
 
-  saveGoal() {
+  async saveGoal() {
     if (!this.goalForm.title.trim()) return;
     if (this.editingGoalId) {
-      this.plannerService.updateGoal(this.editingGoalId, {
+      await this.plannerService.updateGoal(this.editingGoalId, {
         title: this.goalForm.title.trim(),
         description: this.goalForm.description.trim(),
         category: this.goalForm.category,
@@ -203,7 +203,7 @@ export class PlannerComponent {
         dueDate: this.goalForm.dueDate || undefined,
       });
     } else {
-      this.plannerService.addGoal({
+      await this.plannerService.addGoal({
         title: this.goalForm.title.trim(),
         description: this.goalForm.description.trim(),
         category: this.goalForm.category,
@@ -214,10 +214,10 @@ export class PlannerComponent {
     this.showGoalForm.set(false);
   }
 
-  deleteGoal(id: string, event: Event) {
+  async deleteGoal(id: string, event: Event) {
     event.stopPropagation();
     if (confirm('Delete this goal and all its tasks?')) {
-      this.plannerService.deleteGoal(id);
+      await this.plannerService.deleteGoal(id);
       if (this.expandedGoalId() === id) {
         this.expandedGoalId.set(null);
       }
@@ -252,10 +252,10 @@ export class PlannerComponent {
     this.showTaskForm.set(true);
   }
 
-  saveTask() {
+  async saveTask() {
     if (!this.taskForm.title.trim()) return;
     if (this.editingTaskId) {
-      this.plannerService.updateTask(this.editingTaskId, {
+      await this.plannerService.updateTask(this.editingTaskId, {
         title: this.taskForm.title.trim(),
         description: this.taskForm.description.trim(),
         category: this.taskForm.category,
@@ -263,7 +263,7 @@ export class PlannerComponent {
         dueDate: this.taskForm.dueDate || undefined,
       });
     } else {
-      this.plannerService.addTask({
+      await this.plannerService.addTask({
         goalId: this.formGoalId,
         title: this.taskForm.title.trim(),
         description: this.taskForm.description.trim(),
@@ -275,15 +275,15 @@ export class PlannerComponent {
     this.showTaskForm.set(false);
   }
 
-  deleteTask(id: string, event: Event) {
+  async deleteTask(id: string, event: Event) {
     event.stopPropagation();
     if (confirm('Delete this task?')) {
-      this.plannerService.deleteTask(id);
+      await this.plannerService.deleteTask(id);
     }
   }
 
-  onTaskStatusChange(taskId: string, status: TaskStatus) {
-    this.plannerService.updateTaskStatus(taskId, status);
+  async onTaskStatusChange(taskId: string, status: TaskStatus) {
+    await this.plannerService.updateTaskStatus(taskId, status);
   }
 
   // ─── Drag and Drop ────────────────────────────────────────
@@ -342,9 +342,9 @@ export class PlannerComponent {
 
   // ─── Ideas ──────────────────────────────────────────────────
 
-  addQuickIdea() {
+  async addQuickIdea() {
     if (!this.newIdeaTitle.trim()) return;
-    this.plannerService.addIdea({ title: this.newIdeaTitle.trim() });
+    await this.plannerService.addIdea({ title: this.newIdeaTitle.trim() });
     this.newIdeaTitle = '';
   }
 
@@ -369,17 +369,17 @@ export class PlannerComponent {
     this.showIdeaForm.set(true);
   }
 
-  saveIdea() {
+  async saveIdea() {
     if (!this.ideaForm.title.trim()) return;
     if (this.editingIdeaId) {
-      this.plannerService.updateIdea(this.editingIdeaId, {
+      await this.plannerService.updateIdea(this.editingIdeaId, {
         title: this.ideaForm.title.trim(),
         notes: this.ideaForm.notes.trim() || undefined,
         category: this.ideaForm.category,
         priority: this.ideaForm.priority,
       });
     } else {
-      this.plannerService.addIdea({
+      await this.plannerService.addIdea({
         title: this.ideaForm.title.trim(),
         notes: this.ideaForm.notes.trim() || undefined,
         category: this.ideaForm.category,
@@ -389,26 +389,26 @@ export class PlannerComponent {
     this.showIdeaForm.set(false);
   }
 
-  deleteIdea(id: string) {
-    this.plannerService.deleteIdea(id);
+  async deleteIdea(id: string) {
+    await this.plannerService.deleteIdea(id);
   }
 
-  convertIdeaToGoal(idea: Idea) {
-    this.plannerService.addGoal({
+  async convertIdeaToGoal(idea: Idea) {
+    await this.plannerService.addGoal({
       title: idea.title,
       description: idea.notes || '',
       category: idea.category,
       priority: idea.priority,
     });
-    this.plannerService.deleteIdea(idea.id);
+    await this.plannerService.deleteIdea(idea.id);
     this.activeTab.set('goals');
   }
 
-  sendIdeaToBrainstorm(idea: Idea) {
+  async sendIdeaToBrainstorm(idea: Idea) {
     this.brainstormInput = idea.notes
       ? `${idea.title}\n${idea.notes}`
       : idea.title;
-    this.plannerService.deleteIdea(idea.id);
+    await this.plannerService.deleteIdea(idea.id);
     this.activeTab.set('brainstorm');
   }
 
@@ -477,11 +477,11 @@ export class PlannerComponent {
     this.isAiLoading.set(false);
   }
 
-  acceptPlan() {
+  async acceptPlan() {
     const plan = this.latestPlan();
     if (!plan?.goal || !plan.tasks) return;
 
-    const goal = this.plannerService.addGoal({
+    const goal = await this.plannerService.addGoal({
       title: plan.goal.title,
       description: plan.goal.description,
       category: plan.goal.category,
@@ -489,7 +489,7 @@ export class PlannerComponent {
     });
 
     for (const task of plan.tasks) {
-      this.plannerService.addTask({
+      await this.plannerService.addTask({
         goalId: goal.id,
         title: task.title,
         description: task.description,

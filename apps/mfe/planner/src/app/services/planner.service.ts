@@ -1,9 +1,9 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, inject, signal, computed, effect } from '@angular/core';
+import { SupabaseService } from '@org/supabase';
 import {
   Goal,
   Task,
   Idea,
-  PlannerData,
   GoalWithProgress,
   Category,
   Priority,
@@ -11,9 +11,11 @@ import {
   TaskStatus,
 } from '../models/planner.models';
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 @Injectable({ providedIn: 'root' })
 export class PlannerService {
-  private readonly storageKey = 'raja-os-planner';
+  private readonly supabase = inject(SupabaseService);
 
   // Signals for reactive state
   readonly goals = signal<Goal[]>([]);
@@ -68,48 +70,142 @@ export class PlannerService {
   });
 
   constructor() {
-    this.loadFromStorage();
+    effect(() => {
+      const user = this.supabase.currentUser();
+      if (user) {
+        this.loadFromDatabase();
+      } else {
+        this.goals.set([]);
+        this.tasks.set([]);
+        this.ideas.set([]);
+      }
+    });
+  }
+
+  // ─── Row Mappers ──────────────────────────────────────────
+
+  private toGoal(row: any): Goal {
+    return {
+      id: row.id,
+      title: row.title,
+      description: row.description,
+      category: row.category,
+      priority: row.priority,
+      status: row.status,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+      dueDate: row.due_date || undefined,
+    };
+  }
+
+  private toTask(row: any): Task {
+    return {
+      id: row.id,
+      goalId: row.goal_id,
+      title: row.title,
+      description: row.description,
+      category: row.category,
+      priority: row.priority,
+      status: row.status,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+      dueDate: row.due_date || undefined,
+    };
+  }
+
+  private toIdea(row: any): Idea {
+    return {
+      id: row.id,
+      title: row.title,
+      notes: row.notes || undefined,
+      category: row.category,
+      priority: row.priority,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+    };
+  }
+
+  // ─── Load from Database ───────────────────────────────────
+
+  private async loadFromDatabase(): Promise<void> {
+    const client = this.supabase.client;
+    const [goalsRes, tasksRes, ideasRes] = await Promise.all([
+      client.from('planner_goals').select('*').order('created_at', { ascending: true }),
+      client.from('planner_tasks').select('*').order('created_at', { ascending: true }),
+      client.from('planner_ideas').select('*').order('created_at', { ascending: true }),
+    ]);
+
+    this.goals.set((goalsRes.data || []).map((r) => this.toGoal(r)));
+    this.tasks.set((tasksRes.data || []).map((r) => this.toTask(r)));
+    this.ideas.set((ideasRes.data || []).map((r) => this.toIdea(r)));
   }
 
   // ─── Goal CRUD ──────────────────────────────────────────
 
-  addGoal(data: {
+  async addGoal(data: {
     title: string;
     description: string;
     category: Category;
     priority: Priority;
     dueDate?: string;
-  }): Goal {
-    const now = new Date().toISOString();
-    const goal: Goal = {
-      id: this.generateId(),
-      title: data.title,
-      description: data.description,
-      category: data.category,
-      priority: data.priority,
-      status: 'active',
-      createdAt: now,
-      updatedAt: now,
-      dueDate: data.dueDate,
-    };
+  }): Promise<Goal> {
+    const userId = this.supabase.currentUser()?.id;
+    if (!userId) throw new Error('Not authenticated');
+
+    const { data: row, error } = await this.supabase.client
+      .from('planner_goals')
+      .insert({
+        user_id: userId,
+        title: data.title,
+        description: data.description,
+        category: data.category,
+        priority: data.priority,
+        status: 'active',
+        due_date: data.dueDate || null,
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+    const goal = this.toGoal(row);
     this.goals.update((list) => [...list, goal]);
-    this.saveToStorage();
     return goal;
   }
 
-  updateGoal(id: string, changes: Partial<Goal>): void {
+  async updateGoal(id: string, changes: Partial<Goal>): Promise<void> {
+    const dbChanges: any = {};
+    if (changes.title !== undefined) dbChanges.title = changes.title;
+    if (changes.description !== undefined) dbChanges.description = changes.description;
+    if (changes.category !== undefined) dbChanges.category = changes.category;
+    if (changes.priority !== undefined) dbChanges.priority = changes.priority;
+    if (changes.status !== undefined) dbChanges.status = changes.status;
+    if (changes.dueDate !== undefined) dbChanges.due_date = changes.dueDate || null;
+
+    const { error } = await this.supabase.client
+      .from('planner_goals')
+      .update(dbChanges)
+      .eq('id', id);
+
+    if (error) throw error;
+
     this.goals.update((list) =>
       list.map((g) =>
         g.id === id ? { ...g, ...changes, updatedAt: new Date().toISOString() } : g
       )
     );
-    this.saveToStorage();
   }
 
-  deleteGoal(id: string): void {
+  async deleteGoal(id: string): Promise<void> {
+    const { error } = await this.supabase.client
+      .from('planner_goals')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+
+    // Tasks are cascade-deleted in DB, update local state
     this.tasks.update((list) => list.filter((t) => t.goalId !== id));
     this.goals.update((list) => list.filter((g) => g.id !== id));
-    this.saveToStorage();
   }
 
   getGoal(id: string): Goal | undefined {
@@ -118,56 +214,84 @@ export class PlannerService {
 
   // ─── Task CRUD ─────────────────────────────────────────────
 
-  addTask(data: {
+  async addTask(data: {
     goalId: string;
     title: string;
     description: string;
     category: Category;
     priority: Priority;
     dueDate?: string;
-  }): Task {
-    const now = new Date().toISOString();
-    const task: Task = {
-      id: this.generateId(),
-      goalId: data.goalId,
-      title: data.title,
-      description: data.description,
-      category: data.category,
-      priority: data.priority,
-      status: 'backlog',
-      createdAt: now,
-      updatedAt: now,
-      dueDate: data.dueDate,
-    };
+  }): Promise<Task> {
+    const userId = this.supabase.currentUser()?.id;
+    if (!userId) throw new Error('Not authenticated');
+
+    const { data: row, error } = await this.supabase.client
+      .from('planner_tasks')
+      .insert({
+        user_id: userId,
+        goal_id: data.goalId,
+        title: data.title,
+        description: data.description,
+        category: data.category,
+        priority: data.priority,
+        status: 'backlog',
+        due_date: data.dueDate || null,
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+    const task = this.toTask(row);
     this.tasks.update((list) => [...list, task]);
-    this.saveToStorage();
-    this.autoUpdateGoalStatus(task.goalId);
+    await this.autoUpdateGoalStatus(task.goalId);
     return task;
   }
 
-  updateTask(id: string, changes: Partial<Task>): void {
+  async updateTask(id: string, changes: Partial<Task>): Promise<void> {
     const existing = this.tasks().find((t) => t.id === id);
+    const dbChanges: any = {};
+    if (changes.title !== undefined) dbChanges.title = changes.title;
+    if (changes.description !== undefined) dbChanges.description = changes.description;
+    if (changes.category !== undefined) dbChanges.category = changes.category;
+    if (changes.priority !== undefined) dbChanges.priority = changes.priority;
+    if (changes.status !== undefined) dbChanges.status = changes.status;
+    if (changes.dueDate !== undefined) dbChanges.due_date = changes.dueDate || null;
+
+    const { error } = await this.supabase.client
+      .from('planner_tasks')
+      .update(dbChanges)
+      .eq('id', id);
+
+    if (error) throw error;
+
     this.tasks.update((list) =>
       list.map((t) =>
         t.id === id ? { ...t, ...changes, updatedAt: new Date().toISOString() } : t
       )
     );
-    this.saveToStorage();
+
     if (existing) {
-      this.autoUpdateGoalStatus(existing.goalId);
+      await this.autoUpdateGoalStatus(existing.goalId);
     }
   }
 
-  updateTaskStatus(id: string, status: TaskStatus): void {
-    this.updateTask(id, { status });
+  async updateTaskStatus(id: string, status: TaskStatus): Promise<void> {
+    await this.updateTask(id, { status });
   }
 
-  deleteTask(id: string): void {
+  async deleteTask(id: string): Promise<void> {
     const task = this.tasks().find((t) => t.id === id);
+
+    const { error } = await this.supabase.client
+      .from('planner_tasks')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+
     this.tasks.update((list) => list.filter((t) => t.id !== id));
-    this.saveToStorage();
     if (task) {
-      this.autoUpdateGoalStatus(task.goalId);
+      await this.autoUpdateGoalStatus(task.goalId);
     }
   }
 
@@ -181,117 +305,78 @@ export class PlannerService {
 
   // ─── Auto Status Updates ───────────────────────────────────
 
-  private autoUpdateGoalStatus(goalId: string): void {
+  private async autoUpdateGoalStatus(goalId: string): Promise<void> {
     const goalTasks = this.tasks().filter((t) => t.goalId === goalId);
     if (goalTasks.length > 0) {
       const allTasksDone = goalTasks.every((t) => t.status === 'done');
       if (allTasksDone) {
-        this.goals.update((list) =>
-          list.map((g) =>
-            g.id === goalId
-              ? { ...g, status: 'completed' as GoalStatus, updatedAt: new Date().toISOString() }
-              : g
-          )
-        );
+        await this.updateGoal(goalId, { status: 'completed' as GoalStatus });
       } else {
         const goal = this.goals().find((g) => g.id === goalId);
         if (goal?.status === 'completed') {
-          this.goals.update((list) =>
-            list.map((g) =>
-              g.id === goalId
-                ? { ...g, status: 'active' as GoalStatus, updatedAt: new Date().toISOString() }
-                : g
-            )
-          );
+          await this.updateGoal(goalId, { status: 'active' as GoalStatus });
         }
       }
     }
-    this.saveToStorage();
   }
 
   // ─── Idea CRUD ───────────────────────────────────────────────
 
-  addIdea(data: {
+  async addIdea(data: {
     title: string;
     notes?: string;
     category?: Category;
     priority?: Priority;
-  }): Idea {
-    const now = new Date().toISOString();
-    const idea: Idea = {
-      id: this.generateId(),
-      title: data.title,
-      notes: data.notes,
-      category: data.category || 'personal',
-      priority: data.priority || 'medium',
-      createdAt: now,
-      updatedAt: now,
-    };
+  }): Promise<Idea> {
+    const userId = this.supabase.currentUser()?.id;
+    if (!userId) throw new Error('Not authenticated');
+
+    const { data: row, error } = await this.supabase.client
+      .from('planner_ideas')
+      .insert({
+        user_id: userId,
+        title: data.title,
+        notes: data.notes || null,
+        category: data.category || 'personal',
+        priority: data.priority || 'medium',
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+    const idea = this.toIdea(row);
     this.ideas.update((list) => [...list, idea]);
-    this.saveToStorage();
     return idea;
   }
 
-  updateIdea(id: string, changes: Partial<Idea>): void {
+  async updateIdea(id: string, changes: Partial<Idea>): Promise<void> {
+    const dbChanges: any = {};
+    if (changes.title !== undefined) dbChanges.title = changes.title;
+    if (changes.notes !== undefined) dbChanges.notes = changes.notes || null;
+    if (changes.category !== undefined) dbChanges.category = changes.category;
+    if (changes.priority !== undefined) dbChanges.priority = changes.priority;
+
+    const { error } = await this.supabase.client
+      .from('planner_ideas')
+      .update(dbChanges)
+      .eq('id', id);
+
+    if (error) throw error;
+
     this.ideas.update((list) =>
       list.map((i) =>
         i.id === id ? { ...i, ...changes, updatedAt: new Date().toISOString() } : i
       )
     );
-    this.saveToStorage();
   }
 
-  deleteIdea(id: string): void {
+  async deleteIdea(id: string): Promise<void> {
+    const { error } = await this.supabase.client
+      .from('planner_ideas')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
     this.ideas.update((list) => list.filter((i) => i.id !== id));
-    this.saveToStorage();
-  }
-
-  // ─── Persistence ───────────────────────────────────────────
-
-  private loadFromStorage(): void {
-    try {
-      const raw = localStorage.getItem(this.storageKey);
-      if (raw) {
-        const data = JSON.parse(raw);
-        // Support legacy data: migrate missions -> goals, flatten milestones
-        if (data.missions) {
-          this.goals.set(data.missions.map((m: Goal & { id: string }) => ({
-            ...m,
-          })));
-          // Migrate tasks: remove milestoneId, rename missionId to goalId
-          const tasks = (data.tasks || []).map((t: Task & { missionId?: string; milestoneId?: string }) => ({
-            ...t,
-            goalId: t.goalId || t.missionId || '',
-          }));
-          this.tasks.set(tasks);
-          this.ideas.set(data.ideas || []);
-          // Save in new format
-          this.saveToStorage();
-        } else {
-          this.goals.set(data.goals || []);
-          this.tasks.set(data.tasks || []);
-          this.ideas.set(data.ideas || []);
-        }
-      }
-    } catch {
-      console.warn('Failed to load planner data from localStorage');
-    }
-  }
-
-  private saveToStorage(): void {
-    try {
-      const data: PlannerData = {
-        goals: this.goals(),
-        tasks: this.tasks(),
-        ideas: this.ideas(),
-      };
-      localStorage.setItem(this.storageKey, JSON.stringify(data));
-    } catch {
-      console.warn('Failed to save planner data to localStorage');
-    }
-  }
-
-  private generateId(): string {
-    return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
   }
 }
