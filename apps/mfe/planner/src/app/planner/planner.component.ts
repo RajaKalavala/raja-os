@@ -2,7 +2,7 @@ import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PlannerService } from '../services/planner.service';
-import { AiService } from '../services/ai.service';
+import { AiService, AiProvider } from '../services/ai.service';
 import {
   Category,
   Priority,
@@ -512,6 +512,18 @@ export class PlannerComponent {
     this.brainstormInput = '';
   }
 
+  // ─── API Key & Provider ────────────────────────────────────
+
+  apiKeyModalTab = signal<AiProvider>('openai');
+  openaiKeyInput = '';
+  claudeKeyInput = '';
+
+  switchProvider(provider: AiProvider) {
+    this.aiService.setProvider(provider);
+    this.brainstormMessages.set([]);
+    this.latestPlan.set(null);
+  }
+
   saveApiKey() {
     if (this.apiKeyInput.trim()) {
       this.aiService.setApiKey(this.apiKeyInput.trim());
@@ -520,7 +532,21 @@ export class PlannerComponent {
     }
   }
 
-  removeApiKey() {
-    this.aiService.removeApiKey();
+  saveOpenAiKey() {
+    if (this.openaiKeyInput.trim()) {
+      this.aiService.setApiKey(this.openaiKeyInput.trim(), 'openai');
+      this.openaiKeyInput = '';
+    }
+  }
+
+  saveClaudeKey() {
+    if (this.claudeKeyInput.trim()) {
+      this.aiService.setApiKey(this.claudeKeyInput.trim(), 'claude');
+      this.claudeKeyInput = '';
+    }
+  }
+
+  removeApiKey(provider?: AiProvider) {
+    this.aiService.removeApiKey(provider);
   }
 }

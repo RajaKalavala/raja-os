@@ -1126,6 +1126,136 @@ form {
   gap: 20px;
 }
 
+// ─── Provider Toggle ────────────────────────────────────────
+.provider-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.provider-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.provider-switcher {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-card-alt);
+  border-radius: 10px;
+  padding: 3px;
+}
+
+.provider-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+
+  &:hover {
+    color: var(--text-primary);
+  }
+
+  &.active {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.provider-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.openai-dot {
+  background: #10a37f;
+}
+
+.claude-dot {
+  background: #d97706;
+}
+
+.key-status {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+
+  &.connected {
+    background: #22c55e;
+  }
+}
+
+// ─── API Key Modal Tabs ─────────────────────────────────────
+.api-key-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border-primary);
+  padding: 0 24px;
+}
+
+.api-key-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    color: var(--text-primary);
+  }
+
+  &.active {
+    color: var(--text-primary);
+    border-bottom-color: var(--accent-green);
+  }
+}
+
+.key-connected-badge {
+  padding: 2px 8px;
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.api-key-hint {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin: 0 0 16px;
+
+  strong {
+    color: var(--accent-green);
+  }
+}
+
+// ─── Claude Avatar ──────────────────────────────────────────
+.message-avatar {
+  &.claude-avatar {
+    background: linear-gradient(135deg, #d97706, #b45309) !important;
+  }
+}
+
 // ─── API Key Banner ─────────────────────────────────────────
 .api-key-banner {
   display: flex;
