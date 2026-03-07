@@ -1,15 +1,24 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Project, ProjectCategory } from '../models/project.model';
 import { PROJECTS_DATA } from '../data/projects.data';
+import { AutomationsComponent } from '../automations/automations.component';
+import { SupabaseService } from '@org/supabase';
 
 @Component({
   selector: 'app-projects-list',
   templateUrl: './projects-list.component.html',
   styleUrl: './projects-list.component.scss',
   standalone: true,
+  imports: [AutomationsComponent],
 })
 export class ProjectsListComponent {
+  private readonly supabaseService = inject(SupabaseService);
+  readonly isAdmin = this.supabaseService.isAdmin;
+
+  // Tabs
+  activeTab = signal<'automations' | 'products'>('products');
+
   searchQuery = signal<string>('');
   selectedCategory = signal<ProjectCategory>('All');
 
@@ -61,6 +70,10 @@ export class ProjectsListComponent {
   );
 
   constructor(private router: Router) {}
+
+  setTab(tab: 'automations' | 'products') {
+    this.activeTab.set(tab);
+  }
 
   onSearchInput(event: Event): void {
     const input = event.target as HTMLInputElement;
