@@ -59,6 +59,18 @@
 
   /* Chart label on career (non-transition) */
   --chart-point-stroke: #ffffff;
+
+  /* Jarvis Theme */
+  --jarvis-primary: #10b981;
+  --jarvis-bg: #0a0a0a;
+  --jarvis-surface: #111111;
+  --jarvis-border: #1f1f1f;
+  --jarvis-text: #e5e7eb;
+  --jarvis-text-muted: #6b7280;
+  --jarvis-success: #10b981;
+  --jarvis-warning: #f59e0b;
+  --jarvis-danger: #ef4444;
+  --jarvis-font: 'JetBrains Mono', 'Fira Code', monospace;
 }
 
 html[data-theme='dark'] {

@@ -49,4 +49,11 @@ export const appRoutes: Route[] = [
         (m) => m!.remoteRoutes,
       ),
   },
+  {
+    path: 'jarvis',
+    loadChildren: () =>
+      loadRemote<typeof import('jarvis/Routes')>('jarvis/Routes').then(
+        (m) => m!.remoteRoutes,
+      ),
+  },
 ];

@@ -1,8 +1,10 @@
 import { ModuleFederationConfig } from '@nx/module-federation';
 
 const config: ModuleFederationConfig = {
-  name: 'shell',
-  remotes: ['dashboard', 'experience', 'planner', 'jarvis'],
+  name: 'jarvis',
+  exposes: {
+    './Routes': 'apps/mfe/jarvis/src/app/remote-entry/entry.routes.ts',
+  },
 };
 
 /**

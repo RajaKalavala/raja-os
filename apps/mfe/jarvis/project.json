@@ -1,0 +1,105 @@
+{
+  "name": "jarvis",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "raja",
+  "sourceRoot": "apps/mfe/jarvis/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:webpack-browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/mfe/jarvis",
+        "index": "apps/mfe/jarvis/src/index.html",
+        "main": "apps/mfe/jarvis/src/main.ts",
+        "tsConfig": "apps/mfe/jarvis/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/mfe/jarvis/public"
+          }
+        ],
+        "styles": ["apps/mfe/jarvis/src/styles.scss"],
+        "customWebpackConfig": {
+          "path": "apps/mfe/jarvis/webpack.config.ts"
+        }
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "24kb",
+              "maximumError": "32kb"
+            }
+          ],
+          "outputHashing": "all",
+          "customWebpackConfig": {
+            "path": "apps/mfe/jarvis/webpack.prod.config.ts"
+          }
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "continuous": true,
+      "executor": "@nx/angular:dev-server",
+      "options": {
+        "port": 4208,
+        "publicHost": "http://localhost:4208"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "jarvis:build:production"
+        },
+        "development": {
+          "buildTarget": "jarvis:build:development"
+        }
+      },
+      "defaultConfiguration": "development",
+      "dependsOn": ["shell:serve"]
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "buildTarget": "jarvis:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "serve-static": {
+      "continuous": true,
+      "executor": "@nx/web:file-server",
+      "defaultConfiguration": "production",
+      "options": {
+        "buildTarget": "jarvis:build",
+        "port": 4208,
+        "watch": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "jarvis:build:development"
+        },
+        "production": {
+          "buildTarget": "jarvis:build:production"
+        }
+      }
+    }
+  }
+}

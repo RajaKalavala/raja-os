@@ -4,5 +4,6 @@
   "aboutme": "/aboutme/mf-manifest.json",
   "projects": "/projects/mf-manifest.json",
   "blogs": "/blogs/mf-manifest.json",
-  "planner": "/planner/mf-manifest.json"
+  "planner": "/planner/mf-manifest.json",
+  "jarvis": "/jarvis/mf-manifest.json"
 }

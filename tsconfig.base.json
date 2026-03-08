@@ -41,7 +41,11 @@
       "planner/Routes": [
         "apps/mfe/planner/src/app/remote-entry/entry.routes.ts"
       ],
-      "@org/supabase": ["libs/shared/supabase/src/index.ts"]
+      "@org/supabase": ["libs/shared/supabase/src/index.ts"],
+      "@org/jarvis": ["libs/shared/jarvis/src/index.ts"],
+      "jarvis/Routes": [
+        "apps/mfe/jarvis/src/app/remote-entry/entry.routes.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

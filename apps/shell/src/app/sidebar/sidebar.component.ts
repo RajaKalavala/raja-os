@@ -32,6 +32,7 @@ export class SidebarComponent {
     { label: 'Projects', route: '/projects', icon: 'folder' },
     { label: 'Experience', route: '/experience', icon: 'history' },
     { label: 'My Planner', route: '/planner', icon: 'clipboard', adminOnly: true },
+    { label: 'Jarvis', route: '/jarvis', icon: 'cpu', adminOnly: true },
     { label: 'Blogs', route: '/blogs', icon: 'book' },
   ];
 
