@@ -16,7 +16,7 @@ Instead of a static resume site, RajaOS is an interactive, data-driven platform 
 
 | Layer              | Technology                                 |
 | ------------------ | ------------------------------------------ |
-| Framework          | Angular 19 (Standalone Components)         |
+| Framework          | Angular 21 (Standalone Components)         |
 | Micro-frontends    | Webpack Module Federation                  |
 | Monorepo           | Nx Workspace                               |
 | Backend            | Supabase (PostgreSQL + Auth + RLS)         |
@@ -26,9 +26,9 @@ Instead of a static resume site, RajaOS is an interactive, data-driven platform 
 | Deployment         | Vercel                                     |
 
 **Structure:**
-- **Shell (Host)** — Main container, sidebar, routing, theme engine (Port 4200)
-- **6 Remote MFEs** — Each independently built and deployable
-- **Shared Libraries** — Supabase client, design system, shared models
+- **Shell (Host)** — Main container, sidebar, routing, theme engine, global overlays (Port 4200)
+- **7 Remote MFEs** — Each independently built and deployable
+- **Shared Libraries** — Supabase client, Jarvis AI services, design system, shared models
 
 ---
 
@@ -167,6 +167,111 @@ A full productivity system with 5 tabs. All data persisted to Supabase with row-
 
 ---
 
+### Jarvis — AI Intelligence Layer (Admin-only)
+
+A personal AI operating system built into RajaOS. Jarvis acts as an intelligent assistant that understands your goals, habits, and productivity patterns. Accessible from the sidebar (admin-only) and via global shortcuts. All data persisted to Supabase with row-level security.
+
+**Architecture:** Dedicated MFE (`apps/mfe/jarvis/`, Port 4208) with shared library (`libs/shared/jarvis/`) containing models, services, and AI prompts. Sub-navigation within Jarvis routes to 8 pages.
+
+#### Home
+- Central hub with quick-access cards to all Jarvis features
+- Quick stats: memories stored, focus sessions this week, best habit streak, overall score
+
+#### Morning Briefing
+- Terminal-style UI with red/yellow/green window dots
+- Auto-shows once per day on admin login (via shell overlay)
+- AI-generated daily briefing with top priority and Jarvis insight
+- Powered by GPT-4o with context from your goals, tasks, and habits
+- Start Day / Regenerate actions
+- Stored in `jarvis_briefings` table with unique constraint per user/date
+
+#### Chat with Jarvis
+- Conversational AI with persistent message history
+- Context-aware: Jarvis knows your goals, tasks, habits, and memories
+- Quick prompt suggestions for common queries
+- User/AI avatars with timestamps
+- Auto-scroll, Enter to send (Shift+Enter for newline)
+- Clear chat functionality
+- Automatic memory extraction from conversations
+
+#### Focus Session Manager
+- Three-phase flow: **Setup → Active Timer → Reflection**
+- **Setup:** Task description, optional goal linking, duration presets (25/45/90 min) or custom
+- **Active:** Large countdown timer (MM:SS or HH:MM:SS), pause/resume, end session, daily stats
+- **Reflection:** Completion notes, blockers, focus rating (1-5 stars)
+- Sessions saved to `jarvis_focus_sessions` with duration tracking
+
+#### Quick Capture
+- Brain-dump input with Cmd/Ctrl+Enter to submit
+- AI classification: determines type (idea/task/goal/note/reminder) and category
+- Classification result with type/category badges and AI summary
+- Route to planner or dismiss
+- Filter tabs: All / Pending / Routed
+- Capture history list
+- **Global shortcut:** Cmd+Shift+J opens capture modal from anywhere in the app (shell-level overlay)
+
+#### Life Metrics Dashboard
+- 6 life score categories: Work, Health, Learning, Side Project, Finance, Personal Brand
+- Each score has: progress bar (color-coded), trend indicator, status note (On track / Needs attention / Critical)
+- Scores calculated from live Supabase data (task completion, habits, posts, focus sessions)
+- Overall "RAJA OS SCORE" out of 100
+- Save weekly snapshot to `jarvis_metrics_snapshots`
+
+#### Weekly Review
+- Terminal-style review generator
+- AI analyzes your past week and produces: Shipped, Wins, Missed/Behind, Challenges, AI Reflection
+- LinkedIn post draft generation from review data
+- Copy LinkedIn Post button
+- Save review to `jarvis_weekly_reviews`
+- Week number and year tracking
+
+#### Memory Manager
+- CRUD interface for Jarvis's persistent memory
+- 5 memory types: Context, Insight, Pattern, Preference, Decision (color-coded badges)
+- 6 categories: Work, Health, Finance, Learning, Habits, Personal
+- Filter by type and category
+- Add manual memories with type/category selectors
+- Relevance scoring and source tracking
+- Jarvis auto-extracts memories from chat conversations
+
+#### Habits Tab (in Planner)
+- Integrated into the Planner MFE as a dedicated tab between Board and Brainstorm
+- Habit checklist with toggle completion for today
+- Streak tracking per habit (consecutive days)
+- Add habit form: name, category, frequency (daily/weekdays/weekly), color, icon
+- Edit and delete habits
+- Completion count display
+- Data stored in `jarvis_habits` and `jarvis_habit_logs` tables
+
+#### Smart Nudges
+- Notification bell in sidebar (admin-only) with unread count badge
+- Nudge panel dropdown showing notifications with priority color dots
+- Action buttons per nudge: navigate to relevant page, snooze (4h), dismiss
+- Mark all as read on panel open
+- 5 automatic trigger checks:
+  - **Overdue Goals** — active goals past target date (high priority)
+  - **Habit Streaks at Risk** — habits missed yesterday (medium)
+  - **Weekly Review Due** — weekends with no review in 6+ days (medium)
+  - **No Focus Session** — after 10 AM with none started (low)
+  - **Aging Ideas** — ideas sitting 30+ days unactioned (low)
+- Deduplication: max one nudge per type per day
+- Data stored in `jarvis_nudges` table
+
+#### Database Schema (10 tables)
+All tables have RLS policies, indexes, and auto-updating timestamps:
+- `jarvis_memories` — Persistent AI memory with type, category, relevance score
+- `jarvis_briefings` — Daily morning briefings (unique per user/date)
+- `jarvis_focus_sessions` — Deep work sessions with duration and ratings
+- `jarvis_habits` — Habit definitions with frequency and color
+- `jarvis_habit_logs` — Daily habit completion tracking (unique per user/habit/date)
+- `jarvis_metrics_snapshots` — Weekly life score snapshots
+- `jarvis_weekly_reviews` — Weekly review content and LinkedIn drafts
+- `jarvis_captures` — Quick capture items with AI classification
+- `jarvis_chat_sessions` — Persistent chat message history
+- `jarvis_nudges` — Smart notification nudges with priority and snooze
+
+---
+
 ### Blogs
 
 Developer writing and technical content.
@@ -210,11 +315,21 @@ Developer writing and technical content.
 - Touch-friendly interactions
 
 ### Database Schema
-4 tables with RLS, auto-updating timestamps, and indexes:
+14 tables with RLS, auto-updating timestamps, and indexes:
 - `planner_goals` — Goals with category, priority, status
 - `planner_tasks` — Tasks linked to goals (cascade delete)
 - `planner_ideas` — Quick-capture ideas
 - `automation_posts` — Social media content drafts
+- `jarvis_memories` — AI persistent memory
+- `jarvis_briefings` — Daily morning briefings
+- `jarvis_focus_sessions` — Deep work session tracking
+- `jarvis_habits` — Habit definitions
+- `jarvis_habit_logs` — Daily habit completions
+- `jarvis_metrics_snapshots` — Weekly life score data
+- `jarvis_weekly_reviews` — Weekly review content
+- `jarvis_captures` — Quick capture items
+- `jarvis_chat_sessions` — Chat message history
+- `jarvis_nudges` — Smart notifications
 
 ---
 
