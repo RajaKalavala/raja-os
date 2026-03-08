@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PlannerService } from '../services/planner.service';
 import { AiService, AiProvider } from '../services/ai.service';
+import { JarvisMemoryService, JarvisHabit } from '@org/jarvis';
 import {
   Category,
   Priority,
@@ -46,8 +47,30 @@ export class PlannerComponent {
   showApiKeyModal = signal(false);
   apiKeyInput = '';
 
+  // Habits
+  private habitService = inject(JarvisMemoryService);
+  habits = signal<JarvisHabit[]>([]);
+  todayHabitLogs = signal<Map<string, boolean>>(new Map());
+  habitStreaks = signal<Map<string, number>>(new Map());
+  showHabitForm = signal(false);
+  editingHabitId: string | null = null;
+  habitForm = {
+    name: '',
+    category: 'health' as 'health' | 'learning' | 'work' | 'personal',
+    frequency: 'daily' as 'daily' | 'weekdays' | 'weekly',
+    color: '#10b981',
+    icon: '',
+  };
+
+  readonly completedHabitsCount = computed(() => {
+    const logs = this.todayHabitLogs();
+    let count = 0;
+    logs.forEach((completed) => { if (completed) count++; });
+    return count;
+  });
+
   // View state
-  activeTab = signal<'overview' | 'goals' | 'board' | 'ideas' | 'brainstorm'>('overview');
+  activeTab = signal<'overview' | 'goals' | 'board' | 'ideas' | 'habits' | 'brainstorm'>('overview');
   expandedGoalId = signal<string | null>(null);
 
   // Modal state
@@ -155,7 +178,7 @@ export class PlannerComponent {
 
   // ─── Tab ───────────────────────────────────────────────────
 
-  setTab(tab: 'overview' | 'goals' | 'board' | 'ideas' | 'brainstorm') {
+  setTab(tab: 'overview' | 'goals' | 'board' | 'ideas' | 'habits' | 'brainstorm') {
     this.activeTab.set(tab);
   }
 
@@ -336,11 +359,107 @@ export class PlannerComponent {
       this.showGoalForm.set(false);
       this.showTaskForm.set(false);
       this.showIdeaForm.set(false);
+      this.showHabitForm.set(false);
       this.showApiKeyModal.set(false);
     }
   }
 
-  // ─── Ideas ──────────────────────────────────────────────────
+  // ─── Habits ─────────────────────────────────────────────────
+
+  constructor() {
+    this.loadHabits();
+  }
+
+  async loadHabits() {
+    const [habits, logs] = await Promise.all([
+      this.habitService.getHabits(),
+      this.habitService.getTodayLogs(),
+    ]);
+    this.habits.set(habits);
+    this.todayHabitLogs.set(logs);
+    await this.loadHabitStreaks(habits);
+  }
+
+  private async loadHabitStreaks(habits: JarvisHabit[]) {
+    const streakMap = new Map<string, number>();
+    await Promise.all(
+      habits.map(async (h) => {
+        const streak = await this.habitService.getHabitStreak(h.id);
+        streakMap.set(h.id, streak);
+      })
+    );
+    this.habitStreaks.set(streakMap);
+  }
+
+  getHabitStreak(habitId: string): number {
+    return this.habitStreaks().get(habitId) || 0;
+  }
+
+  openHabitForm(habit?: JarvisHabit) {
+    if (habit) {
+      this.editingHabitId = habit.id;
+      this.habitForm = {
+        name: habit.name,
+        category: habit.category,
+        frequency: habit.frequency,
+        color: habit.color,
+        icon: habit.icon,
+      };
+    } else {
+      this.editingHabitId = null;
+      this.habitForm = {
+        name: '',
+        category: 'health',
+        frequency: 'daily',
+        color: '#10b981',
+        icon: '',
+      };
+    }
+    this.showHabitForm.set(true);
+  }
+
+  async saveHabit() {
+    if (!this.habitForm.name.trim()) return;
+    if (this.editingHabitId) {
+      await this.habitService.updateHabit(this.editingHabitId, {
+        name: this.habitForm.name.trim(),
+        category: this.habitForm.category,
+        frequency: this.habitForm.frequency,
+        color: this.habitForm.color,
+        icon: this.habitForm.icon,
+      });
+    } else {
+      await this.habitService.addHabit({
+        name: this.habitForm.name.trim(),
+        category: this.habitForm.category,
+        frequency: this.habitForm.frequency,
+        color: this.habitForm.color,
+        icon: this.habitForm.icon,
+      });
+    }
+    this.showHabitForm.set(false);
+    await this.loadHabits();
+  }
+
+  async deleteHabit(id: string) {
+    if (confirm('Delete this habit?')) {
+      await this.habitService.deleteHabit(id);
+      await this.loadHabits();
+    }
+  }
+
+  async toggleHabitLog(habitId: string) {
+    const newState = await this.habitService.toggleHabitLog(habitId);
+    this.todayHabitLogs.update((map) => {
+      const newMap = new Map(map);
+      newMap.set(habitId, newState);
+      return newMap;
+    });
+    // Refresh streaks after toggling
+    await this.loadHabitStreaks(this.habits());
+  }
+
+  // ─── Ideas ─────────────────────────────────────────────────
 
   async addQuickIdea() {
     if (!this.newIdeaTitle.trim()) return;

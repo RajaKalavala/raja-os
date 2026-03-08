@@ -82,6 +82,74 @@
     }
   </div>
 
+  <!-- Notification Bell (Admin only) -->
+  @if (supabaseService.isAdmin()) {
+    <div class="nudge-bell-wrapper">
+      <button class="nudge-bell-btn" (click)="toggleNudgePanel()" aria-label="Notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+        </svg>
+        @if (nudgeService.unreadCount() > 0) {
+          <span class="nudge-badge">{{ nudgeService.unreadCount() }}</span>
+        }
+      </button>
+
+      <!-- Nudge Panel -->
+      @if (showNudgePanel()) {
+        <div class="nudge-panel">
+          <div class="nudge-panel-header">
+            <span class="nudge-panel-title">Notifications</span>
+            <button class="nudge-panel-close" (click)="closeNudgePanel()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+          <div class="nudge-panel-body">
+            @if (nudgeService.nudges().length === 0) {
+              <div class="nudge-empty">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                <span>All clear. No nudges right now.</span>
+              </div>
+            } @else {
+              @for (nudge of nudgeService.nudges(); track nudge.id) {
+                <div class="nudge-item" [class.unread]="!nudge.isRead">
+                  <div class="nudge-item-dot" [style.background]="getNudgePriorityColor(nudge.priority)"></div>
+                  <div class="nudge-item-content">
+                    <p class="nudge-item-message">{{ nudge.message }}</p>
+                    <span class="nudge-item-time">{{ getTimeAgo(nudge.createdAt) }}</span>
+                  </div>
+                  <div class="nudge-item-actions">
+                    @if (nudge.actionLabel) {
+                      <button class="nudge-action-btn" (click)="onNudgeAction(nudge)">{{ nudge.actionLabel }}</button>
+                    }
+                    <button class="nudge-snooze-btn" (click)="onNudgeSnooze(nudge)" title="Snooze 4h">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                      </svg>
+                    </button>
+                    <button class="nudge-dismiss-btn" (click)="onNudgeDismiss(nudge)" title="Dismiss">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+
   <!-- MENU Section -->
   <div class="sidebar-section">
     <h3 class="sidebar-section-title">MENU</h3>

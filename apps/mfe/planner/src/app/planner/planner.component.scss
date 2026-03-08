@@ -1649,6 +1649,135 @@ form {
   }
 }
 
+// ─── Habits Tab ─────────────────────────────────────────
+.habits-section {
+  max-width: 700px;
+}
+
+.habits-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.habits-date {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.habits-checkin {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.habit-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  border-left: 3px solid;
+  border-radius: 8px;
+  transition: all 150ms;
+}
+
+.habit-icon {
+  font-size: 18px;
+  width: 28px;
+  text-align: center;
+}
+
+.habit-name {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.habit-toggle {
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--border-primary);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 150ms;
+  min-width: 70px;
+
+  &:hover {
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+  }
+
+  &.done {
+    background: rgba(34, 197, 94, 0.15);
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+  }
+}
+
+.habit-streak {
+  font-size: 13px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  min-width: 80px;
+}
+
+.habit-edit-btn,
+.habit-delete-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 150ms;
+
+  &:hover {
+    color: var(--text-primary);
+    background: var(--bg-card-alt);
+  }
+}
+
+.habit-delete-btn:hover {
+  color: #ef4444;
+}
+
+.habits-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.habits-summary {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: var(--bg-card-alt);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.color-input {
+  width: 50px;
+  height: 36px;
+  padding: 2px;
+  cursor: pointer;
+}
+
 // ─── Responsive ─────────────────────────────────────────────
 @media (max-width: 768px) {
   .planner-container { padding: 16px; }
