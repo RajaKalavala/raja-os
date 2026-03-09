@@ -2,6 +2,7 @@ import { Component, signal, HostListener, OnInit, inject, effect } from '@angula
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { JarvisMascotComponent } from './jarvis-mascot/jarvis-mascot.component';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import { ThemeService } from './services/theme.service';
@@ -9,7 +10,7 @@ import { SupabaseService } from '@org/supabase';
 import { JarvisService } from '@org/jarvis';
 
 @Component({
-  imports: [RouterModule, FormsModule, SidebarComponent, CommonModule],
+  imports: [RouterModule, FormsModule, SidebarComponent, JarvisMascotComponent, CommonModule],
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.scss',

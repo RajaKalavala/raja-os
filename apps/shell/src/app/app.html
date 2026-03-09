@@ -51,6 +51,11 @@
   </main>
 </div>
 
+<!-- Jarvis Mascot -->
+@if (showSidebar) {
+  <app-jarvis-mascot></app-jarvis-mascot>
+}
+
 <!-- Jarvis Morning Briefing Overlay -->
 @if (showBriefingOverlay()) {
   <div class="briefing-overlay" (click)="dismissBriefing()">

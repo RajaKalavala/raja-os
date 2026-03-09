@@ -1,0 +1,143 @@
+<!-- Speech Bubble -->
+@if (speechBubble() && !isChatOpen()) {
+  <div class="speech-bubble" (click)="toggleChat()">
+    <p>{{ speechBubble() }}</p>
+    <div class="speech-bubble-arrow"></div>
+  </div>
+}
+
+<!-- Chat Panel -->
+@if (isChatOpen()) {
+  <div class="chat-panel">
+    <div class="chat-header">
+      <div class="chat-header-left">
+        <span class="chat-header-dot"></span>
+        <span class="chat-header-title">Jarvis</span>
+        @if (isAdmin()) {
+          <span class="chat-admin-badge">ADMIN</span>
+        }
+      </div>
+      <button class="chat-close-btn" (click)="toggleChat()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <div class="chat-messages">
+      @for (msg of messages(); track msg.id) {
+        <div class="chat-msg" [class.user]="msg.role === 'user'" [class.assistant]="msg.role === 'assistant'">
+          @if (msg.role === 'assistant') {
+            <div class="msg-avatar bot">J</div>
+          }
+          <div class="msg-bubble">{{ msg.content }}</div>
+          @if (msg.role === 'user') {
+            <div class="msg-avatar user">R</div>
+          }
+        </div>
+      }
+
+      @if (isTyping()) {
+        <div class="chat-msg assistant">
+          <div class="msg-avatar bot">J</div>
+          <div class="msg-bubble typing">
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+          </div>
+        </div>
+      }
+
+      <!-- Quick prompts when few messages -->
+      @if (messages().length <= 1 && !isTyping()) {
+        <div class="quick-prompts">
+          @for (prompt of quickPrompts(); track prompt) {
+            <button class="quick-prompt-btn" (click)="useQuickPrompt(prompt)">{{ prompt }}</button>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="chat-input-area">
+      <textarea
+        class="chat-input"
+        [(ngModel)]="inputText"
+        (keydown)="onKeydown($event)"
+        placeholder="Ask Jarvis..."
+        rows="1"
+      ></textarea>
+      <button class="chat-send-btn" (click)="sendMessage()" [disabled]="!inputText.trim() || isTyping()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </button>
+    </div>
+  </div>
+}
+
+<!-- Robot Mascot -->
+<div
+  class="mascot-container"
+  [class.chat-open]="isChatOpen()"
+  [attr.data-mood]="mood()"
+  (click)="toggleChat()"
+  (dblclick)="onBodyDoubleClick()"
+>
+  <svg class="robot" viewBox="0 0 80 100" width="64" height="80">
+    <!-- Antenna -->
+    <g class="antenna-group" (click)="onAntennaClick($event)">
+      <line class="antenna-stem" x1="40" y1="14" x2="40" y2="4" stroke="#10b981" stroke-width="2.5" stroke-linecap="round"/>
+      <circle class="antenna-ball" cx="40" cy="3" r="3.5" fill="#10b981"/>
+    </g>
+
+    <!-- Head -->
+    <rect class="head" x="14" y="14" width="52" height="34" rx="12" fill="#1a2e26"/>
+    <rect class="head-screen" x="19" y="19" width="42" height="24" rx="8" fill="#0f1a15"/>
+
+    <!-- Eyes -->
+    <g class="eyes">
+      <circle class="eye left-eye" cx="32" cy="31" r="5.5" fill="#10b981"/>
+      <circle class="eye right-eye" cx="48" cy="31" r="5.5" fill="#10b981"/>
+      <circle class="pupil left-pupil" cx="32" cy="31" r="2" fill="#fff"/>
+      <circle class="pupil right-pupil" cx="48" cy="31" r="2" fill="#fff"/>
+      <!-- Closed eyes (sleeping) -->
+      <line class="eye-closed left-closed" x1="27" y1="31" x2="37" y2="31" stroke="#10b981" stroke-width="2.5" stroke-linecap="round"/>
+      <line class="eye-closed right-closed" x1="43" y1="31" x2="53" y2="31" stroke="#10b981" stroke-width="2.5" stroke-linecap="round"/>
+    </g>
+
+    <!-- Mouth -->
+    <path class="mouth smile" d="M32 39 Q40 45 48 39" stroke="#10b981" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <line class="mouth flat" x1="34" y1="39" x2="46" y2="39" stroke="#10b981" stroke-width="2" stroke-linecap="round"/>
+    <circle class="mouth open" cx="40" cy="40" r="4" fill="#10b981" opacity="0"/>
+
+    <!-- Body -->
+    <rect class="body" x="18" y="52" width="44" height="28" rx="10" fill="#1a2e26"/>
+    <circle class="chest-light" cx="40" cy="63" r="4.5" fill="#10b981" opacity="0.7"/>
+    <circle class="chest-glow" cx="40" cy="63" r="7" fill="#10b981" opacity="0.15"/>
+
+    <!-- Arms -->
+    <rect class="arm left-arm" x="6" y="55" width="10" height="18" rx="5" fill="#1a2e26"/>
+    <rect class="arm right-arm" x="64" y="55" width="10" height="18" rx="5" fill="#1a2e26"/>
+
+    <!-- Feet -->
+    <rect class="foot left-foot" x="22" y="82" width="14" height="8" rx="4" fill="#1a2e26"/>
+    <rect class="foot right-foot" x="44" y="82" width="14" height="8" rx="4" fill="#1a2e26"/>
+
+    <!-- Zzz (sleeping) -->
+    <g class="sleep-zzz">
+      <text x="56" y="12" fill="#10b981" font-size="10" font-weight="700" opacity="0.8">z</text>
+      <text x="62" y="6" fill="#10b981" font-size="8" font-weight="700" opacity="0.5">z</text>
+      <text x="66" y="1" fill="#10b981" font-size="6" font-weight="700" opacity="0.3">z</text>
+    </g>
+
+    <!-- Sparkles (celebrating) -->
+    <g class="sparkles">
+      <text x="2" y="10" font-size="10">✦</text>
+      <text x="68" y="8" font-size="8">✦</text>
+      <text x="10" y="50" font-size="7">✦</text>
+      <text x="65" y="48" font-size="9">✦</text>
+    </g>
+  </svg>
+</div>
