@@ -26,7 +26,8 @@
 - **Product Requirements Document**: See `prd.md` in project root for comprehensive feature requirements, data models, and roadmap
 - **Architecture**: Module Federation with Angular Standalone Components
 - **Monorepo**: Nx workspace
-- **Current Status**: Shell complete, Dashboard implemented with dark/light theme toggle, 8 pages pending
+- **Features Documentation**: See `docs/features.md` for comprehensive feature documentation
+- **Current Status**: Shell complete with 7 deployed MFEs, Jarvis AI system, global mascot chatbot, Supabase backend
 
 ## Architecture
 
@@ -40,28 +41,38 @@ This project uses **Module Federation** to create a micro frontend architecture:
   - Provides shared layout and theme
 
 - **Remote MFEs**: Independent micro frontend applications at `apps/mfe/`
-  - `dashboard/` - Dashboard page (Port 4202) - ✅ Implemented (includes dark/light theme toggle)
-  - `system-overview/` - System Overview page - ❌ Not started
-  - `production-history/` - Production History page - ❌ Not started (Priority 1)
-  - `builds/` - Builds showcase page - ❌ Not started
-  - `architecture/` - Architecture documentation - ❌ Not started
-  - `ai-lab/` - AI/ML projects showcase - ❌ Not started
-  - `engineering-notes/` - Blog/technical writing - ❌ Not started
-  - `now/` - Current focus page - ❌ Not started
-  - `ping-me/` - Contact page - ❌ Not started
+  - `dashboard/` - Dashboard & command center (Port 4202) - ✅ Implemented
+  - `aboutme/` - About Me page (Port 4204) - ✅ Implemented
+  - `experience/` - Career timeline (Port 4203) - ✅ Implemented
+  - `projects/` - Projects showcase + Automations (Port 4205) - ✅ Implemented
+  - `blogs/` - Developer blog (Port 4206) - ✅ Implemented
+  - `planner/` - Productivity planner with Kanban, Goals, Ideas, Habits, Brainstorm (Port 4207) - ✅ Implemented (Admin-only)
+  - `jarvis/` - AI intelligence layer with 8 sub-pages (Port 4208) - ✅ Implemented (Admin-only)
+
+- **Shell Global Components** (not MFEs, live in `apps/shell/src/app/`):
+  - `sidebar/` - Navigation with nudge notifications
+  - `jarvis-mascot/` - Animated robot mascot chatbot (bottom-right, all pages)
+  - Morning briefing overlay (auto-shows daily for admin)
+  - Quick capture modal (Cmd+Shift+J)
 
 ### Libraries
 
-- `libs/design-system/` - Shared component library (needs expansion)
+- `libs/design-system/` - Shared component library
 - `libs/shared/models/` - Shared TypeScript interfaces and data models
+- `libs/shared/supabase/` - Supabase client service (auth, database, RLS)
+- `libs/shared/jarvis/` - Jarvis AI services, models, prompts, nudge service
 - `libs/shop/*` - Legacy libraries from template (can be removed if not needed)
 
 ### Application Ports
 
 - Shell: 4200
 - Dashboard MFE: 4202
-- Future MFEs: 4203-4210 (as needed)
-- API: 3000 (when implemented)
+- Experience MFE: 4203
+- About Me MFE: 4204
+- Projects MFE: 4205
+- Blogs MFE: 4206
+- Planner MFE: 4207
+- Jarvis MFE: 4208
 
 ## Development Guidelines
 
@@ -104,7 +115,7 @@ This project uses **Module Federation** to create a micro frontend architecture:
 - **Theme System**:
   - Light/Dark mode toggle implemented globally
   - Theme managed via CSS variables in `apps/shell/src/styles.scss`
-  - ThemeService in dashboard MFE (`apps/mfe/dashboard/src/app/services/theme.service.ts`)
+  - ThemeService in shell (`apps/shell/src/app/services/theme.service.ts`)
   - Persists to localStorage as `'raja-os-theme'`
   - Respects OS `prefers-color-scheme` on first visit
   - Toggle button in dashboard header (sun/moon icon)
@@ -129,11 +140,19 @@ This project uses **Module Federation** to create a micro frontend architecture:
 ### Navigation
 
 - `apps/shell/src/app/app.routes.ts` - Main routing configuration
-- `apps/shell/src/app/sidebar/sidebar.component.ts` - Navigation menu (all routes defined)
+- `apps/shell/src/app/sidebar/sidebar.component.ts` - Navigation menu with nudge notifications
+
+### Shell Global Components
+
+- `apps/shell/src/app/jarvis-mascot/` - Animated robot mascot chatbot (3 files: .ts, .html, .scss)
+- `apps/shell/src/app/app.ts` - Root component with morning briefing overlay, quick capture modal
+- `apps/shell/src/app/services/theme.service.ts` - Theme management service
 
 ### Key Reference Files
 
 - `prd.md` - Complete product requirements and data models
+- `docs/features.md` - Comprehensive feature documentation
+- `docs/prod-deployment.md` - MFE production deployment checklist
 - `README.md` - General Nx repository information
 - `AGENTS.md` - Nx MCP configuration
 
@@ -161,23 +180,23 @@ When shell is served with `nx serve shell`, it will automatically start remote M
 
 ## Current Priorities
 
-Based on the development roadmap in `prd.md`:
+### Completed
+- [x] Dark/light theme toggle
+- [x] All 7 MFEs (Dashboard, About Me, Experience, Projects, Blogs, Planner, Jarvis)
+- [x] Supabase backend with RLS
+- [x] Jarvis AI system (8 sub-pages: Home, Briefing, Chat, Focus, Capture, Metrics, Review, Memory)
+- [x] Planner with Goals, Tasks, Ideas, Board, Habits, Brainstorm
+- [x] Projects with Automations (LinkedIn post generator)
+- [x] Smart nudge notifications in sidebar
+- [x] Jarvis mascot chatbot (animated robot, dual-mode AI)
+- [x] Morning briefing overlay, Quick capture (Cmd+Shift+J)
 
-### Phase 2: Dashboard Completion (Current)
-
-- [x] Implement dark/light theme toggle (✅ Completed)
-- [ ] Refine Dashboard data models
-- [ ] Implement real data integration
-- [ ] Add animations and transitions
-- [ ] Improve mobile responsiveness
-- [ ] Add interactive features
-
-### Phase 3: High Priority Pages (Next)
-
-- [ ] Create Production History MFE (Priority 1)
-- [ ] Create Architecture MFE
-- [ ] Create AI Lab MFE
-- [ ] Expand design system components
+### Next
+- [ ] Real data integration for dashboard metrics
+- [ ] Design system component library expansion
+- [ ] X/Twitter automation integration
+- [ ] Content calendar with scheduling
+- [ ] Terminal emulator page
 
 ## Code Quality Standards
 
@@ -265,6 +284,7 @@ The application supports light/dark mode theming via CSS custom properties:
 - Sidebar navigation
 - Admin login modal
 - Timer card gradient in time tracker
+- Jarvis mascot chatbot (robot + chat panel)
 
 ## Key Reminders
 

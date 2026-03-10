@@ -272,6 +272,48 @@ All tables have RLS policies, indexes, and auto-updating timestamps:
 
 ---
 
+### Jarvis Mascot Chatbot (Global)
+
+An animated robot mascot that lives in the bottom-right corner across all pages. Dual-mode AI assistant with personality.
+
+**Architecture:** Shell-level component (`apps/shell/src/app/jarvis-mascot/`) — not an MFE, rendered globally on all pages except the landing boot screen.
+
+- **SVG Robot Character** — Custom-designed robot with antenna, animated eyes, mouth expressions, arms, feet, chest light
+- **9 Mood States** — idle (blink), thinking (eyes look around), happy (bright eyes), sleeping (closed eyes + Zzz), alert (flashing), waving (arm wave), celebrating (sparkles + arms up), looking (head tilt), dancing (full body bounce)
+- **Floating Animation** — Gentle bobbing motion when idle
+- **Speech Bubbles** — Context-aware messages that pop up periodically with fun facts, tips, and reactions
+- **Time-Based Behavior** — Sleeping mood between midnight and 5 AM with "working late?" greeting
+- **Navigation Reactive** — Reacts to page changes with contextual speech bubbles (e.g., "Welcome to my domain!" on Jarvis page)
+- **Easter Eggs** — Click antenna for dance + "Beep boop beep!", double-click body for celebration
+- **Random Idle Animations** — Every 35-60 seconds, plays random mood (looking, dancing, waving) with optional speech bubble
+
+**Chat Panel:**
+- Slide-up chat panel with message history
+- User/AI message bubbles with avatars
+- Typing indicator with animated dots
+- Quick prompt suggestions (different for public vs admin)
+- Enter to send, Shift+Enter for newline
+
+**Public Mode (No API Key):**
+- Keyword-matching response system covering: who is Raja, skills, experience, projects, contact, education, AI, Angular, RajaOS
+- Fun facts and site tips in speech bubbles
+- Quick prompts: "Who is Raja?", "What are his skills?", "Tell me about his projects", "How to contact him?"
+
+**Admin Mode (With API Key):**
+- Full GPT-4o powered conversational AI
+- Personal assistant personality — witty, efficient, slightly sarcastic
+- Productivity help, motivation, daily planning
+- Quick prompts: "How's my day going?", "What should I focus on?", "Give me a motivational push", "Quick productivity tip"
+- Admin badge in chat header
+
+**AI Integration:**
+- Uses same OpenAI API key from localStorage (`raja-os-openai-key`)
+- 10-message conversation context window
+- Custom system prompts for public (portfolio showcase) and admin (personal assistant) modes
+- Temperature 0.8, max 300 tokens for concise responses
+
+---
+
 ### Blogs
 
 Developer writing and technical content.
