@@ -255,8 +255,17 @@ raja-os/
 │   └── shared/
 │       └── models/                 # Shared TypeScript interfaces and data models
 │
+├── docs/                           # Project documentation
+│   ├── prd.md                      # Product Requirements Document
+│   ├── features.md                 # Comprehensive feature documentation
+│   ├── deployment.md               # Deployment guide
+│   ├── deploy-now.md               # Quick deployment checklist
+│   ├── prod-deployment.md          # MFE production deployment checklist
+│   ├── implementation-guide.md     # Claude Code implementation guide
+│   ├── claude-cheatsheet.md        # Claude cheatsheet
+│   └── setup.md                    # Project setup guide
+│
 ├── CLAUDE.md                       # AI assistant instructions
-├── prd.md                          # Product Requirements Document
 ├── nx.json                         # Nx workspace configuration
 ├── tsconfig.base.json              # TypeScript path mappings
 ├── package.json                    # Dependencies and scripts
@@ -404,7 +413,7 @@ color: #111827;
 
 1. Create component in `libs/design-system/src/lib/`
 2. Export from `libs/design-system/src/index.ts`
-3. Use design tokens from `prd.md`
+3. Use design tokens from `docs/prd.md`
 4. Ensure theme compatibility (light/dark modes)
 5. Document usage
 
@@ -569,7 +578,7 @@ color: #111827;
 - **Shadows**: sm, md, lg
 - **Transitions**: fast (150ms), base (200ms), slow (300ms)
 
-See `prd.md` for complete design token specifications.
+See `docs/prd.md` for complete design token specifications.
 
 ---
 
@@ -602,7 +611,7 @@ If you find a bug or have a feature suggestion, please open an issue on GitHub.
 ## 📚 Documentation
 
 - **[CLAUDE.md](./CLAUDE.md)**: Comprehensive project instructions for AI assistants and developers
-- **[prd.md](./prd.md)**: Product Requirements Document with detailed feature specifications
+- **[prd.md](./docs/prd.md)**: Product Requirements Document with detailed feature specifications
 - **[Nx Documentation](https://nx.dev)**: Official Nx documentation
 - **[Angular Documentation](https://angular.io)**: Official Angular documentation
 - **[Module Federation Guide](https://webpack.js.org/concepts/module-federation/)**: Webpack Module Federation documentation

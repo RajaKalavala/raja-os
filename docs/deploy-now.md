@@ -87,7 +87,7 @@ After ~3-5 minutes, your app will be live at:
 - All routes redirect to `index.html`
 
 **Need help?**
-- See full guide: `DEPLOYMENT.md`
+- See full guide: `docs/deployment.md`
 - Vercel docs: [vercel.com/docs](https://vercel.com/docs)
 
 ## Preview Before Production

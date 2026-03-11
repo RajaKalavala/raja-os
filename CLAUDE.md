@@ -23,7 +23,7 @@
 
 ### Key Information
 
-- **Product Requirements Document**: See `prd.md` in project root for comprehensive feature requirements, data models, and roadmap
+- **Product Requirements Document**: See `docs/prd.md` for comprehensive feature requirements, data models, and roadmap
 - **Architecture**: Module Federation with Angular Standalone Components
 - **Monorepo**: Nx workspace
 - **Features Documentation**: See `docs/features.md` for comprehensive feature documentation
@@ -106,7 +106,7 @@ This project uses **Module Federation** to create a micro frontend architecture:
 ### Data Models
 
 - **Location**: `libs/shared/models/` or within individual MFE projects
-- **Pattern**: Define TypeScript interfaces matching the data models in `prd.md`
+- **Pattern**: Define TypeScript interfaces matching the data models in `docs/prd.md`
 - **Example**: See Dashboard component for MetricCard, CareerMilestone, etc.
 
 ### Styling
@@ -150,9 +150,14 @@ This project uses **Module Federation** to create a micro frontend architecture:
 
 ### Key Reference Files
 
-- `prd.md` - Complete product requirements and data models
+- `docs/prd.md` - Complete product requirements and data models
 - `docs/features.md` - Comprehensive feature documentation
 - `docs/prod-deployment.md` - MFE production deployment checklist
+- `docs/deployment.md` - Deployment guide
+- `docs/deploy-now.md` - Quick deployment checklist
+- `docs/implementation-guide.md` - Claude Code implementation guide
+- `docs/claude-cheatsheet.md` - Claude cheatsheet
+- `docs/setup.md` - Project setup guide
 - `README.md` - General Nx repository information
 - `AGENTS.md` - Nx MCP configuration
 
@@ -232,7 +237,7 @@ When shell is served with `nx serve shell`, it will automatically start remote M
 
 ### Adding a New Page/MFE
 
-1. Check `prd.md` for feature requirements and data models
+1. Check `docs/prd.md` for feature requirements and data models
 2. Generate new Angular app in `apps/mfe/`
 3. Configure Module Federation (webpack.config.ts)
 4. Add route to shell's app.routes.ts
@@ -243,13 +248,13 @@ When shell is served with `nx serve shell`, it will automatically start remote M
 
 1. Create component in `libs/design-system/src/lib/`
 2. Export from `libs/design-system/src/index.ts`
-3. Use design tokens from `prd.md`
+3. Use design tokens from `docs/prd.md`
 4. Create Storybook story (if Storybook is set up)
 5. Document usage
 
 ### Working with Data
 
-1. Define TypeScript interfaces based on `prd.md` data models
+1. Define TypeScript interfaces based on `docs/prd.md` data models
 2. Create service in MFE or shared location
 3. Implement data fetching/management
 4. Use Angular signals for reactive state (preferred)
@@ -288,7 +293,7 @@ The application supports light/dark mode theming via CSS custom properties:
 
 ## Key Reminders
 
-- **Always check `prd.md`** for feature requirements and data models before implementing
+- **Always check `docs/prd.md`** for feature requirements and data models before implementing
 - **Module Federation**: Each MFE is independently deployable
 - **Standalone Components**: No NgModules, use standalone: true
 - **Theme System**: Use CSS variables for all colors to support light/dark modes (`var(--bg-card)`, etc.)
@@ -304,12 +309,12 @@ The application supports light/dark mode theming via CSS custom properties:
 - **For Nx questions**: Use `nx_docs` MCP tool
 - **For workspace structure**: Use `nx_workspace` MCP tool
 - **For project details**: Use `nx_project_details` MCP tool
-- **For feature requirements**: Check `prd.md`
-- **For architecture questions**: See Architecture section in `prd.md`
+- **For feature requirements**: Check `docs/prd.md`
+- **For architecture questions**: See Architecture section in `docs/prd.md`
 
 ## References
 
-- Product Requirements: `prd.md`
+- Product Requirements: `docs/prd.md`
 - Nx Documentation: https://nx.dev
 - Angular Documentation: https://angular.io
 - Module Federation: https://webpack.js.org/concepts/module-federation/
