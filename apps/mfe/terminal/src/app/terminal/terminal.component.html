@@ -1,0 +1,54 @@
+<div class="terminal-page">
+  <div class="terminal-window" (click)="focusInput()">
+    <!-- Title Bar -->
+    <div class="terminal-titlebar">
+      <div class="titlebar-dots">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+      </div>
+      <div class="titlebar-title">raja&#64;rajaos ~ terminal</div>
+      <div class="titlebar-spacer"></div>
+    </div>
+
+    <!-- Terminal Body -->
+    <div class="terminal-body" #terminalBody>
+      @for (line of lines(); track line.timestamp.getTime() + $index) {
+        <div class="terminal-line" [ngClass]="'line-' + line.type">
+          @if (line.type === 'input') {
+            <span class="prompt">
+              <span class="prompt-user">raja</span><span class="prompt-at">&#64;</span><span class="prompt-host">rajaos</span>
+              <span class="prompt-sep">:</span><span class="prompt-dir">~</span>
+              <span class="prompt-symbol">$</span>
+            </span>
+            <span class="line-text">{{ line.text }}</span>
+          } @else {
+            <pre class="line-text">{{ line.text }}</pre>
+          }
+        </div>
+      }
+
+      <!-- Active Input -->
+      <div class="terminal-line line-active">
+        <span class="prompt">
+          <span class="prompt-user">raja</span><span class="prompt-at">&#64;</span><span class="prompt-host">rajaos</span>
+          <span class="prompt-sep">:</span><span class="prompt-dir">~</span>
+          <span class="prompt-symbol">$</span>
+        </span>
+        <input
+          #cmdInput
+          class="terminal-input"
+          [(ngModel)]="currentInput"
+          (keydown)="onKeydown($event)"
+          [disabled]="isProcessing()"
+          spellcheck="false"
+          autocomplete="off"
+          autofocus
+        />
+        @if (isProcessing()) {
+          <span class="cursor-blink processing">...</span>
+        }
+      </div>
+    </div>
+  </div>
+</div>

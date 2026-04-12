@@ -43,8 +43,9 @@
       ],
       "@org/supabase": ["libs/shared/supabase/src/index.ts"],
       "@org/jarvis": ["libs/shared/jarvis/src/index.ts"],
-      "jarvis/Routes": [
-        "apps/mfe/jarvis/src/app/remote-entry/entry.routes.ts"
+      "jarvis/Routes": ["apps/mfe/jarvis/src/app/remote-entry/entry.routes.ts"],
+      "terminal/Routes": [
+        "apps/mfe/terminal/src/app/remote-entry/entry.routes.ts"
       ]
     }
   },

@@ -5,5 +5,6 @@
   "projects": "http://localhost:4205/mf-manifest.json",
   "blogs": "http://localhost:4206/mf-manifest.json",
   "planner": "http://localhost:4207/mf-manifest.json",
-  "jarvis": "http://localhost:4208/mf-manifest.json"
+  "jarvis": "http://localhost:4208/mf-manifest.json",
+  "terminal": "http://localhost:4209/mf-manifest.json"
 }
