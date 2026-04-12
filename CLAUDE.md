@@ -27,7 +27,7 @@
 - **Architecture**: Module Federation with Angular Standalone Components
 - **Monorepo**: Nx workspace
 - **Features Documentation**: See `docs/features.md` for comprehensive feature documentation
-- **Current Status**: Shell complete with 7 deployed MFEs, Jarvis AI system, global mascot chatbot, Supabase backend
+- **Current Status**: Shell complete with 8 deployed MFEs, Jarvis AI system, Health MFE, global mascot chatbot, Supabase backend
 
 ## Architecture
 
@@ -48,6 +48,7 @@ This project uses **Module Federation** to create a micro frontend architecture:
   - `blogs/` - Developer blog (Port 4206) - ✅ Implemented
   - `planner/` - Productivity planner with Kanban, Goals, Ideas, Habits, Brainstorm (Port 4207) - ✅ Implemented (Admin-only)
   - `jarvis/` - AI intelligence layer with 8 sub-pages (Port 4208) - ✅ Implemented (Admin-only)
+  - `health/` - Health archive with AI advisor, medical vault, 10 sub-pages (Port 4210) - ✅ Implemented (Admin-only)
 
 - **Shell Global Components** (not MFEs, live in `apps/shell/src/app/`):
   - `sidebar/` - Navigation with nudge notifications
@@ -61,6 +62,7 @@ This project uses **Module Federation** to create a micro frontend architecture:
 - `libs/shared/models/` - Shared TypeScript interfaces and data models
 - `libs/shared/supabase/` - Supabase client service (auth, database, RLS)
 - `libs/shared/jarvis/` - Jarvis AI services, models, prompts, nudge service
+- `libs/shared/health/` - Health AI providers (multi-model), health data services, models
 - `libs/shop/*` - Legacy libraries from template (can be removed if not needed)
 
 ### Application Ports
@@ -73,6 +75,7 @@ This project uses **Module Federation** to create a micro frontend architecture:
 - Blogs MFE: 4206
 - Planner MFE: 4207
 - Jarvis MFE: 4208
+- Health MFE: 4210
 
 ## Development Guidelines
 

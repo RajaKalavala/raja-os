@@ -6,5 +6,6 @@
   "blogs": "http://localhost:4206/mf-manifest.json",
   "planner": "http://localhost:4207/mf-manifest.json",
   "jarvis": "http://localhost:4208/mf-manifest.json",
-  "terminal": "http://localhost:4209/mf-manifest.json"
+  "terminal": "http://localhost:4209/mf-manifest.json",
+  "health": "http://localhost:4210/mf-manifest.json"
 }

@@ -1,9 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { SupabaseService } from '@org/supabase';
+import { HealthDataService } from '@org/health';
 
 @Injectable({ providedIn: 'root' })
 export class JarvisDataService {
   private supabase = inject(SupabaseService);
+  private healthDataService = inject(HealthDataService);
 
   private get client() {
     return this.supabase.client;
@@ -16,12 +18,13 @@ export class JarvisDataService {
   async getLiveDataSummary(): Promise<string> {
     if (!this.userId) return 'No user logged in.';
 
-    const [goals, tasks, captures, posts, focusSessions] = await Promise.all([
+    const [goals, tasks, captures, posts, focusSessions, health] = await Promise.all([
       this.getGoalsSummary(),
       this.getTasksSummary(),
       this.getCapturesSummary(),
       this.getPostsSummary(),
       this.getFocusSummary(),
+      this.getHealthSummary(),
     ]);
 
     return [
@@ -30,7 +33,16 @@ export class JarvisDataService {
       `Pending Captures: ${captures}`,
       `Content Posts: ${posts}`,
       `Focus Sessions: ${focusSessions}`,
+      `Health: ${health}`,
     ].join('\n');
+  }
+
+  private async getHealthSummary(): Promise<string> {
+    try {
+      return await this.healthDataService.getHealthSummary();
+    } catch {
+      return 'Health data unavailable';
+    }
   }
 
   private async getGoalsSummary(): Promise<string> {

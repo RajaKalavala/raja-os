@@ -39,6 +39,7 @@ export class SidebarComponent implements OnDestroy {
     { label: 'My Planner', route: '/planner', icon: 'clipboard', adminOnly: true },
     { label: 'Jarvis', route: '/jarvis', icon: 'cpu', adminOnly: true },
     { label: 'Blogs', route: '/blogs', icon: 'book' },
+    { label: 'Health', route: '/health', icon: 'heart', adminOnly: true },
     { label: 'Terminal', route: '/terminal', icon: 'terminal', adminOnly: true },
   ];
 

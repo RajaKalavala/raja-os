@@ -82,6 +82,9 @@ export class JarvisNudgeService {
       this.checkNoFocusSession(),
       this.checkWeeklyReviewDue(),
       this.checkAgingIdeas(),
+      this.checkLabsOutOfRange(),
+      this.checkHealthLogMissing(),
+      this.checkVitalsDataStale(),
     ]);
 
     const newNudges = checks.flat().filter(Boolean) as {
@@ -266,6 +269,74 @@ export class JarvisNudgeService {
         priority: 'low' as const,
       },
     ];
+  }
+
+  // ─── Health Nudge Checks ───────────────────────────────
+
+  private async checkLabsOutOfRange() {
+    if (!this.userId) return [];
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    const { data } = await this.client
+      .from('health_lab_results')
+      .select('biomarker_name, flag_direction, lab_date')
+      .eq('user_id', this.userId)
+      .eq('is_flagged', true)
+      .gte('lab_date', thirtyDaysAgo.toISOString().split('T')[0])
+      .order('lab_date', { ascending: false })
+      .limit(3);
+
+    if (!data || data.length === 0) return [];
+    return [{
+      type: 'labs_out_of_range' as NudgeType,
+      message: `${data.length} lab result${data.length > 1 ? 's' : ''} flagged: "${data[0]['biomarker_name']}" is ${data[0]['flag_direction']}`,
+      actionLabel: 'View Lab Results',
+      actionRoute: '/health/labs',
+      priority: 'high' as const,
+    }];
+  }
+
+  private async checkHealthLogMissing() {
+    if (!this.userId) return [];
+    if (new Date().getHours() < 20) return [];
+
+    const today = new Date().toISOString().split('T')[0];
+    const { count } = await this.client
+      .from('health_daily_log')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', this.userId)
+      .eq('log_date', today);
+
+    if ((count || 0) > 0) return [];
+    return [{
+      type: 'health_log_missing' as NudgeType,
+      message: "How are you feeling today? Your daily health log is empty.",
+      actionLabel: 'Log Today',
+      actionRoute: '/health',
+      priority: 'low' as const,
+    }];
+  }
+
+  private async checkVitalsDataStale() {
+    if (!this.userId) return [];
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+    const { count } = await this.client
+      .from('health_vitals')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', this.userId)
+      .gte('recorded_at', sevenDaysAgo.toISOString());
+
+    if ((count || 0) > 0) return [];
+    return [{
+      type: 'vitals_data_stale' as NudgeType,
+      message: 'No health vitals data in 7+ days. Time to import from Apple Health?',
+      actionLabel: 'Import Data',
+      actionRoute: '/health/vitals',
+      priority: 'medium' as const,
+    }];
   }
 
   // ─── Helpers ──────────────────────────────────────────

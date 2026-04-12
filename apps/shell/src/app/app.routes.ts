@@ -63,4 +63,11 @@ export const appRoutes: Route[] = [
         (m) => m!.remoteRoutes,
       ),
   },
+  {
+    path: 'health',
+    loadChildren: () =>
+      loadRemote<typeof import('health/Routes')>('health/Routes').then(
+        (m) => m!.remoteRoutes,
+      ),
+  },
 ];

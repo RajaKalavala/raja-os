@@ -46,6 +46,10 @@
       "jarvis/Routes": ["apps/mfe/jarvis/src/app/remote-entry/entry.routes.ts"],
       "terminal/Routes": [
         "apps/mfe/terminal/src/app/remote-entry/entry.routes.ts"
+      ],
+      "@org/health": ["libs/shared/health/src/index.ts"],
+      "health/Routes": [
+        "apps/mfe/health/src/app/remote-entry/entry.routes.ts"
       ]
     }
   },

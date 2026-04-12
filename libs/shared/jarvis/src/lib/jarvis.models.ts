@@ -149,4 +149,10 @@ export type NudgeType =
   | 'ideas_aging'
   | 'no_focus_session'
   | 'weekly_review_due'
-  | 'goal_completed';
+  | 'goal_completed'
+  | 'medication_reminder'
+  | 'labs_out_of_range'
+  | 'health_log_missing'
+  | 'vitals_data_stale'
+  | 'health_goal_at_risk'
+  | 'apple_health_import_due';
