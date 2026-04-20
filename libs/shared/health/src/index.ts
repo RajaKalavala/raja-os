@@ -10,3 +10,4 @@ export { HEALTH_PROMPTS } from './lib/ai/health.prompts';
 // Services
 export { HealthContextService } from './lib/services/health-context.service';
 export { HealthDataService } from './lib/services/health-data.service';
+export { HealthFitnessService } from './lib/services/health-fitness.service';

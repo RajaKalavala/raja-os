@@ -44,6 +44,10 @@ users (auth system)
   |-- 1:N -- health_chat_sessions
   |-- 1:1 -- health_profile
   |-- 1:N -- health_import_sessions
+  |-- 1:N -- health_workouts
+  |             |-- 1:N -- health_workout_exercises
+  |-- 1:N -- health_body_weight
+  |-- 1:N -- health_exercise_library (custom exercises)
 ```
 
 ---
@@ -396,6 +400,84 @@ Tracks data imports from Apple Health, wearables, or CSV files.
 | `error_message` | TEXT | YES | NULL | Error details if failed |
 | `import_date` | TIMESTAMP | NO | `now()` | When the import was initiated |
 | `created_at` | TIMESTAMP | NO | `now()` | Row creation time |
+
+---
+
+### 12. `health_workouts`
+
+Stores workout sessions — one row per gym visit.
+
+| Column | Type | Nullable | Default | Description |
+|--------|------|----------|---------|-------------|
+| `id` | UUID | NO | auto-generate | Primary key |
+| `user_id` | UUID | NO | — | FK to users table |
+| `workout_date` | DATE | NO | — | Date of the workout |
+| `split_type` | VARCHAR(20) | NO | `'custom'` | `push`, `pull`, `legs`, `upper`, `lower`, `full_body`, `chest`, `back`, `shoulders`, `arms`, `core`, `cardio`, `custom` |
+| `duration_minutes` | INTEGER | NO | `60` | Total workout duration |
+| `energy_level` | SMALLINT | NO | `3` | Energy rating 1-5 |
+| `notes` | TEXT | YES | NULL | Workout notes |
+| `created_at` | TIMESTAMP | NO | `now()` | Row creation time |
+
+**Constraints:** `CHECK (energy_level BETWEEN 1 AND 5)`
+
+**Indexes:** `(user_id, workout_date DESC)`
+
+---
+
+### 13. `health_workout_exercises`
+
+Individual exercises within a workout session. For strength exercises, `sets` is a JSON array. For cardio, use `distance_km` and `duration_minutes`.
+
+| Column | Type | Nullable | Default | Description |
+|--------|------|----------|---------|-------------|
+| `id` | UUID | NO | auto-generate | Primary key |
+| `user_id` | UUID | NO | — | FK to users table |
+| `session_id` | UUID | NO | — | FK to `health_workouts`. **ON DELETE CASCADE** |
+| `exercise_name` | VARCHAR(100) | NO | — | Exercise name (e.g., `Bench Press`, `Running`) |
+| `muscle_group` | VARCHAR(20) | NO | — | `chest`, `back`, `legs`, `shoulders`, `arms`, `core`, `cardio` |
+| `exercise_type` | VARCHAR(10) | NO | `'strength'` | `strength` or `cardio` |
+| `sets` | JSON | YES | `[]` | Array of set objects: `[{"setNumber": 1, "reps": 10, "weightKg": 80, "isWarmup": false}]` |
+| `distance_km` | DECIMAL(6,2) | YES | NULL | Distance for cardio exercises |
+| `duration_minutes` | INTEGER | YES | NULL | Duration for cardio exercises |
+| `order_index` | INTEGER | NO | `0` | Display order within the workout |
+| `notes` | TEXT | YES | NULL | Exercise-specific notes |
+| `created_at` | TIMESTAMP | NO | `now()` | Row creation time |
+
+---
+
+### 14. `health_body_weight`
+
+Daily body weight log. One entry per user per day.
+
+| Column | Type | Nullable | Default | Description |
+|--------|------|----------|---------|-------------|
+| `id` | UUID | NO | auto-generate | Primary key |
+| `user_id` | UUID | NO | — | FK to users table |
+| `log_date` | DATE | NO | — | Date of weigh-in |
+| `weight_kg` | DECIMAL(5,1) | NO | — | Weight in kilograms |
+| `notes` | TEXT | YES | NULL | Optional notes |
+| `created_at` | TIMESTAMP | NO | `now()` | Row creation time |
+
+**Constraints:** `UNIQUE(user_id, log_date)`
+
+**Indexes:** `(user_id, log_date DESC)`
+
+---
+
+### 15. `health_exercise_library`
+
+User-defined custom exercises. Predefined exercises are hardcoded in the app — this table only stores user-added exercises.
+
+| Column | Type | Nullable | Default | Description |
+|--------|------|----------|---------|-------------|
+| `id` | UUID | NO | auto-generate | Primary key |
+| `user_id` | UUID | NO | — | FK to users table |
+| `name` | VARCHAR(100) | NO | — | Exercise name |
+| `muscle_group` | VARCHAR(20) | NO | — | Target muscle group |
+| `exercise_type` | VARCHAR(10) | NO | `'strength'` | `strength` or `cardio` |
+| `created_at` | TIMESTAMP | NO | `now()` | Row creation time |
+
+**Constraints:** `UNIQUE(user_id, name)`
 
 ---
 

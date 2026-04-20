@@ -234,6 +234,78 @@ ALTER TABLE health_import_sessions ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users see own imports" ON health_import_sessions FOR ALL USING (auth.uid() = user_id);
 
 -- ============================================
+-- FITNESS TRACKER TABLES
+-- ============================================
+
+-- 12. Workout Sessions
+CREATE TABLE IF NOT EXISTS health_workouts (
+  id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id           UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  workout_date      DATE NOT NULL,
+  split_type        TEXT NOT NULL DEFAULT 'custom',
+  duration_minutes  INTEGER NOT NULL DEFAULT 60,
+  energy_level      SMALLINT NOT NULL DEFAULT 3 CHECK (energy_level BETWEEN 1 AND 5),
+  notes             TEXT,
+  created_at        TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_health_workouts_user_date
+  ON health_workouts(user_id, workout_date DESC);
+
+ALTER TABLE health_workouts ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users see own workouts" ON health_workouts FOR ALL USING (auth.uid() = user_id);
+
+-- 13. Workout Exercises (individual exercises within a workout)
+CREATE TABLE IF NOT EXISTS health_workout_exercises (
+  id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id           UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  session_id        UUID NOT NULL REFERENCES health_workouts(id) ON DELETE CASCADE,
+  exercise_name     TEXT NOT NULL,
+  muscle_group      TEXT NOT NULL,
+  exercise_type     TEXT NOT NULL DEFAULT 'strength',
+  sets              JSONB DEFAULT '[]',
+  distance_km       NUMERIC,
+  duration_minutes  INTEGER,
+  order_index       INTEGER NOT NULL DEFAULT 0,
+  notes             TEXT,
+  created_at        TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+ALTER TABLE health_workout_exercises ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users see own workout exercises" ON health_workout_exercises FOR ALL USING (auth.uid() = user_id);
+
+-- 14. Body Weight Log
+CREATE TABLE IF NOT EXISTS health_body_weight (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id     UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  log_date    DATE NOT NULL,
+  weight_kg   NUMERIC(5,1) NOT NULL,
+  notes       TEXT,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE(user_id, log_date)
+);
+
+CREATE INDEX IF NOT EXISTS idx_health_body_weight_user_date
+  ON health_body_weight(user_id, log_date DESC);
+
+ALTER TABLE health_body_weight ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users see own body weight" ON health_body_weight FOR ALL USING (auth.uid() = user_id);
+
+-- 15. Custom Exercise Library (user-added exercises)
+CREATE TABLE IF NOT EXISTS health_exercise_library (
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id         UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  name            TEXT NOT NULL,
+  muscle_group    TEXT NOT NULL,
+  exercise_type   TEXT NOT NULL DEFAULT 'strength',
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE(user_id, name)
+);
+
+ALTER TABLE health_exercise_library ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users see own custom exercises" ON health_exercise_library FOR ALL USING (auth.uid() = user_id);
+
+-- ============================================
 -- Supabase Storage Bucket for Medical Documents
 -- Run this separately or via Supabase dashboard:
 --

@@ -16,6 +16,7 @@ export const remoteRoutes: Route[] = [
       { path: 'body-map', loadComponent: () => import('../pages/body-map/body-map.component').then(m => m.BodyMapComponent) },
       { path: 'correlations', loadComponent: () => import('../pages/correlations/correlations.component').then(m => m.CorrelationsComponent) },
       { path: 'timeline', loadComponent: () => import('../pages/timeline/health-timeline.component').then(m => m.HealthTimelineComponent) },
+      { path: 'fitness', loadComponent: () => import('../pages/fitness/fitness-tracker.component').then(m => m.FitnessTrackerComponent) },
     ],
   },
 ];

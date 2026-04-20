@@ -287,6 +287,87 @@ export interface HealthProfileSummary {
 // Apple Health Import
 // ========================================
 
+// ========================================
+// Fitness Tracker
+// ========================================
+
+export type WorkoutSplitType =
+  | 'push' | 'pull' | 'legs' | 'upper' | 'lower'
+  | 'full_body' | 'cardio' | 'chest' | 'back'
+  | 'shoulders' | 'arms' | 'core' | 'custom';
+
+export type MuscleGroup =
+  | 'chest' | 'back' | 'legs' | 'shoulders'
+  | 'arms' | 'core' | 'cardio' | 'full_body';
+
+export interface ExerciseSet {
+  setNumber: number;
+  reps: number;
+  weightKg: number;
+  isWarmup: boolean;
+}
+
+export interface WorkoutExercise {
+  id: string;
+  sessionId: string;
+  exerciseName: string;
+  muscleGroup: MuscleGroup;
+  exerciseType: 'strength' | 'cardio';
+  sets: ExerciseSet[];
+  distanceKm: number | null;
+  durationMinutes: number | null;
+  orderIndex: number;
+  notes: string | null;
+}
+
+export interface WorkoutSession {
+  id: string;
+  userId: string;
+  workoutDate: string;
+  splitType: WorkoutSplitType;
+  durationMinutes: number;
+  energyLevel: number;
+  notes: string | null;
+  exercises: WorkoutExercise[];
+  createdAt: Date;
+}
+
+export interface BodyWeightLog {
+  id: string;
+  userId: string;
+  logDate: string;
+  weightKg: number;
+  notes: string | null;
+  createdAt: Date;
+}
+
+export interface ExerciseDefinition {
+  name: string;
+  muscleGroup: MuscleGroup;
+  type: 'strength' | 'cardio';
+  isCustom: boolean;
+}
+
+export interface PersonalRecord {
+  exerciseName: string;
+  maxWeight: number;
+  reps: number;
+  date: string;
+}
+
+export interface FitnessStats {
+  workoutsThisWeek: number;
+  workoutsThisMonth: number;
+  currentStreak: number;
+  totalVolumeWeek: number;
+  latestBodyWeight: number | null;
+  bodyWeightChange7d: number | null;
+}
+
+// ========================================
+// Apple Health Import
+// ========================================
+
 export interface HealthImportSession {
   id: string;
   userId: string;

@@ -16,6 +16,10 @@ import { CommonModule } from '@angular/common';
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
           Vitals
         </a>
+        <a routerLink="/health/fitness" routerLinkActive="active" class="health-nav-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6.5 6.5h11M6.5 17.5h11M2 12h3M19 12h3M6.5 6.5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2M17.5 6.5a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2"></path></svg>
+          Fitness
+        </a>
         <a routerLink="/health/vault" routerLinkActive="active" class="health-nav-link">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
           Vault
